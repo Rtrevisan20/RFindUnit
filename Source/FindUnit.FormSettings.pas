@@ -21,7 +21,7 @@ uses
   Vcl.StdCtrls,
 
   Winapi.ShellAPI, FindUnit.OTAUtils, ToolsAPI, Vcl.Controls, Vcl.ComCtrls,
-  System.Classes, Vcl.Forms;
+  System.Classes, Vcl.Forms, Vcl.Buttons;
 
 type
   TfrmSettings = class(TForm)

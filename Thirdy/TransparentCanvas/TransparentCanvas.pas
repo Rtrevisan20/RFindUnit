@@ -593,9 +593,9 @@ begin
   //Windows; do no special processing
     GlowTextOut(X, Y, GlowSize, Text, Alignment, Alpha);
   end else begin
-    // Windows draws glowing text with a white background, always.  To change the background colour,
-    // draw with the normal white background and black text, then process the colours to change
-    // white to the specified colour, and black to the font colour
+// Windows draws glowing text with a white background, always.  To change the background colour,
+// draw with the normal white background and black text, then process the colours to change
+// white to the specified colour, and black to the font colour
     Background := TQuadColor.Create(BackColor);
     Background.SetAlpha(GlowAlpha, Alpha / 255.0);
     InternalGlowTextOut(X, Y, GlowSize, Text, Alignment, Alpha, True, Background);

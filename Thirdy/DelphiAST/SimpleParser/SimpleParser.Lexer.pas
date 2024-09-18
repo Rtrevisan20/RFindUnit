@@ -1418,7 +1418,8 @@ begin
 {$IFDEF SUPPORTS_INTRINSIC_HELPERS}
     while FBuffer.Buf[FBuffer.Run].IsDigit do
 {$ELSE}
-    while IsDigit(FBuffer.Buf[FBuffer.Run]) do
+    while FBuffer.Buf[FBuffer.Run].IsDigit do
+//     while IsDigit(FBuffer.Buf[FBuffer.Run]) do
 {$ENDIF}
       Inc(FBuffer.Run);
   end;
@@ -1801,7 +1802,7 @@ begin
 {$IFDEF SUPPORTS_INTRINSIC_HELPERS}
   Result := (AChar.IsLetterOrDigit) or (AChar = '_');
 {$ELSE}
-  Result := TCharacter.IsLetterOrDigit(AChar) or (AChar = '_');
+  Result := (AChar.IsLetterOrDigit) or (AChar = '_');
 {$ENDIF}
 end;
 

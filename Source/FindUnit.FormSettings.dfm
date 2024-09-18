@@ -11,12 +11,10 @@ object frmSettings: TfrmSettings
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object pgcMain: TPageControl
     Left = 0
@@ -26,9 +24,10 @@ object frmSettings: TfrmSettings
     ActivePage = tsGeneral
     Align = alClient
     TabOrder = 0
+    StyleName = 'Windows'
     OnChange = pgcMainChange
     object tsGeneral: TTabSheet
-      Caption = 'General'
+      Caption = 'Geral'
       ImageIndex = 1
       object grpGeneralSettings: TGroupBox
         Left = 0
@@ -70,9 +69,9 @@ object frmSettings: TfrmSettings
         object Label2: TLabel
           Left = 397
           Top = 170
-          Width = 69
+          Width = 118
           Height = 13
-          Caption = 'Unused import'
+          Caption = 'Importa'#231#227'o n'#227'o utilizada'
         end
         object Label3: TLabel
           Left = 357
@@ -84,19 +83,20 @@ object frmSettings: TfrmSettings
         object Label4: TLabel
           Left = 397
           Top = 193
-          Width = 237
+          Width = 276
           Height = 65
           Caption = 
-            'No access to the pas, it'#39's probably a dcu file that '#13#10'was add in' +
-            ' the library path. '#13#10'To fix it, click in the button'#13#10'"Process DC' +
-            'Us files from Library Path"'#13#10'On the search screen'
+            'Sem acesso ao pas, provavelmente '#233' um arquivo dcu que'#10'foi adicio' +
+            'nado no caminho da biblioteca.'#10'Para corrigi-lo, clique no bot'#227'o'#10 +
+            '"Processar arquivos DCUs do caminho da biblioteca"'#10'Na tela de pe' +
+            'squisa'
         end
         object grpSearchAlgorithm: TRadioGroup
           Left = 335
           Top = 20
           Width = 297
           Height = 81
-          Caption = 'Search match algorithm '
+          Caption = 'Pesquisar algoritmo de correspond'#234'ncia'
           Items.Strings = (
             'Default'
             'Levenshtein')
@@ -111,20 +111,23 @@ object frmSettings: TfrmSettings
           TabOrder = 0
           object chkMemorize: TCheckBox
             Left = 12
-            Top = 23
+            Top = 13
             Width = 274
-            Height = 17
-            Caption = 'Store choices to use on Auto Import (Ctrl + Shit + I)'
+            Height = 28
+            Caption = 
+              'Armazene op'#231#245'es para usar na importa'#231#227'o autom'#225'tica (Ctrl + Shift' +
+              ' + I)'
             Checked = True
             State = cbChecked
             TabOrder = 0
+            WordWrap = True
           end
           object chkOrganizeUses: TCheckBox
             Left = 12
             Top = 46
             Width = 194
             Height = 17
-            Caption = 'Organize uses (Ctrl + Shift + U)'
+            Caption = 'Organizar uses (Ctrl + Shift + U)'
             TabOrder = 1
           end
         end
@@ -133,21 +136,21 @@ object frmSettings: TfrmSettings
           Top = 108
           Width = 297
           Height = 221
-          Caption = 'Uses Organization'
+          Caption = 'Oganiza'#231#227'o das Uses'
           TabOrder = 2
           object lblBreakLineAt: TLabel
             Left = 15
             Top = 184
-            Width = 124
+            Width = 130
             Height = 13
-            Caption = 'Break uses line at position'
+            Caption = 'Quebra de linha na posi'#231#227'o'
           end
           object chkAlwaysImportToInterfaceSection: TCheckBox
             Left = 15
             Top = 42
             Width = 229
             Height = 17
-            Caption = 'Always import to interface section'
+            Caption = 'Sempre importar para a se'#231#227'o de interface'
             TabOrder = 1
           end
           object chkSortAfterAdding: TCheckBox
@@ -155,7 +158,7 @@ object frmSettings: TfrmSettings
             Top = 64
             Width = 210
             Height = 17
-            Caption = 'Sort uses by alphabetical order'
+            Caption = 'Classificar Uses por ordem alfab'#233'tica'
             TabOrder = 2
             OnClick = chkSortAfterAddingClick
           end
@@ -164,7 +167,7 @@ object frmSettings: TfrmSettings
             Top = 86
             Width = 210
             Height = 17
-            Caption = 'Break line at each new uses entry'
+            Caption = 'Quebre a linha a cada nova entrada Uses'
             TabOrder = 3
             OnClick = chkBreaklineClick
           end
@@ -176,7 +179,7 @@ object frmSettings: TfrmSettings
             Hint = 
               'Sort and Break line should be checked in order to use this optio' +
               'n'
-            Caption = 'Blank line between namescapes'
+            Caption = 'Linha em branco entre namescapes'
             ParentShowHint = False
             ShowHint = True
             TabOrder = 4
@@ -184,13 +187,13 @@ object frmSettings: TfrmSettings
           object chbOrganizeUsesAfterInsertingNewUsesUnit: TCheckBox
             Left = 15
             Top = 21
-            Width = 266
+            Width = 279
             Height = 17
-            Caption = 'Organize uses after inserting a new Uses unit'
+            Caption = 'Organize os Uses ap'#243's inserir uma nova unit no Uses'
             TabOrder = 0
           end
           object medtBreakUsesLineAtPosition: TMaskEdit
-            Left = 147
+            Left = 155
             Top = 181
             Width = 34
             Height = 21
@@ -207,7 +210,7 @@ object frmSettings: TfrmSettings
             Hint = 
               'Sort and Break line should be checked in order to use this optio' +
               'n'
-            Caption = 'Group non-namepace units'
+            Caption = 'Agrupar units sem namespace'
             ParentShowHint = False
             ShowHint = True
             TabOrder = 5
@@ -220,7 +223,7 @@ object frmSettings: TfrmSettings
             Hint = 
               'Sort and Break line should be checked in order to use this optio' +
               'n'
-            Caption = 'Don'#39't break line for non-namepace units'
+            Caption = 'N'#227'o quebre a linha para units sem namespace'
             ParentShowHint = False
             ShowHint = True
             TabOrder = 6
@@ -231,7 +234,7 @@ object frmSettings: TfrmSettings
           Top = 328
           Width = 192
           Height = 25
-          Caption = 'Create configuration for this project'
+          Caption = 'Criar configura'#231#227'o para este projeto'
           TabOrder = 4
           Visible = False
           OnClick = btnCreateProjectConfigurationClick
@@ -241,7 +244,7 @@ object frmSettings: TfrmSettings
           Top = 129
           Width = 297
           Height = 17
-          Caption = 'Enable experimental feature: Find unused uses'
+          Caption = 'Ativar recurso experimental: encontre uses n'#227'o utilizados'
           TabOrder = 3
         end
       end
@@ -282,22 +285,22 @@ object frmSettings: TfrmSettings
         Width = 646
         Height = 48
         Align = alTop
-        Caption = 'Settings'
+        Caption = 'Configura'#231#245'es'
         TabOrder = 0
         object chkAutoEnabled: TCheckBox
           Left = 16
           Top = 18
           Width = 65
           Height = 21
-          Caption = 'Enabled'
+          Caption = 'Habilitado'
           TabOrder = 1
         end
         object btn1: TButton
-          Left = 512
+          Left = 480
           Top = 14
-          Width = 125
+          Width = 157
           Height = 25
-          Caption = 'Open Settings File'
+          Caption = 'Abrir arquivo de configura'#231#245'es'
           TabOrder = 0
           OnClick = btn1Click
         end
@@ -314,14 +317,14 @@ object frmSettings: TfrmSettings
       end
     end
     object tsUnusedUses: TTabSheet
-      Caption = 'Unused uses'
+      Caption = 'Uses n'#227'o utilizados'
       ImageIndex = 2
       object Label1: TLabel
         Left = 5
         Top = 6
-        Width = 57
+        Width = 61
         Height = 13
-        Caption = 'Ignore uses'
+        Caption = 'Ignorar uses'
       end
       object mmoIgnoreUses: TMemo
         Left = 0
@@ -339,13 +342,13 @@ object frmSettings: TfrmSettings
   object dtsAutoImport: TDataSource
     DataSet = cdsAutoImport
     Left = 582
-    Top = 96
+    Top = 80
   end
   object cdsAutoImport: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 583
-    Top = 41
+    Left = 487
+    Top = 81
     object cdsAutoImportIDENTIFIER: TStringField
       FieldName = 'IDENTIFIER'
       Size = 200

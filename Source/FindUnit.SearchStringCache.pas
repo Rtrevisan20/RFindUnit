@@ -32,6 +32,7 @@ begin
   FRcFullCache.Acquire;
   try
     FFullMatchCache.AddOrSetValue(SearchString, FoundList);
+    Result := True;
   finally
     FRcFullCache.Release;
   end;

@@ -1,5 +1,4 @@
 ﻿package RFindUnit;
-
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
@@ -77,4 +76,3 @@ contains
   FindUnit.FormSearch in '..\..\Source\FindUnit.FormSearch.pas' {frmFindUnit};
 
 end.
-

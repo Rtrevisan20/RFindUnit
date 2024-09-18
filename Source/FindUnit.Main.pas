@@ -61,10 +61,10 @@ var
   vIDENotifierIndex: Integer;
 
 resourcestring
-  resPackageName = 'RfUtils - Import Usages';
-  resLicense = 'OpenSource (MIT)';
-  resAboutCopyright = 'Copyright Rodrigo Farias Rezino';
-  resAboutTitle = 'RfUtils - Import Usages';
+  resPackageName      = 'RFindUnit - Import Usages';
+  resLicense          = 'OpenSource (MIT)';
+  resAboutCopyright   = 'Copyright Rodrigo Farias Rezino';
+  resAboutTitle       = 'RFindUnit - Import Usages';
   resAboutDescription = 'Help us on GitHub https://github.com/rfrezino/RFindUnit';
 
 procedure Register;
@@ -142,11 +142,11 @@ begin
   else
     IndexFirstBreak := ToolItem.Count - 1;
 
-  RfItemMenu := ToolItem.Find('RfUtils');
+  RfItemMenu := ToolItem.Find('RFindUnit');
   if RfItemMenu = nil then
   begin
     RfItemMenu := TMenuItem.Create(nil);
-    RfItemMenu.Caption := 'RfUtils';
+    RfItemMenu.Caption := 'RFindUnit';
     ToolItem.Insert(IndexFirstBreak, RfItemMenu);
   end;
 
@@ -276,7 +276,7 @@ begin
 
   BindingResult := krHandled;
   FEnvControl.OrganizeUses;
-  TfrmMessage.ShowInfoToUser('Uses organized. If the uses contains comments or IFDEF it wont be organized');
+  TfrmMessage.ShowInfoToUser('Uses organized. If the uses contains comments or IFDEF it wont be organized...');
 end;
 
 procedure Clear;

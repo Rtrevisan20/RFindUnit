@@ -3,7 +3,7 @@ object frmFindUnit: TfrmFindUnit
   Top = 0
   BorderStyle = bsSizeToolWin
   Caption = 'Find Uses'
-  ClientHeight = 492
+  ClientHeight = 501
   ClientWidth = 580
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,13 +11,12 @@ object frmFindUnit: TfrmFindUnit
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poMainFormCenter
   Visible = True
+  StyleName = 'Windows'
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object btn1: TSpeedButton
     Left = 287
@@ -27,60 +26,60 @@ object frmFindUnit: TfrmFindUnit
   end
   object grpOptions: TGroupBox
     Left = 0
-    Top = 398
+    Top = 392
     Width = 580
-    Height = 94
+    Height = 109
     Align = alBottom
     Caption = 'Options'
     TabOrder = 2
     DesignSize = (
       580
-      94)
+      109)
     object lblProjectUnitsStatus: TLabel
-      Left = 193
+      Left = 194
       Top = 23
-      Width = 49
+      Width = 69
       Height = 13
-      Caption = 'Loading...'
+      Caption = 'Carregando...'
     end
     object lblLibraryUnitsStatus: TLabel
-      Left = 193
+      Left = 194
       Top = 46
-      Width = 49
+      Width = 69
       Height = 13
-      Caption = 'Loading...'
+      Caption = 'Carregando...'
     end
     object btnRefreshProject: TSpeedButton
       Left = 188
-      Top = 17
+      Top = 18
       Width = 54
       Height = 22
-      Caption = '&Refresh'
+      Caption = '&Atualizar'
       Visible = False
       OnClick = btnRefreshProjectClick
     end
     object btnRefreshLibraryPath: TSpeedButton
       Left = 188
-      Top = 40
+      Top = 42
       Width = 54
       Height = 22
-      Caption = 'Re&fresh'
+      Caption = 'At&ualizar'
       OnClick = btnRefreshLibraryPathClick
     end
     object btnProcessDCUs: TSpeedButton
       Left = 19
-      Top = 67
+      Top = 75
       Width = 223
       Height = 22
-      Caption = 'Process DCUs files from Library Path'
+      Caption = 'Processar arquivos DCUs do Library Path'
       OnClick = btnProcessDCUsClick
     end
     object lblWarnDcuDecompi: TLabel
-      Left = 246
-      Top = 72
-      Width = 280
-      Height = 14
-      Caption = '<-- It'#39's highly recommend to run this process'
+      Left = 247
+      Top = 70
+      Width = 276
+      Height = 28
+      Caption = '<-- '#201' altamente recomend'#225'vel executar este processo'
       Color = clRed
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clRed
@@ -89,31 +88,33 @@ object frmFindUnit: TfrmFindUnit
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
+      WordWrap = True
     end
     object chkSearchLibraryPath: TCheckBox
       Left = 19
       Top = 45
       Width = 163
-      Height = 17
-      Caption = 'Search in Library Path'#39's Units'
+      Height = 24
+      Caption = 'Procurar em Library Path'#39's Units'
       Checked = True
       State = cbChecked
       TabOrder = 1
+      WordWrap = True
       OnClick = chkSearchLibraryPathClick
     end
     object chkSearchProjectFiles: TCheckBox
       Left = 19
       Top = 22
-      Width = 159
+      Width = 166
       Height = 17
-      Caption = 'Search in Project Units'
+      Caption = 'Pesquisar nas Units do Projeto'
       Checked = True
       State = cbChecked
       TabOrder = 0
       OnClick = chkSearchProjectFilesClick
     end
     object btnConfig: TButton
-      Left = 550
+      Left = 545
       Top = 64
       Width = 22
       Height = 22
@@ -129,15 +130,15 @@ object frmFindUnit: TfrmFindUnit
     Left = 0
     Top = 73
     Width = 580
-    Height = 325
+    Height = 319
     Align = alClient
-    Caption = 'Result'
+    Caption = 'Resultado'
     TabOrder = 1
     object lstResult: TListBox
       Left = 2
       Top = 15
       Width = 576
-      Height = 261
+      Height = 255
       Align = alClient
       ItemHeight = 13
       TabOrder = 0
@@ -146,7 +147,7 @@ object frmFindUnit: TfrmFindUnit
     end
     object pnlMsg: TPanel
       Left = 2
-      Top = 276
+      Top = 270
       Width = 576
       Height = 47
       Align = alBottom
@@ -155,12 +156,12 @@ object frmFindUnit: TfrmFindUnit
       object lblMessage: TLabel
         Left = 1
         Top = 1
-        Width = 574
-        Height = 45
+        Width = 509
+        Height = 26
         Align = alClient
         Caption = 
-          '  Remember that you can create incremental searches like: "strin' +
-          'g   replace", I'#39'm going to look for the arguments separately'
+          'Lembre-se que voc'#234' pode criar pesquisas incrementais como: "stri' +
+          'ng replace", ou procurar os argumentos separadamente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 19174
         Font.Height = -11
@@ -169,8 +170,6 @@ object frmFindUnit: TfrmFindUnit
         ParentFont = False
         Layout = tlCenter
         WordWrap = True
-        ExplicitWidth = 541
-        ExplicitHeight = 26
       end
     end
   end
@@ -180,7 +179,7 @@ object frmFindUnit: TfrmFindUnit
     Width = 580
     Height = 73
     Align = alTop
-    Caption = 'Search'
+    Caption = 'Pesquisar'
     TabOrder = 0
     DesignSize = (
       580
@@ -188,9 +187,9 @@ object frmFindUnit: TfrmFindUnit
     object lblWhere: TLabel
       Left = 16
       Top = 46
-      Width = 32
+      Width = 57
       Height = 13
-      Caption = 'Add to'
+      Caption = 'Adicionar '#224':'
     end
     object edtSearch: TEdit
       Left = 16
@@ -198,7 +197,7 @@ object frmFindUnit: TfrmFindUnit
       Width = 330
       Height = 21
       TabOrder = 0
-      Text = 'Type your search...'
+      Text = 'Digite sua pesquisa...'
       OnChange = edtSearchChange
       OnClick = edtSearchClick
       OnKeyDown = edtSearchKeyDown
@@ -222,32 +221,32 @@ object frmFindUnit: TfrmFindUnit
       TabOrder = 3
     end
     object btnAdd: TButton
-      Left = 475
-      Top = 24
+      Left = 482
+      Top = 16
       Width = 85
       Height = 25
       Anchors = [akTop, akRight]
-      Caption = '&Add'
+      Caption = '&Adicionar'
       TabOrder = 1
       OnClick = btnAddClick
     end
   end
   object aevKeys: TApplicationEvents
     OnMessage = aevKeysMessage
-    Left = 538
-    Top = 300
+    Left = 506
+    Top = 124
   end
   object tmrLoadedItens: TTimer
     Interval = 700
     OnTimer = tmrLoadedItensTimer
-    Left = 474
-    Top = 301
+    Left = 498
+    Top = 189
   end
   object ilImages: TImageList
-    Left = 476
-    Top = 177
+    Left = 372
+    Top = 129
     Bitmap = {
-      494C010101000500080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000500040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFF2D2D2D0029292900FFFFFFFFFFFFFFFFFFFF

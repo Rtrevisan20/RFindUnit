@@ -6,7 +6,8 @@ uses
   FindUnit.Header,
   FindUnit.OTAUtils,
   FindUnit.StringPositionList,
-  FindUnit.Utils, System.IniFiles;
+  FindUnit.Utils,
+  System.IniFiles;
 
 type
   TAutoImport = class(TObject)

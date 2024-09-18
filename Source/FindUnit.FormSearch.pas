@@ -157,16 +157,17 @@ end;
 
 procedure TfrmFindUnit.ShowTextOnScreen(Text: string);
 var
-  MsgForm: TfrmMessage;
+  aText: string;
+//  MsgForm: TfrmMessage;
 begin
-  MsgForm := TfrmMessage.Create(nil);
+//  MsgForm := TfrmMessage.Create(nil);
 
   if rbInterface.Checked then
-    Text := 'Unit ' + Text + ' added to interface''s uses.'
+    aText := 'Unit ' + Text + ' added to interface''s uses.'
   else
-    Text := 'Unit ' + Text + ' added to implementation''s uses.';
-
-  MsgForm.DisplayMessage(Text);
+    aText := 'Unit ' + Text + ' added to implementation''s uses.';
+  TfrmMessage.ShowInfoToUser(aText);
+//  MsgForm.DisplayMessage(aText);
   SetFocus;
 end;
 
@@ -219,10 +220,15 @@ end;
 
 function TfrmFindUnit.CanProcessDCUFiles: Boolean;
 const
-  MESGEM = 'The dcu32int.exe was not found. It should be at %s . If you download the project´s source you will '
-    + 'find it at {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copy the executable and past it on the %s, and '
-    + 'try execute this command again. If you don´t know where to find this executable I can send you '
-    + 'to the project page, do you want I open it to you ?';
+  MESGEM =
+  'O dcu32int.exe não foi encontrado. Deve estar em %s . Se você baixar o fonte do projeto você vai '
+  + 'encontre-o em {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copie o executável e cole no %s, e '
+  + 'tente executar este comando novamente. Se você não sabe onde encontrar este executável posso te enviar '
+  + 'para a página do projeto, você quer que eu abra para você ?';
+//  'The dcu32int.exe was not found. It should be at %s . If you download the project´s source you will '
+//    + 'find it at {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copy the executable and past it on the %s, and '
+//    + 'try execute this command again. If you don´t know where to find this executable I can send you '
+//    + 'to the project page, do you want I open it to you ?';
 var
   ForMessage: string;
   MesDlg: TForm;
@@ -255,10 +261,15 @@ end;
 
 procedure TfrmFindUnit.ProcessDCUFiles;
 const
-  MESGEM = 'This command will list all the DCUs files that you don´t have access to .PAS '
-   + ' and process it to make it available for search.'
-   + ' This process will slowdown your computer and can take some minutes (~2), '
-   + ' are you sure that you want to run it now ?';
+  MESGEM =
+  'Este comando irá listar todos os arquivos DCUs.PAS que você não tem acesso '
+  + 'e processá-lo para torná-lo disponível para pesquisa.'
+  + 'Este processo deixará seu computador lento e pode levar alguns minutos (~2), '
+  + 'tem certeza que deseja executá-lo agora?';
+//  'This command will list all the DCUs files that you don´t have access to .PAS '
+//   + ' and process it to make it available for search.'
+//   + ' This process will slowdown your computer and can take some minutes (~2), '
+//   + ' are you sure that you want to run it now ?';
 var
   Settings: TSettings;
 begin
@@ -380,8 +391,11 @@ end;
 procedure TfrmFindUnit.DisplayMessageToMuchResults(Show: Boolean);
 begin
   pnlMsg.Visible := Show;
-  lblMessage.Caption := '  There are to many results on your search, I''m not showing everything. Type a bigger search.' + #13#10 +
-    'Remember that you can create incremental searchs like: "string   replace", I''m going to look for the arguments separately.'
+  lblMessage.Caption :=
+             ' Existem muitos resultados em sua pesquisa, não estou mostrando tudo. Digite uma busca maior.' + #13#10 +
+             'Lembre-se que você pode criar buscas incrementais como: "string replace", vou procurar os argumentos separadamente.';
+//  ' There are to many results on your search, I''m not showing everything. Type a bigger search.' + #13#10 +
+//  'Remember that you can create incremental searchs like: "string   replace", I''m going to look for the arguments separately.'
 end;
 
 procedure TfrmFindUnit.FilterItem(const SearchString: string);
