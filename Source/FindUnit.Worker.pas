@@ -3,10 +3,19 @@ unit FindUnit.Worker;
 interface
 
 uses
-  System.Classes, FindUnit.IncluderHandlerInc, FindUnit.PasParser, System.Generics.Collections,
-  Log4Pascal, SimpleParser.Lexer.Types, System.SysUtils, FindUnit.DcuDecompiler,
-  FindUnit.Utils, System.Threading, FindUnit.FileCache, System.DateUtils,
-  FindUnit.Header;
+  Log4Pascal,
+  FindUnit.DcuDecompiler,
+  FindUnit.FileCache,
+  FindUnit.Header,
+  FindUnit.IncluderHandlerInc,
+  FindUnit.PasParser,
+  FindUnit.Utils,
+  SimpleParser.Lexer.Types,
+  System.Classes,
+  System.DateUtils,
+  System.Generics.Collections,
+  System.SysUtils,
+  System.Threading;
 
 type
   TOnFinished = procedure(FindUnits: TUnits) of object;
@@ -58,8 +67,11 @@ uses
 
 { TParserWorker }
 
-constructor TParserWorker.Create(var DirectoriesPath: TStringList; var Files: TDictionary<string, TFileInfo>;
-  Chache: TUnits);
+constructor TParserWorker.Create(
+    var DirectoriesPath: TStringList;
+    var Files: TDictionary<string, TFileInfo>;
+    Chache: TUnits
+);
 var
   InfoFiles: TFileInfo;
 begin
@@ -102,11 +114,10 @@ begin
 
     FCacheFiles.Free;
     Step := 'FDcuFiles';
-  //  FIncluder.Free; //Weak reference
+    //  FIncluder.Free; //Weak reference
     FDcuFiles.Free;
   except
-    on E: exception do
-    begin
+    on E: exception do begin
       Logger.Error('TParserWorker.Destroy ' + Step);
     end;
   end;
@@ -155,11 +166,13 @@ begin
   FDirectoriesPath.Add(DirRealeaseWin32);
   ResultList := TThreadList<string>.Create;
 
-  TParallel.&For(0, FDirectoriesPath.Count -1,
-    procedure (index: Integer)
+  TParallel.&For(
+      0,
+      FDirectoriesPath.Count - 1,
+      procedure(index: Integer)
       var
-      DcuFiles: TDictionary<string, TFileInfo>;
-      DcuFile: TFileInfo;
+        DcuFiles: TDictionary<string, TFileInfo>;
+        DcuFile: TFileInfo;
       begin
         try
           DcuFiles := GetAllDcuFilesFromPath(FDirectoriesPath[index]);
@@ -170,13 +183,15 @@ begin
             DcuFiles.Free;
           end;
         except
-          on E: exception do
-          begin
+          on E: exception do begin
             Logger.Error('TParserWorker.ListDcuFiles: ' + e.Message);
-            {$IFDEF RAISEMAD} raise; {$ENDIF}
+{$IFDEF RAISEMAD}
+            raise;
+{$ENDIF}
           end;
         end;
-      end);
+      end
+  );
 
   for DcuFile in ResultList.LockList do
     FDcuFiles.Add(DcuFile);
@@ -190,19 +205,21 @@ var
   PasValue: TFileInfo;
 begin
   //DEBUG
-//  FPasFiles.Add('C:\Program Files (x86)\Embarcadero\RAD Studio\8.0\source\rtl\common\Classes.pas');
-//  Exit;
+  //  FPasFiles.Add('C:\Program Files (x86)\Embarcadero\RAD Studio\8.0\source\rtl\common\Classes.pas');
+  //  Exit;
 
   if FPasFiles.Count > 0 then
     Exit;
 
   ResultList := TThreadList<TFileInfo>.Create;
 
-  TParallel.&For(0, FDirectoriesPath.Count -1,
-      procedure (index: Integer)
+  TParallel.&For(
+      0,
+      FDirectoriesPath.Count - 1,
+      procedure(index: Integer)
       var
-      PasFiles: TDictionary<string, TFileInfo>;
-      PasFile: TFileInfo;
+        PasFiles: TDictionary<string, TFileInfo>;
+        PasFile: TFileInfo;
       begin
         try
           if not DirectoryExists(FDirectoriesPath[index]) then
@@ -216,14 +233,15 @@ begin
             PasFiles.Free;
           end;
         except
-          on E: exception do
-          begin
+          on E: exception do begin
             Logger.Error('TParserWorker.ListPasFiles: ' + e.Message);
-            {$IFDEF RAISEMAD} raise; {$ENDIF}
+{$IFDEF RAISEMAD}
+            raise;
+{$ENDIF}
           end;
         end;
       end
-    );
+  );
 
   for PasValue in ResultList.LockList do
     FPasFiles.AddOrSetValue(PasValue.Path, PasValue);
@@ -245,19 +263,15 @@ var
   CurFileInfo: TFileInfo;
   MilliBtw: Int64;
 begin
-  for CurFileInfo in FPasFiles.Values do
-  begin
+  for CurFileInfo in FPasFiles.Values do begin
     Parser := nil;
     if not MustContinue then
       Exit;
 
-    if FCacheFiles <> nil then
-    begin
-      if FCacheFiles.TryGetValue(CurFileInfo.Path, OldParsedFile) then
-      begin
+    if FCacheFiles <> nil then begin
+      if FCacheFiles.TryGetValue(CurFileInfo.Path, OldParsedFile) then begin
         MilliBtw := MilliSecondsBetween(CurFileInfo.LastAccess, OldParsedFile.LastModification);
-        if MilliBtw <= 1  then
-        begin
+        if MilliBtw <= 1 then begin
           Item := FCacheFiles.ExtractPair(CurFileInfo.Path).Value;
           FFindUnits.Add(Item.FilePath, Item);
           Logger.Debug('TParserWorker.ParseFiles[%s]: Cached files', [CurFileInfo.Path]);
@@ -279,17 +293,17 @@ begin
         InterlockedIncrement(FParsedItems);
         Step := 'Parser.Process';
         Item := Parser.Process;
-        if Item <> nil then
-        begin
+        if Item <> nil then begin
           Item.LastModification := CurFileInfo.LastAccess;
           Item.FilePath := CurFileInfo.Path;
           FFindUnits.Add(Item.FilePath, Item);
         end;
       except
-        on e: exception do
-        begin
+        on e: exception do begin
           Logger.Error('TParserWorker.ParseFiles[%s]: %s', [Step, e.Message]);
-          {$IFDEF RAISEMAD} raise; {$ENDIF}
+{$IFDEF RAISEMAD}
+          raise;
+{$ENDIF}
         end;
       end;
     finally
@@ -321,41 +335,36 @@ begin
 
   ItemsToParser := TList<TFileInfo>.Create;
   try
-    if FCacheFiles <> nil then
-    begin
-      for CurFileInfo in FPasFiles.Values do
-      begin
+    if FCacheFiles <> nil then begin
+      for CurFileInfo in FPasFiles.Values do begin
 
-        if FCacheFiles.TryGetValue(CurFileInfo.Path, OldParsedFile) then
-        begin
+        if FCacheFiles.TryGetValue(CurFileInfo.Path, OldParsedFile) then begin
           MilliBtw := MilliSecondsBetween(CurFileInfo.LastAccess, OldParsedFile.LastModification);
-          if MilliBtw <= 1  then
-          begin
+          if MilliBtw <= 1 then begin
             Item := FCacheFiles.ExtractPair(CurFileInfo.Path).Value;
             FFindUnits.Add(Item.FilePath, Item);
             Continue;
           end
-          else
-          begin
+          else begin
             Logger.Debug('TParserWorker.ParseFiles[Out of date]: %d millis btw | %s', [MilliBtw, CurFileInfo.Path]);
             ItemsToParser.Add(CurFileInfo);
           end;
         end
-        else
-        begin
+        else begin
           Logger.Debug('TParserWorker.ParseFiles[New file]: %s', [CurFileInfo.Path]);
           ItemsToParser.Add(CurFileInfo);
         end;
       end;
     end
-    else
-    begin
+    else begin
       for CurFileInfo in FPasFiles.Values do
         ItemsToParser.Add(CurFileInfo);
     end;
 
-    TParallel.&For(0, ItemsToParser.Count -1,
-        procedure (index: Integer)
+    TParallel.&For(
+        0,
+        ItemsToParser.Count - 1,
+        procedure(index: Integer)
         var
           Parser: TPasFileParser;
           Item: TPasFile;
@@ -378,25 +387,24 @@ begin
               Parser.Free;
             end;
 
-            if Item <> nil then
-            begin
+            if Item <> nil then begin
               Item.LastModification := ItemsToParser[index].LastAccess;
               Item.FilePath := ItemsToParser[index].Path;
               ResultList.Add(Item);
             end;
           except
-            on e: exception do
-            begin
+            on e: exception do begin
               Logger.Error('TParserWorker.ParseFiles[%s]: %s', [Step, e.Message]);
-              {$IFDEF RAISEMAD} raise; {$ENDIF}
+{$IFDEF RAISEMAD}
+              raise;
+{$ENDIF}
             end;
           end;
         end
-      );
+    );
 
     Logger.Debug('TParserWorker.ParseFiles: Put results together.');
-    for PasValue in ResultList.LockList do
-    begin
+    for PasValue in ResultList.LockList do begin
       FFindUnits.Add(PasValue.FilePath, PasValue);
     end;
 
@@ -428,18 +436,16 @@ begin
   PasFilesName.Sorted := True;
   PasFilesName.Duplicates := dupIgnore;
   try
-    for PasFileIn in FPasFiles.Values do
-    begin
+    for PasFileIn in FPasFiles.Values do begin
       PasFile := PasFileIn.Path;
       PasFile := UpperCase(ExtractFileName(PasFile));
       PasFile := StringReplace(PasFile, '.PAS', '', [rfReplaceAll]);
       PasFilesName.Add(PasFile);
     end;
 
-    for I := FDcuFiles.Count -1 downto 0 do
-    begin
+    for I := FDcuFiles.Count - 1 downto 0 do begin
       DcuFile := FDcuFiles[i];
-      DcuFile:= UpperCase(ExtractFileName(DcuFile));
+      DcuFile := UpperCase(ExtractFileName(DcuFile));
       DcuFile := StringReplace(DcuFile, '.DCU', '', [rfReplaceAll]);
 
       if PasFilesName.IndexOf(DcuFile) > -1 then
@@ -481,10 +487,11 @@ begin
     ParseFilesParallel;
     OutPutStep('Finished');
   except
-    on E: exception do
-    begin
-      Logger.Error('TParserWorker.RunTasks[%s]: %s ',[Step, e.Message]);
-      {$IFDEF RAISEMAD} raise; {$ENDIF}
+    on E: exception do begin
+      Logger.Error('TParserWorker.RunTasks[%s]: %s ', [Step, e.Message]);
+{$IFDEF RAISEMAD}
+      raise;
+{$ENDIF}
     end;
   end;
 end;
@@ -503,4 +510,3 @@ begin
 end;
 
 end.
-

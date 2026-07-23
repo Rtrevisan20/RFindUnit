@@ -39,8 +39,6 @@ uses
 const
   SECTION = 'MEMORIZEDUNIT';
 
-{ TAutoImport }
-
 constructor TAutoImport.Create(const IniFilePath: string);
 begin
   inherited Create;

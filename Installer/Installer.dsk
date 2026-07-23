@@ -1,29 +1,22 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.FormMessage.pas',0,1,1,25,26,0,0,,
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\common\System.Win.Registry.pas',0,1,1,113,17,0,0,,
+File_1=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Installer\uDelphiInstallationCheck.pas',0,1,35,20,37,0,0,,
+File_2=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Installer\uInstaller.pas',0,106,67,32,85,0,0,,
+File_3=TSourceModule,'D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.FormMessage.pas',0,1,1,25,26,0,0,,
 
 [Modules]
-Module0=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uMain.pas
-Module1=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uInstaller.pas
-Module2=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uDelphiInstallationCheck.pas
-Count=3
+Module0=D:\Recursos GitHub\HDFindUnit\Installer\uMain.pas
+Count=1
 EditWindowCount=1
 
-[D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uMain.pas]
-ModuleType=TSourceModule
-
-[D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uInstaller.pas]
-ModuleType=TSourceModule
-
-[D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uDelphiInstallationCheck.pas]
+[D:\Recursos GitHub\HDFindUnit\Installer\uMain.pas]
 ModuleType=TSourceModule
 
 [EditWindow0]
-ViewCount=4
-CurrentEditView=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uMain.pas
+ViewCount=2
+CurrentEditView=D:\Recursos GitHub\HDFindUnit\Installer\uMain.pas
 View0=0
 View1=1
-View2=2
-View3=3
 PercentageSizes=1
 Create=1
 Visible=1
@@ -37,20 +30,16 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=9917
 ClientHeight=9264
-TBDockHeight=9264
-LRDockWidth=9917
-Dockable=1
-StayOnTop=0
 DockedToMainForm=1
 BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
-LeftPanelSize=2333
+LeftPanelSize=2156
 LeftPanelClients=DockSite2
 LeftPanelData=000008000100000000009422000000000000002A0D00000000000001000000009422000009000000446F636B5369746532FFFFFFFF
 RightPanelSize=0
 BottomPanelSize=0
 BottomPanelClients=DockSite1
-BottomPanelData=0000080001000100000009000000446F636B5369746531DE44000000000000002606000000000000FFFFFFFF
+BottomPanelData=0000080001000100000009000000446F636B5369746531DE44000000000000000103000000000000FFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0,GraphDrawingModel
 BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E67566965779F1D00000000000002F206000000000000FFFFFFFF
@@ -63,36 +52,14 @@ OTAEditViewType=WelcomePage.MainPage
 
 [View1]
 CustomEditViewType=TEditView
-Module=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uMain.pas
-CursorX=4
-CursorY=133
-TopLine=121
+Module=D:\Recursos GitHub\HDFindUnit\Installer\uMain.pas
+CursorX=35
+CursorY=34
+TopLine=79
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uMain.pas
-
-[View2]
-CustomEditViewType=TEditView
-Module=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uInstaller.pas
-CursorX=1
-CursorY=12
-TopLine=1
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uInstaller.pas
-
-[View3]
-CustomEditViewType=TEditView
-Module=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uDelphiInstallationCheck.pas
-CursorX=11
-CursorY=138
-TopLine=127
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=D:\Recursos Programacao\23 - HardDev_FindUnit\Installer\uDelphiInstallationCheck.pas
+EditViewName=D:\Recursos GitHub\HDFindUnit\Installer\uMain.pas
 
 [Watches]
 Count=0
@@ -127,19 +94,7 @@ Count=0
 [EmbarcaderoWin64Debugger_AddressBreakpoints]
 Count=0
 
-[EmbarcaderoOSXArm64Debugger_AddressBreakpoints]
-Count=0
-
-[EmbarcaderoOSX64Debugger_AddressBreakpoints]
-Count=0
-
-[EmbarcaderoIOS64DeviceDebugger_AddressBreakpoints]
-Count=0
-
-[EmbarcaderoAndroid32Debugger_AddressBreakpoints]
-Count=0
-
-[EmbarcaderoAndroid64Debugger_AddressBreakpoints]
+[EmbarcaderoLinux64Debugger_AddressBreakpoints]
 Count=0
 
 [Main Window]
@@ -170,11 +125,11 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
+Width=2156
 Height=8488
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
+ClientWidth=2156
 ClientHeight=8488
 TBDockHeight=5901
 LRDockWidth=2349
@@ -190,12 +145,12 @@ State=0
 Left=8
 Top=1024
 Width=2771
-Height=1376
+Height=2442
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2688
-ClientHeight=998
-TBDockHeight=1376
+ClientWidth=2771
+ClientHeight=2442
+TBDockHeight=2442
 LRDockWidth=2771
 Dockable=1
 StayOnTop=0
@@ -227,17 +182,17 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
-Height=6996
+Width=2156
+Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
-ClientHeight=6996
+ClientWidth=2156
+ClientHeight=8721
 TBDockHeight=9012
-LRDockWidth=1896
+LRDockWidth=1812
 Dockable=1
 StayOnTop=0
-SplitPos=192
+SplitPos=176
 
 [PropInspDesignerSelection]
 ArrangeBy=Name
@@ -252,71 +207,14 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
-Height=6996
+Width=2156
+Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
-ClientHeight=6996
+ClientWidth=2156
+ClientHeight=8721
 TBDockHeight=5959
 LRDockWidth=2510
-Dockable=1
-StayOnTop=0
-
-[ClassBrowserTool]
-PercentageSizes=1
-Create=1
-Visible=0
-Docked=1
-State=0
-Left=-64
-Top=-93
-Width=1849
-Height=3140
-MaxLeft=-1
-MaxTop=-1
-ClientWidth=1849
-ClientHeight=3140
-TBDockHeight=3140
-LRDockWidth=1849
-Dockable=1
-StayOnTop=0
-
-[MetricsView]
-PercentageSizes=1
-Create=1
-Visible=1
-Docked=1
-State=0
-Left=0
-Top=0
-Width=2339
-Height=1202
-MaxLeft=-1
-MaxTop=-1
-ClientWidth=2339
-ClientHeight=1202
-TBDockHeight=4835
-LRDockWidth=3562
-Dockable=1
-StayOnTop=0
-
-[QAView]
-PercentageSizes=1
-Create=1
-Visible=1
-Docked=1
-State=0
-Left=0
-Top=0
-Width=2339
-Height=1202
-MaxLeft=-1
-MaxTop=-1
-ClientWidth=2339
-ClientHeight=1202
-TBDockHeight=4835
-LRDockWidth=3562
 Dockable=1
 StayOnTop=0
 
@@ -422,25 +320,6 @@ LRDockWidth=3484
 Dockable=1
 StayOnTop=0
 
-[PatchForm]
-PercentageSizes=1
-Create=1
-Visible=1
-Docked=1
-State=0
-Left=0
-Top=0
-Width=2339
-Height=1202
-MaxLeft=-1
-MaxTop=-1
-ClientWidth=2339
-ClientHeight=1202
-TBDockHeight=2500
-LRDockWidth=3401
-Dockable=1
-StayOnTop=0
-
 [FindReferencsForm]
 PercentageSizes=1
 Create=1
@@ -450,11 +329,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1202
+Height=3014
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1202
+ClientHeight=3014
 TBDockHeight=2316
 LRDockWidth=2823
 Dockable=1
@@ -469,11 +348,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1202
+Height=3014
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1202
+ClientHeight=3014
 TBDockHeight=3207
 LRDockWidth=2823
 Dockable=1
@@ -488,11 +367,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1202
+Height=3014
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1202
+ClientHeight=3014
 TBDockHeight=1153
 LRDockWidth=3677
 Dockable=1
@@ -514,12 +393,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
-Height=6996
+Width=2156
+Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
-ClientHeight=6996
+ClientWidth=2156
+ClientHeight=8721
 TBDockHeight=4884
 LRDockWidth=7151
 Dockable=1
@@ -541,6 +420,63 @@ ClientWidth=2854
 ClientHeight=3207
 TBDockHeight=3207
 LRDockWidth=2854
+Dockable=1
+StayOnTop=0
+
+[ClassBrowserTool]
+PercentageSizes=1
+Create=1
+Visible=0
+Docked=1
+State=0
+Left=-32
+Top=-88
+Width=1849
+Height=3140
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=1849
+ClientHeight=3140
+TBDockHeight=3140
+LRDockWidth=1849
+Dockable=1
+StayOnTop=0
+
+[MetricsView]
+PercentageSizes=1
+Create=1
+Visible=1
+Docked=1
+State=0
+Left=0
+Top=0
+Width=2339
+Height=3014
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=2339
+ClientHeight=3014
+TBDockHeight=4835
+LRDockWidth=3562
+Dockable=1
+StayOnTop=0
+
+[QAView]
+PercentageSizes=1
+Create=1
+Visible=1
+Docked=1
+State=0
+Left=0
+Top=0
+Width=2339
+Height=3014
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=2339
+ClientHeight=3014
+TBDockHeight=4835
+LRDockWidth=3562
 Dockable=1
 StayOnTop=0
 
@@ -578,12 +514,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
-Height=6996
+Width=2156
+Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
-ClientHeight=6996
+ClientWidth=2156
+ClientHeight=8721
 TBDockHeight=3682
 LRDockWidth=1896
 Dockable=1
@@ -597,12 +533,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
-Height=6996
+Width=2156
+Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
-ClientHeight=6996
+ClientWidth=2156
+ClientHeight=8721
 TBDockHeight=4884
 LRDockWidth=5307
 Dockable=1
@@ -641,18 +577,18 @@ State=0
 Left=8
 Top=8
 Width=2339
-Height=1473
+Height=3285
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1473
-TBDockHeight=1473
+ClientHeight=3285
+TBDockHeight=3285
 LRDockWidth=2339
 Dockable=1
 StayOnTop=0
 TabPosition=1
 ActiveTabID=RefactoringForm
-TabDockClients=RefactoringForm,PatchForm,FindReferencsForm,ToDo List,MetricsView,QAView
+TabDockClients=RefactoringForm,FindReferencsForm,ToDo List,MetricsView,QAView
 
 [DockSite1]
 HostDockSite=DockBottomPanel
@@ -688,14 +624,14 @@ Docked=1
 State=0
 Left=0
 Top=28
-Width=2333
+Width=2156
 Height=8760
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
+ClientWidth=2156
 ClientHeight=8760
 TBDockHeight=9012
-LRDockWidth=2333
+LRDockWidth=2156
 Dockable=1
 StayOnTop=0
 TabPosition=0
@@ -710,8 +646,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=1896
-Top=76
+Left=8
+Top=8
 Width=2000
 Height=9012
 MaxLeft=-1

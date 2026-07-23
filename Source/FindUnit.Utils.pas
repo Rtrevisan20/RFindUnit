@@ -22,9 +22,10 @@ type
   end;
 
   TPathConverter = class(TObject)
-  private const
-    VAR_INIT = '$(';
-    VAR_END = ')';
+  private
+    const
+      VAR_INIT = '$(';
+      VAR_END = ')';
   public
     class function ConvertPathsToFullPath(Paths: string): string;
   end;
@@ -33,8 +34,12 @@ function GetAllFilesFromPath(const Path, Filter: string): TDictionary<string, TF
 function GetAllPasFilesFromPath(const Path: string): TDictionary<string, TFileInfo>;
 function GetAllDcuFilesFromPath(const Path: string): TDictionary<string, TFileInfo>;
 
-function Fetch(var AInput: string; const ADelim: string = ''; const ADelete: Boolean = True;
-  const ACaseSensitive: Boolean = False): string; inline;
+function Fetch(
+    var AInput: string;
+    const ADelim: string = '';
+    const ADelete: Boolean = True;
+    const ACaseSensitive: Boolean = False
+): string; inline;
 
 function IsProcessRunning(const AExeFileName: string): Boolean;
 function GetHashCodeFromStr(Str: PChar): Integer;
@@ -58,7 +63,8 @@ uses
   Winapi.Windows,
   System.IOUtils,
   System.Classes,
-  System.SysUtils, System.Types;
+  System.SysUtils,
+  System.Types;
 
 function DictionaryToString(Dir: TDictionary<string, string>): string;
 var
@@ -85,10 +91,10 @@ begin
   else
     UnitName := Trim(Fetch(UnitName, '-'));
   UnitName := ReverseString(UnitName);
-  ClassName := Fetch(UnitName,'.');
+  ClassName := Fetch(UnitName, '.');
 
   if IsSetEnumItem then
-    ClassName := Fetch(UnitName,'.');
+    ClassName := Fetch(UnitName, '.');
 
   ClassName := ReverseString(ClassName);
   UnitName := ReverseString(UnitName);
@@ -110,18 +116,15 @@ begin
   Off := 1;
   Len := StrLen(Str);
   if Len < 16 then
-    for I := (Len - 1) downto 0 do
-    begin
+    for I := (Len - 1) downto 0 do begin
       Result := (Result * 37) + Ord(Str[Off]);
       Inc(Off);
     end
-  else
-  begin
+  else begin
     { Only sample some characters }
     Skip := Len div 8;
     I := Len - 1;
-    while I >= 0 do
-    begin
+    while I >= 0 do begin
       Result := (Result * 39) + Ord(Str[Off]);
       Dec(I, Skip);
       Inc(Off, Skip);
@@ -140,10 +143,9 @@ begin
     SnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     Entry.dwSize := SizeOf(Entry);
     Continuar := Process32First(SnapshotHandle, Entry);
-    while Integer(Continuar) <> 0 do
-    begin
-      if ((UpperCase(ExtractFileName(Entry.szExeFile)) = UpperCase(AExeFileName)) or
-        (UpperCase(Entry.szExeFile) = UpperCase(AExeFileName))) then
+    while Integer(Continuar) <> 0 do begin
+      if ((UpperCase(ExtractFileName(Entry.szExeFile)) = UpperCase(AExeFileName))
+          or (UpperCase(Entry.szExeFile) = UpperCase(AExeFileName))) then
       begin
         Result := True;
       end;
@@ -159,57 +161,51 @@ function FetchCaseInsensitive(var AInput: string; const ADelim: string; const AD
 var
   LPos: Integer;
 begin
-  if ADelim = #0 then
-  begin
+  if ADelim = #0 then begin
     LPos := Pos(ADelim, AInput);
   end
-  else
-  begin
+  else begin
     LPos := Pos(UpperCase(ADelim), UpperCase(AInput));
   end;
-  if LPos = 0 then
-  begin
+  if LPos = 0 then begin
     Result := AInput;
-    if ADelete then
-    begin
+    if ADelete then begin
       AInput := '';
     end;
   end
-  else
-  begin
+  else begin
     Result := Copy(AInput, 1, LPos - 1);
     if ADelete then
       AInput := Copy(AInput, LPos + Length(ADelim), MaxInt);
   end;
 end;
 
-function Fetch(var AInput: string; const ADelim: string = ''; const ADelete: Boolean = True;
-  const ACaseSensitive: Boolean = False): string; inline;
+function Fetch(
+    var AInput: string;
+    const ADelim: string = '';
+    const ADelete: Boolean = True;
+    const ACaseSensitive: Boolean = False
+): string; inline;
 var
   LPos: Integer;
 begin
-  if ACaseSensitive then
-  begin
+  if ACaseSensitive then begin
     LPos := Pos(ADelim, AInput);
-    if LPos = 0 then
-    begin
+    if LPos = 0 then begin
       Result := AInput;
       if ADelete then
         AInput := '';
     end
-    else
-    begin
+    else begin
       Result := Copy(AInput, 1, LPos - 1);
-      if ADelete then
-      begin
+      if ADelete then begin
         // slower Delete(AInput, 1, LPos + Length(ADelim) - 1); because the
         // remaining part is larger than the deleted
         AInput := Copy(AInput, LPos + Length(ADelim), MaxInt);
       end;
     end;
   end
-  else
-  begin
+  else begin
     Result := FetchCaseInsensitive(AInput, ADelim, ADelete);
   end;
 end;
@@ -223,8 +219,7 @@ begin
   Files := System.IOUtils.TDirectory.GetFiles(Path, Filter, TSearchOption.soTopDirectoryOnly);
 
   Result := TDictionary<string, TFileInfo>.Create;
-  for FilePath in Files do
-  begin
+  for FilePath in Files do begin
     FileInfo.Path := Trim(FilePath);
     if FileExists(FilePath) then
       FileInfo.LastAccess := System.IOUtils.TFile.GetLastWriteTime(FilePath)
@@ -278,7 +273,7 @@ begin
   ForceDirectories(FindUnitDirLogger);
 
   DirRealeaseWin32 := ExtractFilePath(ParamStr(0));
-  DirRealeaseWin32 := StringReplace(DirRealeaseWin32,'\bin','\lib\win32\release',[rfReplaceAll, rfIgnoreCase]);
+  DirRealeaseWin32 := StringReplace(DirRealeaseWin32, '\bin', '\lib\win32\release', [rfReplaceAll, rfIgnoreCase]);
 end;
 
 { TPathConverter }
@@ -289,8 +284,7 @@ var
   CurPaths: string;
   FullPath: string;
 begin
-  while Pos(VAR_INIT, Paths) > 0 do
-  begin
+  while Pos(VAR_INIT, Paths) > 0 do begin
     CurPaths := Paths;
     Fetch(CurPaths, VAR_INIT);
     CurVariable := Fetch(CurPaths, VAR_END, False);
@@ -307,6 +301,6 @@ end;
 
 initialization
 
-CarregarPaths;
+  CarregarPaths;
 
 end.

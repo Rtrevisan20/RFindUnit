@@ -3,9 +3,19 @@ unit uMain;
 interface
 
 uses
-  Windows, SysUtils, Classes, Controls, Forms, Dialogs, Registry,
-  StdCtrls, ComCtrls, uDelphiInstallationCheck, ExtCtrls,
-  uInstaller, ImgList, System.ImageList;
+  Classes,
+  ComCtrls,
+  Controls,
+  Dialogs,
+  ExtCtrls,
+  Forms,
+  ImgList,
+  StdCtrls,
+  SysUtils,
+  Windows,
+  uDelphiInstallationCheck,
+  uInstaller,
+  System.ImageList;
 
 type
   TFrmInstall = class(TForm)
@@ -35,6 +45,9 @@ var
   FrmInstall: TFrmInstall;
 
 implementation
+
+uses
+  System.Win.Registry;
 
 const
   BPL_FILENAME = 'RfFindUnit.bpl';

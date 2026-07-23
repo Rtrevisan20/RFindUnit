@@ -3,25 +3,26 @@ unit FindUnit.FormSettings;
 interface
 
 uses
+  ToolsAPI,
   Data.DB,
-
   Datasnap.DBClient,
-
+  FindUnit.OTAUtils,
   FindUnit.Settings,
-
+  System.Classes,
   System.IniFiles,
   System.SyncObjs,
   System.SysUtils,
-
+  Vcl.Buttons,
+  Vcl.ComCtrls,
+  Vcl.Controls,
   Vcl.DBCtrls,
   Vcl.DBGrids,
   Vcl.ExtCtrls,
+  Vcl.Forms,
   Vcl.Grids,
   Vcl.Mask,
   Vcl.StdCtrls,
-
-  Winapi.ShellAPI, FindUnit.OTAUtils, ToolsAPI, Vcl.Controls, Vcl.ComCtrls,
-  System.Classes, Vcl.Forms, Vcl.Buttons;
+  Winapi.ShellAPI;
 
 type
   TfrmSettings = class(TForm)
@@ -92,7 +93,8 @@ type
 implementation
 
 uses
-  Winapi.Windows, Vcl.Dialogs;
+  Vcl.Dialogs,
+  Winapi.Windows;
 
 {$R *.dfm}
 
@@ -102,17 +104,13 @@ begin
   FSettings.AlwaysUseInterfaceSection := chkAlwaysImportToInterfaceSection.Checked;
   FSettings.OrganizeUses := chkOrganizeUses.Checked;
   FSettings.StoreChoices := chkMemorize.Checked;
-
   FSettings.BreakLine := chkBreakline.Checked;
   FSettings.SortUsesAfterAdding := chkSortAfterAdding.Checked;
   FSettings.BlankLineBtwNameScapes := chkBlankLineBtwNamespace.Checked;
-
   FSettings.UseDefaultSearchMatch := grpSearchAlgorithm.ItemIndex = 0;
-
   FSettings.OrganizeUsesAfterAddingNewUsesUnit := chbOrganizeUsesAfterInsertingNewUsesUnit.Checked;
   FSettings.BreakUsesLineAtPosition := StrToInt(Trim(medtBreakUsesLineAtPosition.Text));
   FSettings.GroupNonNamespaceUnits := chbGroupNonNameSpaceUnits.Checked;
-
   FSettings.IgnoreUsesUnused := mmoIgnoreUses.Lines.CommaText;
   FSettings.EnableExperimentalFindUnusedUses := chbFeatureUnusedUses.Checked;
   FSettings.BreakLineForNonDomainUses := not chbDontBreakLineForNonNameSpaceUnits.Checked;
@@ -212,16 +210,14 @@ begin
     if not cdsAutoImport.Active then
       cdsAutoImport.CreateDataSet;
 
-    for I := 0 to Values.Count -1 do
-    begin
+    for I := 0 to Values.Count - 1 do begin
       cdsAutoImport.Append;
-      cdsAutoImportIDENTIFIER.Value := Values.Names[i];
-      cdsAutoImportUNIT.Value := Values.ValueFromIndex[i];
+      cdsAutoImportIDENTIFIER.AsString := Values.Names[i];
+      cdsAutoImportUNIT.AsString := Values.ValueFromIndex[i];
       cdsAutoImport.Post;
     end;
 
-    with cdsAutoImport.IndexDefs.AddIndexDef do
-    begin
+    with cdsAutoImport.IndexDefs.AddIndexDef do begin
       Name := cdsAutoImportIDENTIFIER.FieldName + 'Idx';
       Fields := cdsAutoImportIDENTIFIER.FieldName;
       Options := [ixCaseInsensitive];
@@ -243,9 +239,8 @@ begin
   cdsAutoImport.DisableControls;
   try
     cdsAutoImport.First;
-    while not cdsAutoImport.Eof do
-    begin
-      Values.Values[UpperCase(cdsAutoImportIDENTIFIER.Value)] := cdsAutoImportUNIT.Value;
+    while not cdsAutoImport.Eof do begin
+      Values.Values[UpperCase(cdsAutoImportIDENTIFIER.AsString)] := cdsAutoImportUNIT.AsString;
       cdsAutoImport.Next;
     end;
     FSettings.AutoImportValue := Values;

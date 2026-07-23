@@ -5,16 +5,12 @@ interface
 uses
   DelphiAST,
   Log4Pascal,
-
   DelphiAST.Classes,
   DelphiAST.Writer,
-
   FindUnit.DelphiReservedWords,
   FindUnit.PasParser,
   FindUnit.Utils,
-
   SimpleParser.Lexer.Types,
-
   System.Classes,
   System.Generics.Collections,
   System.SysUtils,
@@ -107,8 +103,7 @@ begin
   if FEnvControl = nil then
     Exit;
 
-  for SearchType in FUsedTypes.Values do
-  begin
+  for SearchType in FUsedTypes.Values do begin
     Matches := FEnvControl.GetFullMatch(SearchType);
     for NewItem in Matches do
       Result.AddOrSetValue(NewItem.ToUpper, NewItem);
@@ -155,8 +150,7 @@ begin
   Result := TDictionary<string, TUsesUnit>.Create;
   AllPossibleMatches := TDictionary<string, string>.Create;
 
-  for Matches in FMatches.Values do
-  begin
+  for Matches in FMatches.Values do begin
     if not vSystemRunning then
       Exit;
 
@@ -165,8 +159,7 @@ begin
     UpMatchs := UnitNameEx.ToUpper;
     AllPossibleMatches.AddOrSetValue(UpMatchs, UnitNameEx);
 
-    for OptionalUses in FOptionalUsesPrefix do
-    begin
+    for OptionalUses in FOptionalUsesPrefix do begin
       AllPossibleMatches.AddOrSetValue(OptionalUses + UpMatchs, Matches);
 
       PrefixVariation := UpMatchs.Replace(OptionalUses, '');
@@ -210,13 +203,10 @@ begin
   XmlFile := TStringList.Create;
   XmlFile.Text := TSyntaxTreeWriter.ToXML(FUnitNode, True);
 
-  for I := 0 to XmlFile.Count - 1 do
-  begin
+  for I := 0 to XmlFile.Count - 1 do begin
     Line := XmlFile[I];
 
-    if (Pos('<TYPE', Line) = 0)
-      and (Pos('<NAME', Line) = 0)
-      and (Pos('<IDENTIFIER', Line) = 0) then
+    if (Pos('<TYPE', Line) = 0) and (Pos('<NAME', Line) = 0) and (Pos('<IDENTIFIER', Line) = 0) then
       Continue;
 
     FetchType := Fetch(Line, 'name="');
@@ -254,13 +244,11 @@ begin
   XmlFile := TStringList.Create;
   XmlFile.Text := TSyntaxTreeWriter.ToXML(FUnitNode, True);
 
-  for I := 0 to XmlFile.Count - 1 do
-  begin
+  for I := 0 to XmlFile.Count - 1 do begin
     Line := XmlFile[I];
 
-    if (FUsesStartLine = -1) and Line.Contains('<USES') then
-    begin
-      Fetch(Line,'begin_line="');
+    if (FUsesStartLine = -1) and Line.Contains('<USES') then begin
+      Fetch(Line, 'begin_line="');
       UsesLine := Fetch(Line, '"');
       FUsesStartLine := StrToInt(UsesLine);
       Continue;
@@ -269,8 +257,7 @@ begin
     if Pos('<UNIT', Line) = 0 then
       Continue;
 
-    if IsHeader then
-    begin
+    if IsHeader then begin
       IsHeader := False;
       Continue;
     end;
@@ -279,10 +266,10 @@ begin
     Column := Line;
     UsesName := Line;
 
-    Fetch(UsesLine,'line="');
+    Fetch(UsesLine, 'line="');
     UsesLine := Fetch(UsesLine, '"');
 
-    Fetch(Column,'col="');
+    Fetch(Column, 'col="');
     Column := Fetch(Column, '"');
 
     Fetch(UsesName, 'name="');
@@ -295,7 +282,7 @@ begin
     if FEnvControl.PasExists(UsesUnit.Name.ToUpper + '.pas') then
       UsesUnit.UnusedType := uetUnused
     else
-       UsesUnit.UnusedType := uetNoPasFile;
+      UsesUnit.UnusedType := uetNoPasFile;
 
     Result.AddOrSetValue(UsesUnit.Name.ToUpper, UsesUnit);
   end;
@@ -347,15 +334,13 @@ procedure TUnsedUsesProcessor.Process;
 var
   Step: string;
 begin
-  if not FEnvControl.AreDependenciasReady then
-  begin
+  if not FEnvControl.AreDependenciasReady then begin
     FEnvControl.ForceRunDependencies;
     Exit;
   end;
 
   FUnitNode := nil;
-  if not FileExists(FFilePath) then
-  begin
+  if not FileExists(FFilePath) then begin
     Logger.Debug('TFindUnitParser.Process: File do not exists %s', [FFilePath]);
     Exit;
   end;
@@ -364,15 +349,13 @@ begin
     try
       FUnitNode := TPasSyntaxTreeBuilder.Run(FFilePath, False, nil);
     except
-      on E: ESyntaxTreeException do
-      begin
+      on E: ESyntaxTreeException do begin
         FUnitNode := E.SyntaxTree;
         E.SyntaxTree := nil;
       end;
     end;
 
-    if FUnitNode = nil then
-    begin
+    if FUnitNode = nil then begin
       Exit;
     end;
 
@@ -387,10 +370,11 @@ begin
     FUnusedUses := GetUnusedUses;
     Logger.Debug('GetUnusedUses:' + GetUnusedUsesAsString);
   except
-    on E: Exception do
-    begin
+    on E: Exception do begin
       Logger.Error('TFindUnitParser.Process: Trying to parse %s. Msg: %s | Step: %s', [FFilePath, E.Message, Step]);
-      {$IFDEF RAISEMAD} raise; {$ENDIF}
+{$IFDEF RAISEMAD}
+      raise;
+{$ENDIF}
     end;
   end;
 end;

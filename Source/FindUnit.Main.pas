@@ -3,8 +3,7 @@ unit FindUnit.Main;
 interface
 
 uses
-  System.Classes,
-
+  ToolsAPI,
   FindUnit.CompilerInterceptor,
   FindUnit.EnvironmentController,
   FindUnit.FormMessage,
@@ -12,7 +11,8 @@ uses
   FindUnit.PaintUnusedUses,
   FindUnit.UnusedUses,
   FindUnit.Utils,
-  Vcl.Graphics, ToolsAPI;
+  System.Classes,
+  Vcl.Graphics;
 
 {$R RFindUnitSplash.res}
 type
@@ -40,27 +40,28 @@ type
     function GetName: string;
   end;
 
-  procedure Register;
+procedure Register;
 
 implementation
 
 uses
   Log4PAscal,
-  System.SysUtils,
-
   FindUnit.FormSearch,
   FindUnit.OTAUtils,
-  FindUnit.Settings, Winapi.Windows, Vcl.Menus;
+  FindUnit.Settings,
+  System.SysUtils,
+  Vcl.Menus,
+  Winapi.Windows;
 
 var
   vKbIndex: Integer;
   VFindUnit: IInterface;
-  AboutBoxServices : IOTAAboutBoxServices = nil;
-  AboutBoxIndex : Integer = 0;
+  AboutBoxServices: IOTAAboutBoxServices = nil;
+  AboutBoxIndex: Integer = 0;
   vBindingServices: IOTAKeyBindingServices;
   vIDENotifierIndex: Integer;
 
-resourcestring
+  resourcestring
   resPackageName      = 'RFindUnit - Import Usages';
   resLicense          = 'OpenSource (MIT)';
   resAboutCopyright   = 'Copyright Rodrigo Farias Rezino';
@@ -71,7 +72,10 @@ procedure Register;
 var
   OtaKey: IOTAKeyboardBinding;
 begin
-  Logger := TLogger.Create(FindUnitDirLogger + Format('rfindunitlog_%s_%d.txt', [FormatDateTime('yyyy-mm-dd', Now), GetCurrentProcessId]));
+  Logger :=
+      TLogger.Create(
+          FindUnitDirLogger + Format('rfindunitlog_%s_%d.txt', [FormatDateTime('yyyy-mm-dd', Now), GetCurrentProcessId])
+      );
 
   VFindUnit := TRFindUnitMain.Create;
   OtaKey := VFindUnit as IOTAKeyboardBinding;
@@ -96,9 +100,10 @@ procedure RegisterAboutBox;
 var
   LProductImage: HBITMAP;
 begin
-  Supports(BorlandIDEServices,IOTAAboutBoxServices, AboutBoxServices);
+  Supports(BorlandIDEServices, IOTAAboutBoxServices, AboutBoxServices);
   LProductImage := LoadBitmap(FindResourceHInstance(HInstance), 'SPLASH');
-  AboutBoxIndex := AboutBoxServices.AddPluginInfo(resPackageName, resAboutDescription, LProductImage, False, resLicense);
+  AboutBoxIndex :=
+      AboutBoxServices.AddPluginInfo(resPackageName, resAboutDescription, LProductImage, False, resLicense);
 end;
 
 procedure UnregisterAboutBox;
@@ -106,8 +111,7 @@ begin
   if vIDENotifierIndex >= 0 then
     (BorlandIDEServices as IOTAServices).RemoveNotifier(vIDENotifierIndex);
 
-  if (AboutBoxIndex = 0) and Assigned(AboutBoxServices) then
-  begin
+  if (AboutBoxIndex = 0) and Assigned(AboutBoxServices) then begin
     AboutBoxServices.RemovePluginInfo(AboutBoxIndex);
     AboutBoxIndex := 0;
     AboutBoxServices := nil;
@@ -143,8 +147,7 @@ begin
     IndexFirstBreak := ToolItem.Count - 1;
 
   RfItemMenu := ToolItem.Find('RFindUnit');
-  if RfItemMenu = nil then
-  begin
+  if RfItemMenu = nil then begin
     RfItemMenu := TMenuItem.Create(nil);
     RfItemMenu.Caption := 'RFindUnit';
     ToolItem.Insert(IndexFirstBreak, RfItemMenu);
@@ -216,16 +219,22 @@ begin
   Result := 'RFindUnit';
 end;
 
-procedure TRFindUnitMain.AutoImport(const Context: IOTAKeyContext; KeyCode: TShortCut;
-  var BindingResult: TKeyBindingResult);
+procedure TRFindUnitMain.AutoImport(
+    const Context: IOTAKeyContext;
+    KeyCode: TShortCut;
+    var BindingResult: TKeyBindingResult
+);
 begin
   BindingResult := krHandled;
   FEnvControl.ImportMissingUnits;
   FEnvControl.ForceLoadProjectPath;
 end;
 
-procedure TRFindUnitMain.GetUnusedUses(const Context: IOTAKeyContext; KeyCode: TShortCut;
-  var BindingResult: TKeyBindingResult);
+procedure TRFindUnitMain.GetUnusedUses(
+    const Context: IOTAKeyContext;
+    KeyCode: TShortCut;
+    var BindingResult: TKeyBindingResult
+);
 var
   UnusedUses: TUnsedUsesProcessor;
   CurEditor: IOTASourceEditor;
@@ -248,8 +257,11 @@ begin
   UnusedUses.Free;
 end;
 
-procedure TRFindUnitMain.OpenForm(const Context: IOTAKeyContext; KeyCode: TShortCut;
-  var BindingResult: TKeyBindingResult);
+procedure TRFindUnitMain.OpenForm(
+    const Context: IOTAKeyContext;
+    KeyCode: TShortCut;
+    var BindingResult: TKeyBindingResult
+);
 var
   SelectedText: TStringPosition;
 begin
@@ -259,8 +271,7 @@ begin
     SelectedText := GetWordAtCursor;
 
   BindingResult := krHandled;
-  if frmFindUnit = nil then
-  begin
+  if frmFindUnit = nil then begin
     frmFindUnit := TfrmFindUnit.Create(nil);
     frmFindUnit.SetEnvControl(FEnvControl);
     frmFindUnit.SetSearch(SelectedText);
@@ -268,15 +279,18 @@ begin
   end;
 end;
 
-procedure TRFindUnitMain.OrganizeUses(const Context: IOTAKeyContext; KeyCode: TShortCut;
-  var BindingResult: TKeyBindingResult);
+procedure TRFindUnitMain.OrganizeUses(
+    const Context: IOTAKeyContext;
+    KeyCode: TShortCut;
+    var BindingResult: TKeyBindingResult
+);
 begin
   if not GlobalSettings.OrganizeUses then
     Exit;
 
   BindingResult := krHandled;
   FEnvControl.OrganizeUses;
-  TfrmMessage.ShowInfoToUser('Uses organized. If the uses contains comments or IFDEF it wont be organized...');
+  TfrmMessage.ShowInfoToUser('Uses organizadas. Se as Uses contiverem comentários ou IFDEF, não serão organizadas...');
 end;
 
 procedure Clear;

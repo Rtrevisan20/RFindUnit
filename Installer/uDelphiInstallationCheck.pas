@@ -12,7 +12,11 @@ type
   TDelphiVersions = (
     DelphiSeattle10,
     DelphiBerlin101,
-    DelphiTokyo);
+    DelphiTokyo,
+    DelphiRio,
+    DelphiSydney,
+    DelphiAlexandria,
+    DelphiAthens);
 
   TDelphiInstallationCheck = class(TObject)
   public
@@ -32,19 +36,31 @@ const
   TDelphiVersionsNames: array [TDelphiVersions] of string = (
     'RAD Studio 10 Seattle',
     'RAD Studio 10.1 Berlin',
-    'RAD Studio 10.2 Tokyo'
+    'RAD Studio 10.2 Tokyo',
+    'RAD Studio 10.3 Rio',
+    'RAD Studio 10.4 Sydney',
+    'RAD Studio 11.0 Alexandria',
+    'RAD Studio 12.0 Athens'
     );
 
   TDelphiRegPaths: array [TDelphiVersions] of string = (
     '\Software\Embarcadero\BDS\17.0',
     '\Software\Embarcadero\BDS\18.0',
-    '\Software\Embarcadero\BDS\19.0'
+    '\Software\Embarcadero\BDS\19.0',
+    '\Software\Embarcadero\BDS\20.0',
+    '\Software\Embarcadero\BDS\21.0',
+    '\Software\Embarcadero\BDS\22.0',
+    '\Software\Embarcadero\BDS\23.0'
     );
 
   TDelphiPackages: array [TDelphiVersions] of string = (
     'DelphiBerlin\',
     'DelphiSeattle\',
-    'DelphiTokyo\'
+    'DelphiTokyo\',
+    'DelphiRio\',
+    'DelphiSydney\',
+    'DelphiAlexandria\',
+    'DelphiAthens\'
   );
 
   DPK_FILENAME = 'RFindUnit.dpk';
@@ -139,7 +155,7 @@ begin
     if RegKeyExists(TDelphiRegPaths[DelphiComp], HKEY_CURRENT_USER) then
       if RegReadStr(TDelphiRegPaths[DelphiComp], 'App', Filename, HKEY_CURRENT_USER) and FileExists(Filename) then
       begin
-        Item := ListView.Items.Add;
+        Item         := ListView.Items.Add;
         Item.Caption := TDelphiVersionsNames[DelphiComp];
         Item.SubItems.Add(Filename);
         ExtractIconFileToImageList(ImageList, Filename);

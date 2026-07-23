@@ -42,8 +42,7 @@ type
     procedure CreateLibraryPathUnits(OldItems: TUnits);
     procedure OnFinishedLibraryPathScan(FindUnits: TUnits);
 
-    procedure CreateProjectPathUnits(NewFiles: TDictionary<string, TFileInfo>;
-      OldFiles: TUnits);
+    procedure CreateProjectPathUnits(NewFiles: TDictionary<string, TFileInfo>; OldFiles: TUnits);
     procedure OnFinishedProjectPathScan(FindUnits: TUnits);
 
     procedure CreatingProject(const ProjectOrGroup: IOTAModule);
@@ -90,9 +89,6 @@ type
   end;
 
 implementation
-
-
-
 { TEnvUpdateControl }
 
 constructor TEnvironmentController.Create;
@@ -176,8 +172,8 @@ begin
 
   Paths := nil;
 
-  FProjectUnits := TUnitsController.Create;
-  FProjectPathWorker := TParserWorker.Create(Paths, NewFiles, OldFiles);
+  FProjectUnits       := TUnitsController.Create;
+  FProjectPathWorker  := TParserWorker.Create(Paths, NewFiles, OldFiles);
   FProjectPathWorker.Start(OnFinishedProjectPathScan);
 end;
 
@@ -188,10 +184,8 @@ end;
 
 destructor TEnvironmentController.Destroy;
 begin
-  if FProjectPathWorker <> nil then
-    FProjectPathWorker.RemoveCallBack;
-  if FLibraryPathWorker <> nil then
-    FLibraryPathWorker.RemoveCallBack;
+  if FProjectPathWorker <> nil then FProjectPathWorker.RemoveCallBack;
+  if FLibraryPathWorker <> nil then FLibraryPathWorker.RemoveCallBack;
 
   FAutoImport.Free;
   FProjectUnits.Free;
@@ -244,7 +238,7 @@ function TEnvironmentController.GetLibraryPathStatus: string;
 begin
   Result := 'Ready';
   if FLibraryPathWorker <> nil then
-    Result := Format('%d/%d Processing...', [FLibraryPathWorker.ParsedItems, FLibraryPathWorker.ItemsToParse]);
+    Result := Format('%d/%d Processando...', [FLibraryPathWorker.ParsedItems, FLibraryPathWorker.ItemsToParse]);
 end;
 
 function TEnvironmentController.GetLibraryPathUnits(const SearchString: string): TStringList;
@@ -262,9 +256,9 @@ end;
 
 function TEnvironmentController.GetProjectPathStatus: string;
 begin
-  Result := 'Ready';
+  Result := 'Preparar';
   if FProjectPathWorker <> nil then
-    Result := Format('%d/%d Files Processed...', [FProjectPathWorker.ParsedItems, FProjectPathWorker.ItemsToParse]);
+    Result := Format('%d/%d Arquivos processados...', [FProjectPathWorker.ParsedItems, FProjectPathWorker.ItemsToParse]);
 end;
 
 function TEnvironmentController.GetProjectUnits(const SearchString: string): TStringList;
@@ -296,7 +290,7 @@ begin
   if ListToImport.Count = 0 then
   begin
     if ShowNoImport then
-      TfrmMessage.ShowInfoToUser('There is no possible uses to import.');
+      TfrmMessage.ShowInfoToUser('Não há uses possíveis para importação.');
     ListToImport.Free;
     SetFocus(OldFocus);
     Exit;
@@ -418,8 +412,7 @@ var
   CurEditor: IOTASourceEditor;
 begin
   CurEditor := OtaGetCurrentSourceEditor;
-  if CurEditor = nil then
-    Exit;
+  if CurEditor = nil then Exit;
 
   FileEditor := TSourceFileEditor.Create(CurEditor);
   try

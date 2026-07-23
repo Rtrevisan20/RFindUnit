@@ -1,9 +1,958 @@
-﻿[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+﻿[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkhlYWRlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Header.pas
+CursorX=1
+CursorY=1
+TopLine=22
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkltYWdlUmVwb3Np
+dG9yeS5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.ImageRepository.pas
+CursorX=1
+CursorY=1
+TopLine=16
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lk1haW4ucGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Main.pas
+CursorX=26
+CursorY=76
+TopLine=76
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcaWRlSW50ZXJhY3Rpb25caW1wbGVtZW50YXRp
+b25zXEZpbmRVbml0LlBhaW50VW51c2VkVXNlcy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+CursorX=1
+CursorY=97
+TopLine=85
+LeftCol=1
+Elisions={{229,2},{243,13},{'Paint the left status'}}
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcaWRlSW50ZXJhY3Rpb25caW1wbGVtZW50YXRp
+b25zXEZpbmRVbml0LlBhaW50VW51c2VkVXNlcy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+CursorX=1
+CursorY=97
+TopLine=85
+LeftCol=1
+Elisions={{229,2},{243,13},{'Paint the left status'}}
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=24
+CursorY=136
+TopLine=118
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=22
+CursorY=77
+TopLine=64
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LlNldHRpbmdzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Settings.pas
+CursorX=20
+CursorY=182
+TopLine=382
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=35
+CursorY=263
+TopLine=242
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=9
+CursorY=189
+TopLine=163
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XExvZzRwYXNjYWxcTG9nNFBhc2Nh
+bC5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+CursorX=35
+CursorY=10
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=9
+CursorY=189
+TopLine=163
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkF1dG9JbXBvcnQu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.AutoImport.pas
+CursorX=53
+CursorY=30
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=9
+CursorY=189
+TopLine=142
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=9
+CursorY=189
+TopLine=142
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=35
+CursorY=263
+TopLine=242
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=35
+CursorY=263
+TopLine=242
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=24
+CursorY=136
+TopLine=118
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=24
+CursorY=136
+TopLine=118
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=34
+CursorY=215
+TopLine=200
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxzb3VyY2VcZGF0
+YVxEYXRhLkRCLnBhcw==]
+Module=c:\program files (x86)\embarcadero\studio\23.0\source\data\Data.DB.pas
+CursorX=1
+CursorY=886
+TopLine=868
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=1
+CursorY=90
+TopLine=72
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=23
+CursorY=256
+TopLine=236
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=24
+CursorY=243
+TopLine=197
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=24
+CursorY=243
+TopLine=197
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkRjdURlY29tcGls
+ZXIucGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.DcuDecompiler.pas
+CursorX=1
+CursorY=47
+TopLine=127
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcSW50ZXJmYWNlc1xJbnRlcmYuU2VhcmNoU3Ry
+aW5nQ2FjaGUucGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.SearchStringCache.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcaWRlSW50ZXJhY3Rpb25caW1wbGVtZW50YXRp
+b25zXEZpbmRVbml0LlBhaW50VW51c2VkVXNlcy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+CursorX=1
+CursorY=229
+TopLine=1
+LeftCol=1
+Elisions={{229,2},{243,13},{'Paint the left status'}}
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkRjdURlY29tcGls
+ZXIucGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.DcuDecompiler.pas
+CursorX=18
+CursorY=21
+TopLine=6
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lk9UQVV0aWxzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+CursorX=30
+CursorY=406
+TopLine=391
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XEFuZHJleVxSZWdFeHByLnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\Andrey\RegExpr.pas
+CursorX=42
+CursorY=662
+TopLine=685
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XExvZzRwYXNjYWxcTG9nNFBhc2Nh
+bC5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+CursorX=29
+CursorY=4
+TopLine=142
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZXR0aW5n
+cy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSettings.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=7
+CursorY=42
+TopLine=34
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XExvZzRwYXNjYWxcTG9nNFBhc2Nh
+bC5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+CursorX=1
+CursorY=11
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=16
+CursorY=189
+TopLine=161
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XExvZzRwYXNjYWxcTG9nNFBhc2Nh
+bC5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+CursorX=7
+CursorY=166
+TopLine=151
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
 XFNZU1xTeXN0ZW0ucGFz]
 Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
 CursorX=1
 CursorY=12
 TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XExvZzRwYXNjYWxcTG9nNFBhc2Nh
+bC5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+CursorX=17
+CursorY=161
+TopLine=141
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XExvZzRwYXNjYWxcTG9nNFBhc2Nh
+bC5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+CursorX=17
+CursorY=161
+TopLine=141
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=11
+CursorY=189
+TopLine=161
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=11
+CursorY=189
+TopLine=161
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XFRyYW5zcGFyZW50Q2FudmFzXFRy
+YW5zcGFyZW50Q2FudmFzLnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\TransparentCanvas\TransparentCanvas.pas
+CursorX=6
+CursorY=34
+TopLine=298
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Thirdy\TransparentCanvas\TransparentCanvas.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcVGhpcmR5XFRyYW5zcGFyZW50Q2FudmFzXFRy
+YW5zcGFyZW50Q2FudmFzLnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Thirdy\TransparentCanvas\TransparentCanvas.pas
+CursorX=6
+CursorY=34
+TopLine=298
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Thirdy\TransparentCanvas\TransparentCanvas.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcaWRlSW50ZXJhY3Rpb25caW1wbGVtZW50YXRp
+b25zXEZpbmRVbml0LlBhaW50VW51c2VkVXNlcy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+CursorX=32
+CursorY=82
+TopLine=62
+LeftCol=1
+Elisions={{229,2},{243,13},{'Paint the left status'}}
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxzb3VyY2VcVG9v
+bHNBUElcVG9vbHNBUEkucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\source\ToolsAPI\ToolsAPI.pas
+CursorX=1
+CursorY=2614
+TopLine=2594
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcaWRlSW50ZXJhY3Rpb25caW1wbGVtZW50YXRp
+b25zXEZpbmRVbml0LlBhaW50VW51c2VkVXNlcy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+CursorX=32
+CursorY=82
+TopLine=62
+LeftCol=1
+Elisions={{229,2},{243,13},{'Paint the left status'}}
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcaWRlSW50ZXJhY3Rpb25caW1wbGVtZW50YXRp
+b25zXEZpbmRVbml0LlBhaW50VW51c2VkVXNlcy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+CursorX=32
+CursorY=82
+TopLine=62
+LeftCol=1
+Elisions={{229,2},{243,13},{'Paint the left status'}}
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcSW50ZXJmYWNlc1xJbnRlcmYuU2VhcmNoU3Ry
+aW5nQ2FjaGUucGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.SearchStringCache.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.SearchStringCache.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcSW50ZXJmYWNlc1xJbnRlcmYuU2VhcmNoU3Ry
+aW5nQ2FjaGUucGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.SearchStringCache.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.SearchStringCache.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcSW50ZXJmYWNlc1xJbnRlcmYuRW52aXJvbm1l
+bnRDb250cm9sbGVyLnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.EnvironmentController.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.EnvironmentController.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcSW50ZXJmYWNlc1xJbnRlcmYuRW52aXJvbm1l
+bnRDb250cm9sbGVyLnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.EnvironmentController.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.EnvironmentController.pas
+
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LlV0aWxzLnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Utils.pas
+CursorX=50
+CursorY=16
+TopLine=82
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Utils.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxzb3VyY2VcVG9v
+bHNBUElcVG9vbHNBUEkucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\source\ToolsAPI\ToolsAPI.pas
+CursorX=41
+CursorY=2622
+TopLine=2594
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lldvcmtlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Worker.pas
+CursorX=1
+CursorY=1
+TopLine=79
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkVudmlyb25tZW50
+Q29udHJvbGxlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+CursorX=1
+CursorY=413
+TopLine=414
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LlNldHRpbmdzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Settings.pas
+CursorX=1
+CursorY=19
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Settings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LlNldHRpbmdzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Settings.pas
+CursorX=1
+CursorY=19
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.Settings.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkVudmlyb25tZW50
+Q29udHJvbGxlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+CursorX=1
+CursorY=413
+TopLine=414
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkVudmlyb25tZW50
+Q29udHJvbGxlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+CursorX=1
+CursorY=413
+TopLine=414
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lk9UQVV0aWxzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+CursorX=34
+CursorY=76
+TopLine=280
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkRlbHBoaVJlc2Vy
+dmVkV29yZHMucGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.DelphiReservedWords.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.DelphiReservedWords.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkF1dG9JbXBvcnQu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.AutoImport.pas
+CursorX=36
+CursorY=32
+TopLine=109
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkF1dG9JbXBvcnQu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.AutoImport.pas
+CursorX=36
+CursorY=32
+TopLine=109
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkluY2x1ZGVySGFu
+ZGxlckluYy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.IncluderHandlerInc.pas
+CursorX=1
+CursorY=1
+TopLine=121
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkluY2x1ZGVySGFu
+ZGxlckluYy5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.IncluderHandlerInc.pas
+CursorX=1
+CursorY=1
+TopLine=121
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LlJlc3VsdHNJbXBv
+cnRhbmNlQ2FsY3VsYXRvci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.ResultsImportanceCalculator.pas
+CursorX=1
+CursorY=1
+TopLine=40
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcUGFja2FnZXNcRGVscGhpVG9reW9cUkZpbmRV
+bml0LmRwaw==]
+Module=D:\Recursos GitHub\HDFindUnit\Packages\DelphiTokyo\RFindUnit.dpk
+CursorX=1
+CursorY=1
+TopLine=34
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LlVudXNlZFVzZXMu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.UnusedUses.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.UnusedUses.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LlVudXNlZFVzZXMu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.UnusedUses.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.UnusedUses.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkVudmlyb25tZW50
+Q29udHJvbGxlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+CursorX=1
+CursorY=413
+TopLine=389
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=24
+CursorY=226
+TopLine=224
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=34
+CursorY=395
+TopLine=395
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=34
+CursorY=395
+TopLine=395
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=34
+CursorY=395
+TopLine=395
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=1
+CursorY=1
+TopLine=49
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=26
+CursorY=6
+TopLine=4
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxzb3VyY2VcVG9v
+bHNBUElcRGVzaWduSW50Zi5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\source\ToolsAPI\DesignIntf.pas
+CursorX=1
+CursorY=10
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxzb3VyY2VcVG9v
+bHNBUElcVG9vbHNBUEkucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\source\ToolsAPI\ToolsAPI.pas
+CursorX=105
+CursorY=19
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\source\ToolsAPI\ToolsAPI.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxzb3VyY2VcVG9v
+bHNBUElcVG9vbHNBUEkucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\source\ToolsAPI\ToolsAPI.pas
+CursorX=105
+CursorY=19
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\source\ToolsAPI\ToolsAPI.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkVudmlyb25tZW50
+Q29udHJvbGxlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+CursorX=6
+CursorY=7
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkVudmlyb25tZW50
+Q29udHJvbGxlci5wYXM=]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+CursorX=6
+CursorY=7
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.EnvironmentController.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=26
+CursorY=6
+TopLine=4
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=48
+CursorY=62
+TopLine=49
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1TZWFyY2gu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+CursorX=41
+CursorY=188
+TopLine=166
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormSearch.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=27
+CursorY=54
+TopLine=22
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=14
+CursorY=52
+TopLine=43
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=15
+CursorY=58
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lk9UQVV0aWxzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+CursorX=39
+CursorY=425
+TopLine=406
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lk9UQVV0aWxzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+CursorX=39
+CursorY=425
+TopLine=361
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=45
+CursorY=188
+TopLine=160
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Borland.FormDesignerView
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkZvcm1NZXNzYWdl
+LnBhcw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FormMessage.pas
+CursorX=45
+CursorY=188
+TopLine=160
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Borland.FormDesignerView
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lk9UQVV0aWxzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+CursorX=39
+CursorY=425
+TopLine=361
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0Lk9UQVV0aWxzLnBh
+cw==]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+CursorX=39
+CursorY=425
+TopLine=361
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.OTAUtils.pas
+[ClosedView_RDpcUmVjdXJzb3MgR2l0SHViXEhERmluZFVuaXRcU291cmNlXEZpbmRVbml0LkF1dG9JbXBvcnQu
+cGFz]
+Module=D:\Recursos GitHub\HDFindUnit\Source\FindUnit.AutoImport.pas
+CursorX=1
+CursorY=1
+TopLine=100
 LeftCol=1
 Elisions=
 Bookmarks=

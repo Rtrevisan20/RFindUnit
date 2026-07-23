@@ -5,13 +5,9 @@ interface
 uses
   System.Classes,
   System.SysUtils,
-
   DelphiAST.Classes,
-
   FindUnit.Header,
-
   System.Generics.Collections,
-
   SimpleParser.Lexer.Types;
 
 type
@@ -95,14 +91,13 @@ type
     procedure SetIncluder(Includer: IIncludeHandler);
   end;
 
-
 implementation
 
 uses
   DelphiAST,
   Log4PAscal,
-
-  DelphiAST.Consts, System.IOUtils;
+  DelphiAST.Consts,
+  System.IOUtils;
 
 { TFindUnitItem }
 
@@ -139,17 +134,28 @@ function TPasFile.GetListFromType(ListType: TListType): TStringList;
 begin
   Result := nil;
   case ListType of
-    ltClasses: Result := FClasses;
-    ltProcedures: Result := FProcedures;
-    ltFunctions: Result := FFunctions;
-    ltContants: Result := FConstants;
-    ltVariables: Result := FVariables;
-    ltClassFunctions: Result := FClassFunctions;
-    ltClassProcedures: Result := FClassProcedure;
-    ltEnumeratores: Result := FEnumerators;
-    ltReferences: Result := FReferences;
-    ltInterfaces: Result := FInterfaces;
-    ltRecords: Result := FRecords;
+    ltClasses:
+      Result := FClasses;
+    ltProcedures:
+      Result := FProcedures;
+    ltFunctions:
+      Result := FFunctions;
+    ltContants:
+      Result := FConstants;
+    ltVariables:
+      Result := FVariables;
+    ltClassFunctions:
+      Result := FClassFunctions;
+    ltClassProcedures:
+      Result := FClassProcedure;
+    ltEnumeratores:
+      Result := FEnumerators;
+    ltReferences:
+      Result := FReferences;
+    ltInterfaces:
+      Result := FInterfaces;
+    ltRecords:
+      Result := FRecords;
   end;
 end;
 
@@ -176,22 +182,18 @@ var
 begin
   SectionTypesNode := FInterfaceNode.FindNode(ntTypeSection);
 
-  while SectionTypesNode <> nil do
-  begin
+  while SectionTypesNode <> nil do begin
     TypeNode := SectionTypesNode.FindNode(ntTypeDecl);
-    while TypeNode <> nil do
-    begin
+    while TypeNode <> nil do begin
       try
         if TypeNode.HasAttribute(anForwarded) then
           GetInterfaceDescription(TypeNode)
-        else
-        begin
+        else begin
           TypeDesc := TypeNode.FindNode(ntType);
 
           if TypeDesc = nil then
             GetReference(TypeNode)
-          else
-          begin
+          else begin
             TypeType := TypeDesc.GetAttribute(anType);
             if TypeType.IsEmpty then
               TypeType := TypeDesc.GetAttribute(anName);
@@ -208,10 +210,9 @@ begin
               GetProcedureReferenceDescription(TypeNode)
             else if TypeType.Equals('function') then
               GetFunctionReferenceDescription(TypeNode)
-            else if  TypeType.Equals('subrange') then
+            else if TypeType.Equals('subrange') then
               GetSubRangeDesc(TypeNode)
-            else
-            begin
+            else begin
               try
                 GetReference(TypeNode);
               except
@@ -222,12 +223,11 @@ begin
           end;
         end;
       except
-        on e: exception do
-        begin
+        on e: exception do begin
           Logger.Error('TFindUnitParser.GetClasses: %s - %s', [e.Message, FFilePath]);
-          {$IFDEF RAISEMAD}
+{$IFDEF RAISEMAD}
           raise;
-          {$ENDIF}
+{$ENDIF}
         end;
       end;
       SectionTypesNode.DeleteChild(TypeNode);
@@ -244,7 +244,7 @@ var
   Description: string;
 begin
   Description := Types.GetAttribute(anName);
-  FResultItem.FClasses.Add(Description  + '.* - Class');
+  FResultItem.FClasses.Add(Description + '.* - Class');
 
   GetClassMethodsFromClassNode(Description, Types);
 end;
@@ -266,14 +266,12 @@ begin
     Exit;
 
   MethodNode := PublicNode.FindNode(ntMethod);
-  while MethodNode <> nil do
-  begin
+  while MethodNode <> nil do begin
     IsClassMethod := MethodNode.HasAttribute(anClass) and MethodNode.GetAttribute(anClass).Equals('true');
-    if IsClassMethod then
-    begin
+    if IsClassMethod then begin
       MethodNameDesc := AClassName + '.' + MethodNode.GetAttribute(anName);
       MethodType := MethodNode.GetAttribute(anKind);
-      if MethodType  = 'procedure' then
+      if MethodType = 'procedure' then
         FResultItem.FClassProcedure.Add(MethodNameDesc + strListTypeDescription[ltClassProcedures])
       else
         FResultItem.FClassFunctions.Add(MethodNameDesc + strListTypeDescription[ltClassFunctions]);
@@ -291,11 +289,9 @@ var
   Name: TSyntaxNode;
 begin
   ConstantsNode := FInterfaceNode.FindNode(ntConstants);
-  while ConstantsNode <> nil do
-  begin
+  while ConstantsNode <> nil do begin
     ConstantItem := ConstantsNode.FindNode(ntConstant);
-    while ConstantItem <> nil do
-    begin
+    while ConstantItem <> nil do begin
       Name := ConstantItem.FindNode(ntName);
 
       FResultItem.FConstants.Add(TValuedSyntaxNode(Name).Value);
@@ -324,7 +320,7 @@ begin
   Description := TypeDesc.GetAttribute(anName);
   if Description.IsEmpty then
     Description := TypeDesc.GetAttribute(anType);
-  
+
   IsEnum := Description.Equals('enum');
 
   Description[1] := UpCase(Description[1]);
@@ -341,11 +337,9 @@ begin
   else
     EnumType := nil;
 
-  if EnumType <> nil then
-  begin
+  if EnumType <> nil then begin
     IdenType := EnumType.FindNode(ntIdentifier);
-    while IdenType <> nil do
-    begin
+    while IdenType <> nil do begin
       FResultItem.FEnumerators.Add(ItemClassName + '.' + IdenType.GetAttribute(anName) + Description + ' item');
 
       EnumType.DeleteChild(IdenType);
@@ -390,20 +384,17 @@ var
   MethodNameDesc: string;
 begin
   MethodNode := FInterfaceNode.FindNode(ntMethod);
-  while MethodNode <> nil do
-  begin
+  while MethodNode <> nil do begin
     MethodNameDesc := MethodNode.GetAttribute(anName);
     IsClassMethod := MethodNode.HasAttribute(anClass) and MethodNode.GetAttribute(anClass).Equals('true');
     MethodType := MethodNode.GetAttribute(anKind);
-    if MethodType  = 'procedure' then
-    begin
+    if MethodType = 'procedure' then begin
       if IsClassMethod then
         FResultItem.FClassProcedure.Add(MethodNameDesc)
       else
         FResultItem.FProcedures.Add(MethodNameDesc);
     end
-    else
-    begin
+    else begin
       if IsClassMethod then
         FResultItem.FClassFunctions.Add(MethodNameDesc)
       else
@@ -453,11 +444,9 @@ var
   VariableName: TSyntaxNode;
 begin
   VariablesNode := FInterfaceNode.FindNode(ntVariables);
-  while VariablesNode <> nil do
-  begin
+  while VariablesNode <> nil do begin
     Variable := VariablesNode.FindNode(ntVariable);
-    while Variable <> nil do
-    begin
+    while Variable <> nil do begin
       VariableName := Variable.FindNode(ntName);
       FResultItem.FVariables.Add(TValuedSyntaxNode(VariableName).Value);
 
@@ -485,8 +474,7 @@ var
 begin
   FUnitNode := nil;
   Result := nil;
-  if not FileExists(FFilePath) then
-  begin
+  if not FileExists(FFilePath) then begin
     Logger.Debug('TFindUnitParser.Process: File do not exists %s', [FFilePath]);
     Exit;
   end;
@@ -495,15 +483,13 @@ begin
     try
       FUnitNode := TPasSyntaxTreeBuilder.Run(FFilePath, True, FIncluder);
     except
-      on E: ESyntaxTreeException do
-      begin
+      on E: ESyntaxTreeException do begin
         FUnitNode := e.SyntaxTree;
         e.SyntaxTree := nil;
       end;
     end;
 
-    if FUnitNode = nil then
-    begin
+    if FUnitNode = nil then begin
       Exit;
     end;
 
@@ -529,15 +515,15 @@ begin
     Step := 'GetConstants';
     GetConstants;
   except
-    on E: Exception do
-    begin
+    on E: Exception do begin
       Logger.Error('TFindUnitParser.Process: Trying to parse %s. Msg: %s | Step: %s', [FFilePath, E.Message, Step]);
       Result := nil;
-      {$IFDEF RAISEMAD} raise; {$ENDIF}
+{$IFDEF RAISEMAD}
+      raise;
+{$ENDIF}
     end;
   end;
 end;
-
 
 procedure TPasFileParser.SetIncluder(Includer: IIncludeHandler);
 begin

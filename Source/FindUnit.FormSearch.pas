@@ -1,12 +1,22 @@
- unit FindUnit.FormSearch;
+unit FindUnit.FormSearch;
 
 interface
 
 uses
-  Vcl.Forms, System.ImageList, Vcl.ImgList, Vcl.Controls, Vcl.ExtCtrls,
-  Vcl.AppEvnts, Vcl.StdCtrls, System.Classes, Vcl.Buttons, Winapi.Windows,
-  FindUnit.EnvironmentController, FindUnit.FormSettings, FindUnit.FileEditor,
-  FindUnit.Header;
+  FindUnit.EnvironmentController,
+  FindUnit.FileEditor,
+  FindUnit.FormSettings,
+  FindUnit.Header,
+  System.Classes,
+  System.ImageList,
+  Vcl.AppEvnts,
+  Vcl.Buttons,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.Forms,
+  Vcl.ImgList,
+  Vcl.StdCtrls,
+  Winapi.Windows;
 
 type
   TFuncBoolean = function: Boolean of object;
@@ -63,7 +73,12 @@ type
 
     procedure ProcessKeyCommand(var Msg: tagMSG; var Handled: Boolean);
 
-    procedure CheckLoadingStatus(Func: TFuncBoolean; FuncStatus: TFuncString; LabelDesc: TLabel; RefreshButton: TSpeedButton);
+    procedure CheckLoadingStatus(
+        Func: TFuncBoolean;
+        FuncStatus: TFuncString;
+        LabelDesc: TLabel;
+        RefreshButton: TSpeedButton
+    );
     procedure CheckLibraryStatus;
     procedure FilterItemFromSearchString;
 
@@ -97,24 +112,28 @@ var
 implementation
 
 uses
+  ToolsAPI,
   FindUnit.DcuDecompiler,
   FindUnit.FormMessage,
   FindUnit.OTAUtils,
   FindUnit.ResultsImportanceCalculator,
-  FindUnit.Utils, FindUnit.Settings, System.SysUtils, Winapi.Messages,
-  Vcl.Dialogs, Winapi.ShellAPI, ToolsAPI, Vcl.Graphics;
+  FindUnit.Settings,
+  FindUnit.Utils,
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.Graphics,
+  Winapi.Messages,
+  Winapi.ShellAPI;
 
 {$R *.dfm}
 
-
 const
   IDCONT = '1';
-  SEARCH_MESSAGE = 'Type your search...';
+  SEARCH_MESSAGE = 'Digite sua pesquisa...';
 
 var
   CONFIG_SearchOnProjectUnits: Boolean;
   CONFIG_SearchOnLibraryPath: Boolean;
-
 
 procedure TfrmFindUnit.SaveFormSettings;
 var
@@ -160,14 +179,14 @@ var
   aText: string;
 //  MsgForm: TfrmMessage;
 begin
-//  MsgForm := TfrmMessage.Create(nil);
+  //  MsgForm := TfrmMessage.Create(nil);
 
   if rbInterface.Checked then
-    aText := 'Unit ' + Text + ' added to interface''s uses.'
+    aText := 'Unit ' + Text + ' adicionado as uses interface''s.'
   else
-    aText := 'Unit ' + Text + ' added to implementation''s uses.';
+    aText := 'Unit ' + Text + ' adicionado as uses implementation''s.';
   TfrmMessage.ShowInfoToUser(aText);
-//  MsgForm.DisplayMessage(aText);
+  //  MsgForm.DisplayMessage(aText);
   SetFocus;
 end;
 
@@ -199,7 +218,6 @@ begin
     ProcessKeyCommand(Msg, Handled);
 end;
 
-
 procedure TfrmFindUnit.btnAddClick(Sender: TObject);
 begin
   AddUnit;
@@ -221,18 +239,13 @@ end;
 function TfrmFindUnit.CanProcessDCUFiles: Boolean;
 const
   MESGEM =
-  'O dcu32int.exe não foi encontrado. Deve estar em %s . Se você baixar o fonte do projeto você vai '
-  + 'encontre-o em {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copie o executável e cole no %s, e '
-  + 'tente executar este comando novamente. Se você não sabe onde encontrar este executável posso te enviar '
-  + 'para a página do projeto, você quer que eu abra para você ?';
-//  'The dcu32int.exe was not found. It should be at %s . If you download the project´s source you will '
-//    + 'find it at {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copy the executable and past it on the %s, and '
-//    + 'try execute this command again. If you don´t know where to find this executable I can send you '
-//    + 'to the project page, do you want I open it to you ?';
+      'O dcu32int.exe não foi encontrado. Deve estar em %s . Se você baixar o fonte do projeto você vai '
+          + 'encontre-o em {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copie o executável e cole no %s, e '
+          + 'tente executar este comando novamente. Se você não sabe onde encontrar este executável posso te enviar '
+          + 'para a página do projeto, você quer que eu abra para você ?';
 var
   ForMessage: string;
   MesDlg: TForm;
-  Settings: TSettings;
 begin
   Result := True;
   if Dcu32IntExecutableExists then
@@ -262,14 +275,10 @@ end;
 procedure TfrmFindUnit.ProcessDCUFiles;
 const
   MESGEM =
-  'Este comando irá listar todos os arquivos DCUs.PAS que você não tem acesso '
-  + 'e processá-lo para torná-lo disponível para pesquisa.'
-  + 'Este processo deixará seu computador lento e pode levar alguns minutos (~2), '
-  + 'tem certeza que deseja executá-lo agora?';
-//  'This command will list all the DCUs files that you don´t have access to .PAS '
-//   + ' and process it to make it available for search.'
-//   + ' This process will slowdown your computer and can take some minutes (~2), '
-//   + ' are you sure that you want to run it now ?';
+      'Este comando irá listar todos os arquivos DCUs.PAS que você não tem acesso '
+          + 'e processá-lo para torná-lo disponível para pesquisa. '
+          + 'Este processo deixará seu computador lento e pode levar alguns minutos (~2), '
+          + 'tem certeza que deseja executá-lo agora?';
 var
   Settings: TSettings;
 begin
@@ -294,12 +303,11 @@ begin
     FEnvControl.LoadLibraryPath;
     CheckLibraryStatus;
   except
-    on E: exception do
-    begin
+    on E: exception do begin
       MessageDlg('btnRefreshLibraryPathClick Error: ' + e.Message, mtError, [mbOK], 0);
-      {$IFDEF RAISEMAD}
+{$IFDEF RAISEMAD}
       raise;
-      {$ENDIF}
+{$ENDIF}
     end;
   end;
 end;
@@ -310,28 +318,30 @@ begin
     FEnvControl.LoadProjectPath;
     CheckLibraryStatus;
   except
-    on E: exception do
-    begin
+    on E: exception do begin
       MessageDlg('btnRefreshProjectClick Error: ' + e.Message, mtError, [mbOK], 0);
-      {$IFDEF RAISEMAD}
+{$IFDEF RAISEMAD}
       raise;
-      {$ENDIF}
+{$ENDIF}
     end;
   end;
 end;
 
-procedure TfrmFindUnit.CheckLoadingStatus(Func: TFuncBoolean; FuncStatus: TFuncString; LabelDesc: TLabel; RefreshButton: TSpeedButton);
+procedure TfrmFindUnit.CheckLoadingStatus(
+    Func: TFuncBoolean;
+    FuncStatus: TFuncString;
+    LabelDesc: TLabel;
+    RefreshButton: TSpeedButton
+);
 var
   NewCaption: string;
 begin
   NewCaption := '';
-  if Func then
-  begin
+  if Func then begin
     RefreshButton.Visible := True;
     LabelDesc.Visible := False;
   end
-  else
-  begin
+  else begin
     LabelDesc.Visible := True;
     RefreshButton.Visible := False;
     NewCaption := FuncStatus;
@@ -339,8 +349,7 @@ begin
     LabelDesc.Font.Style := [fsItalic];
   end;
 
-  if NewCaption <> LabelDesc.Caption then
-  begin
+  if NewCaption <> LabelDesc.Caption then begin
     FilterItemFromSearchString;
     LabelDesc.Caption := NewCaption;
   end;
@@ -392,10 +401,10 @@ procedure TfrmFindUnit.DisplayMessageToMuchResults(Show: Boolean);
 begin
   pnlMsg.Visible := Show;
   lblMessage.Caption :=
-             ' Existem muitos resultados em sua pesquisa, não estou mostrando tudo. Digite uma busca maior.' + #13#10 +
-             'Lembre-se que você pode criar buscas incrementais como: "string replace", vou procurar os argumentos separadamente.';
-//  ' There are to many results on your search, I''m not showing everything. Type a bigger search.' + #13#10 +
-//  'Remember that you can create incremental searchs like: "string   replace", I''m going to look for the arguments separately.'
+' Existem muitos resultados em sua pesquisa, não estou mostrando tudo. Digite uma busca maior.'+ #13#10
++ 'Lembre-se que você pode criar buscas incrementais como: "string replace", ou procurar os argumentos separadamente.';
+  //  ' There are to many results on your search, I''m not showing everything. Type a bigger search.' + #13#10 +
+  //  'Remember that you can create incremental searchs like: "string   replace", I''m going to look for the arguments separately.'
 end;
 
 procedure TfrmFindUnit.FilterItem(const SearchString: string);
@@ -418,21 +427,21 @@ begin
     if (SearchString = '') or (FEnvControl = nil) or (SearchString = SEARCH_MESSAGE) then
       Exit;
 
-    if chkSearchProjectFiles.Checked then
-    begin
+    if chkSearchProjectFiles.Checked then begin
       Return := FEnvControl.GetProjectUnits(SearchString);
       ResultSearch.Text := ResultSearch.Text + Return.Text;
       IsThereToMuchResults;
       Return.Free;
     end;
 
-    if chkSearchLibraryPath.Checked then
-    begin
+    if chkSearchLibraryPath.Checked then begin
       Return := FEnvControl.GetLibraryPathUnits(SearchString);
       ResultSearch.Text := ResultSearch.Text + Return.Text;
       IsThereToMuchResults;
       Return.Free;
     end;
+// Implementar busca no search path do projeto
+
     ResultSearch.Sorted := True;
     lstResult.Items.Text := ResultSearch.Text;
 
@@ -450,7 +459,7 @@ begin
   try
     FilterItem(edtSearch.Text);
   except
-//    Logger
+    //    Logger
     raise
   end;
 end;
@@ -484,10 +493,8 @@ begin
   if lstResult.Count = 0 then
     Exit;
 
-  for I := 0 to lstResult.Items.Count -1 do
-  begin
-    if lstResult.Selected[i] then
-    begin
+  for I := 0 to lstResult.Items.Count - 1 do begin
+    if lstResult.Selected[i] then begin
       GetUnitFromSearchSelection(lstResult.Items[i], UnitName, ClassName);
       Exit;
     end;
@@ -513,9 +520,9 @@ end;
 
 procedure TfrmFindUnit.lstResultClick(Sender: TObject);
 begin
-  {$IFDEF DEBUG}
-//  Clipboard.AsText := lstResult.Items.Text;
-  {$ENDIF}
+{$IFDEF DEBUG}
+  //  Clipboard.AsText := lstResult.Items.Text;
+{$ENDIF}
 end;
 
 procedure TfrmFindUnit.lstResultDblClick(Sender: TObject);
@@ -533,19 +540,16 @@ const
     Result := (GetKeyState(VK_CONTROL) < 0) and (Char(Msg.wParam) = 'A');
   end;
 begin
-  if FfrmConfig <> nil then
-  begin
+  if FfrmConfig <> nil then begin
     Handled := False;
     Exit;
   end;
 
-  if (Msg.wParam in MOVE_COMMANDS) then
-  begin
+  if (Msg.wParam in MOVE_COMMANDS) then begin
     Msg.hwnd := lstResult.Handle;
     lstResult.SetFocus;
   end
-  else
-  begin
+  else begin
     Msg.hwnd := edtSearch.Handle;
     edtSearch.SetFocus;
 
@@ -584,13 +588,11 @@ end;
 
 procedure TfrmFindUnit.SetSearch(Filter: TStringPosition);
 begin
-  if GlobalSettings.AlwaysUseInterfaceSection then
-  begin
+  if GlobalSettings.AlwaysUseInterfaceSection then begin
     rbImplementation.Checked := False;
     rbInterface.Checked := True;
   end
-  else
-  begin
+  else begin
     rbInterface.Checked := not FFileEditor.IsLineOnImplementationSection(Filter.Line);
     rbImplementation.Checked := FFileEditor.IsLineOnImplementationSection(Filter.Line);
   end;
@@ -604,8 +606,18 @@ end;
 procedure TfrmFindUnit.CheckLibraryStatus;
 begin
   btnProcessDCUs.Enabled := not FEnvControl.ProcessingDCU;
-  CheckLoadingStatus(FEnvControl.IsProjectsUnitReady, FEnvControl.GetProjectPathStatus, lblProjectUnitsStatus, btnRefreshProject);
-  CheckLoadingStatus(FEnvControl.IsLibraryPathsUnitReady, FEnvControl.GetLibraryPathStatus, lblLibraryUnitsStatus, btnRefreshLibraryPath);
+  CheckLoadingStatus(
+      FEnvControl.IsProjectsUnitReady,
+      FEnvControl.GetProjectPathStatus,
+      lblProjectUnitsStatus,
+      btnRefreshProject
+  );
+  CheckLoadingStatus(
+      FEnvControl.IsLibraryPathsUnitReady,
+      FEnvControl.GetLibraryPathStatus,
+      lblLibraryUnitsStatus,
+      btnRefreshLibraryPath
+  );
 end;
 
 procedure TfrmFindUnit.tmrLoadedItensTimer(Sender: TObject);
@@ -621,6 +633,5 @@ end;
 
 initialization
   LoadInitialConfigs;
-
 
 end.

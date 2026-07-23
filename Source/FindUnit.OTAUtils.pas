@@ -5,8 +5,12 @@ interface
 uses
   FindUnit.Header,
   FindUnit.Utils,
-  System.Generics.Collections, ToolsAPI, System.Classes, Winapi.ActiveX,
-  Winapi.ShellAPI, Winapi.ShlObj;
+  System.Generics.Collections,
+  ToolsAPI,
+  System.Classes,
+  Winapi.ActiveX,
+  Winapi.ShellAPI,
+  Winapi.ShlObj;
 
 function GetVolumeLabel(const DriveChar: string): string;
 function BrowseURL(const URL: string): boolean;
@@ -35,7 +39,10 @@ var
 implementation
 
 uses
-  System.SysUtils, System.IOUtils, System.Win.Registry, Winapi.Windows;
+  System.SysUtils,
+  System.IOUtils,
+  System.Win.Registry,
+  Winapi.Windows;
 
 function SourceEditor(Module: IOTAMOdule): IOTASourceEditor;
 var
@@ -45,8 +52,7 @@ begin
   Result := nil;
   if Module = nil then
     Exit;
-  with Module do
-  begin
+  with Module do begin
     iFileCount := GetModuleFileCount;
     for i := 0 To iFileCount - 1 do
       if GetModuleFileEditor(i).QueryInterface(IOTASourceEditor, Result) = S_OK then
@@ -88,22 +94,18 @@ begin
   Result := TDictionary<string, TFileInfo>.Create;
 
   ModServices := BorlandIDEServices as IOTAModuleServices;
+
   if ModServices = nil then
     Exit;
-
   if ModServices.ModuleCount = 0 then
     Exit;
-  
-  for iMod := 0 to ModServices.ModuleCount - 1 do
-  begin
+
+  for iMod := 0 to ModServices.ModuleCount - 1 do begin
     Module := ModServices.Modules[iMod];
-    if Supports(Module, IOTAProjectGroup, ProjectGroup) then
-    begin
-      for iProj := 0 to ProjectGroup.ProjectCount -1 do
-      begin
+    if Supports(Module, IOTAProjectGroup, ProjectGroup) then begin
+      for iProj := 0 to ProjectGroup.ProjectCount - 1 do begin
         CurProject := ProjectGroup.Projects[iProj];
-        for iFile := 0 to CurProject.GetModuleCount -1 do
-        begin
+        for iFile := 0 to CurProject.GetModuleCount - 1 do begin
           FileDesc := CurProject.GetModule(iFile).FileName;
           if FileDesc = '' then
             Continue;
@@ -130,9 +132,11 @@ var
   RegRead: TRegistry;
 begin
   Svcs := BorlandIDEServices as IOTAServices;
-  if not Assigned(Svcs) then Exit;
+  if not Assigned(Svcs) then
+    Exit;
   Options := Svcs.GetEnvironmentOptions;
-  if not Assigned(Options) then Exit;
+  if not Assigned(Options) then
+    Exit;
 
   ValueCompiler := Svcs.GetBaseRegistryKey;
 
@@ -141,8 +145,7 @@ begin
   try
     if PlatformName = '' then
       Text := Options.GetOptionValue('LibraryPath')
-    else
-    begin
+    else begin
       RegRead.RootKey := HKEY_CURRENT_USER;
       RegRead.OpenKey(ValueCompiler + '\Library\' + PlatformName, False);
       Text := RegRead.GetDataAsString('Search Path');
@@ -153,8 +156,7 @@ begin
 
     if PlatformName = '' then
       Text := Options.GetOptionValue('BrowsingPath')
-    else
-    begin
+    else begin
       RegRead.RootKey := HKEY_CURRENT_USER;
       RegRead.OpenKey(ValueCompiler + '\Library\' + PlatformName, False);
       Text := RegRead.GetDataAsString('Browsing Path');
@@ -170,7 +172,7 @@ end;
 
 function GetWordAtCursor(DeltaCharPosition: Integer): TStringPosition;
 const
-  strIdentChars = ['a' .. 'z', 'A' .. 'Z', '_', '0' .. '9'];
+  strIdentChars = ['a'..'z', 'A'..'Z', '_', '0'..'9'];
 var
   SourceEditor: IOTASourceEditor;
   EditPos: TOTAEditPos;
@@ -196,7 +198,7 @@ begin
         while CharInSet(ContentTxt[iPosition], strIdentChars) do
           Inc(iPosition);
         Delete(ContentTxt, iPosition, Length(ContentTxt) - iPosition + 1);
-        if CharInSet(ContentTxt[1], ['0' .. '9']) then
+        if CharInSet(ContentTxt[1], ['0'..'9']) then
           ContentTxt := '';
       end
       else
@@ -208,8 +210,7 @@ begin
       Content.Free;
     end;
   except
-    on E: exception do
-    begin
+    on E: exception do begin
       Result.Value := '';
       Result.Line := -1;
     end;
@@ -247,16 +248,13 @@ var
 begin
   Result := nil;
   ModServices := BorlandIDEServices as IOTAModuleServices;
-  for i := 0 to ModServices.ModuleCount - 1 do
-  begin
+  for i := 0 to ModServices.ModuleCount - 1 do begin
     Module := ModServices.Modules[i];
-    if Supports(Module, IOTAProjectGroup, ProjectGroup) then
-    begin
+    if Supports(Module, IOTAProjectGroup, ProjectGroup) then begin
       Result := ProjectGroup.ActiveProject;
       Exit;
     end
-    else if Supports(Module, IOTAProject, Project) then
-    begin // In the case of unbound packages, return the 1st
+    else if Supports(Module, IOTAProject, Project) then begin // In the case of unbound packages, return the 1st
       if Result = nil then
         Result := Project;
     end;
@@ -291,16 +289,12 @@ begin
   if not Assigned(Module) then
     Exit;
 
-  for i := 0 to Module.GetModuleFileCount - 1 do
-  begin
+  for i := 0 to Module.GetModuleFileCount - 1 do begin
     IEditor := GxOtaGetFileEditorForModule(Module, i);
 
-    if Supports(IEditor, IOTASourceEditor, ISourceEditor) then
-    begin
-      if Assigned(ISourceEditor) then
-      begin
-        if (FileName = '') or SameFileName(ISourceEditor.FileName, FileName) then
-        begin
+    if Supports(IEditor, IOTASourceEditor, ISourceEditor) then begin
+      if Assigned(ISourceEditor) then begin
+        if (FileName = '') or SameFileName(ISourceEditor.FileName, FileName) then begin
           Result := ISourceEditor;
           Break;
         end;
@@ -399,8 +393,7 @@ var
   AnsiPathName: AnsiString;
 begin
   Result := ShortPathName;
-  if Succeeded(SHGetDesktopFolder(Desktop)) then
-  begin
+  if Succeeded(SHGetDesktopFolder(Desktop)) then begin
     WidePathName := ShortPathName;
     if Succeeded(Desktop.ParseDisplayName(0, nil, PWideChar(WidePathName), ULONG(nil^), PIDL, ULONG(nil^))) then
 
@@ -420,8 +413,7 @@ var
   LBufSize: Integer;
 begin
   LBufSize := GetEnvironmentVariable(PChar(AVarName), nil, 0);
-  if LBufSize > 0 then
-  begin
+  if LBufSize > 0 then begin
     SetLength(Result, LBufSize - 1);
     GetEnvironmentVariable(PChar(AVarName), PChar(Result), LBufSize);
   end
@@ -433,9 +425,9 @@ function GetVolumeLabel(const DriveChar: string): string;
 var
   NotUsed: DWORD;
   VolumeFlags: DWORD;
-  VolumeInfo: array [0 .. MAX_PATH] of Char;
+  VolumeInfo: array[0..MAX_PATH] of Char;
   VolumeSerialNumber: DWORD;
-  Buf: array [0 .. MAX_PATH] of Char;
+  Buf: array[0..MAX_PATH] of Char;
 begin
   GetVolumeInformation(PChar(DriveChar), Buf, SizeOf(VolumeInfo), @VolumeSerialNumber, NotUsed, VolumeFlags, nil, 0);
 
@@ -449,13 +441,14 @@ var
 begin
   Result := False;
   LBrowserInformation := GetDefaultBrowser;
-  Result := ShellExecute(0, 'open', PChar(LBrowserInformation.Path + LBrowserInformation.Name), PChar(URL), nil,
-    SW_SHOW) > 32;
+  Result :=
+      ShellExecute(0, 'open', PChar(LBrowserInformation.Path + LBrowserInformation.Name), PChar(URL), nil, SW_SHOW)
+          > 32;
 end;
 
 initialization
 
-PathUserDir := GetEnvVarValue('APPDATA') + '\RfUtils';
-CreateDir(PathUserDir);
+  PathUserDir := GetEnvVarValue('APPDATA') + '\RfUtils';
+  CreateDir(PathUserDir);
 
 end.

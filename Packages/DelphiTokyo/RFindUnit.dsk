@@ -1,32 +1,16 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas',0,1,1,1,12,0,0,,
-File_1=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\source\rtl\common\System.Character.pas',0,1,90,13,102,0,0,,
-File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\source\rtl\win\Winapi.ShlObj.pas',0,1,14331,1,14348,0,0,,
-File_3=TSourceModule,'D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.Utils.pas',0,1,255,66,281,0,0,,
+File_0=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.SearchStringCache.pas',0,1,1,21,15,0,0,,
+File_1=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.EnvironmentController.pas',0,1,1,35,14,0,0,,
+File_2=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Source\FindUnit.SearchString.pas',0,1,10,1,16,0,0,,
+File_3=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FileCache.pas',0,1,25,1,43,0,0,,
 
 [Modules]
-Module0=D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.OTAUtils.pas
-Module1=D:\Recursos Programacao\23 - HardDev_FindUnit\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas
-Module2=D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.Main.pas
-Count=3
+Count=0
 EditWindowCount=1
 
-[D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.OTAUtils.pas]
-ModuleType=TSourceModule
-
-[D:\Recursos Programacao\23 - HardDev_FindUnit\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas]
-ModuleType=TSourceModule
-
-[D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.Main.pas]
-ModuleType=TSourceModule
-
 [EditWindow0]
-ViewCount=4
-CurrentEditView=D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.OTAUtils.pas
-View0=0
-View1=1
-View2=2
-View3=3
+ViewCount=0
+CurrentView=-1
 PercentageSizes=1
 Create=1
 Visible=1
@@ -47,7 +31,7 @@ StayOnTop=0
 DockedToMainForm=1
 BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
-LeftPanelSize=2333
+LeftPanelSize=2224
 LeftPanelClients=DockSite2
 LeftPanelData=000008000100000000009422000000000000002A0D00000000000001000000009422000009000000446F636B5369746532FFFFFFFF
 RightPanelSize=0
@@ -55,47 +39,10 @@ BottomPanelSize=0
 BottomPanelClients=DockSite1
 BottomPanelData=0000080001000100000009000000446F636B5369746531DE44000000000000002606000000000000FFFFFFFF
 BottomMiddlePanelSize=0
-BottomMiddlePanelClients=DockSite0,GraphDrawingModel
-BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E67566965779F1D00000000000002F206000000000000FFFFFFFF
+BottomMiddlePanelClients=DockSite0
+BottomMiddelPanelData=0000080001000100000009000000446F636B5369746530D23500000000000000D70C000000000000FFFFFFFF
 TabDockBottomClients=MessageView=0
 TabDockRightClients=DockSite3=0
-
-[View0]
-CustomEditViewType=TOTACustomEditView
-OTAEditViewType=WelcomePage.MainPage
-
-[View1]
-CustomEditViewType=TEditView
-Module=D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.Main.pas
-CursorX=34
-CursorY=16
-TopLine=1
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.Main.pas
-
-[View2]
-CustomEditViewType=TEditView
-Module=D:\Recursos Programacao\23 - HardDev_FindUnit\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas
-CursorX=43
-CursorY=1810
-TopLine=1791
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=D:\Recursos Programacao\23 - HardDev_FindUnit\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas
-
-[View3]
-CustomEditViewType=TEditView
-Module=D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.OTAUtils.pas
-CursorX=26
-CursorY=440
-TopLine=431
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=D:\Recursos Programacao\23 - HardDev_FindUnit\Source\FindUnit.OTAUtils.pas
 
 [Watches]
 Count=0
@@ -131,9 +78,6 @@ Count=0
 Count=0
 
 [EmbarcaderoOSXArm64Debugger_AddressBreakpoints]
-Count=0
-
-[EmbarcaderoOSX64Debugger_AddressBreakpoints]
 Count=0
 
 [EmbarcaderoIOS64DeviceDebugger_AddressBreakpoints]
@@ -173,11 +117,11 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
+Width=2224
 Height=8488
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
+ClientWidth=2224
 ClientHeight=8488
 TBDockHeight=5901
 LRDockWidth=2349
@@ -212,11 +156,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8740
+Height=8992
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8740
+ClientHeight=8992
 TBDockHeight=7151
 LRDockWidth=2000
 Dockable=1
@@ -230,17 +174,17 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
-Height=8488
+Width=2224
+Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
-ClientHeight=8488
-TBDockHeight=9012
+ClientWidth=2224
+ClientHeight=8721
+TBDockHeight=8992
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
-SplitPos=192
+SplitPos=193
 
 [frmDesignPreview]
 PercentageSizes=1
@@ -250,11 +194,11 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
+Width=2224
 Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
+ClientWidth=2224
 ClientHeight=8721
 TBDockHeight=5959
 LRDockWidth=2510
@@ -267,8 +211,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-160
-Top=-81
+Left=-64
+Top=-93
 Width=1849
 Height=3140
 MaxLeft=-1
@@ -336,8 +280,8 @@ TBDockHeight=359
 LRDockWidth=276
 Dockable=1
 StayOnTop=0
-Name=120
-Description=334
+Name=35
+Description=99
 filter=1
 
 [DebugLogView]
@@ -512,11 +456,11 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
+Width=2224
 Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
+ClientWidth=2224
 ClientHeight=8721
 TBDockHeight=4884
 LRDockWidth=7151
@@ -527,17 +471,17 @@ StayOnTop=0
 PercentageSizes=1
 Create=1
 Visible=0
-Docked=1
+Docked=0
 State=0
-Left=0
-Top=0
-Width=2854
-Height=3207
-MaxLeft=-1
-MaxTop=-1
-ClientWidth=2854
-ClientHeight=3207
-TBDockHeight=3207
+Left=2062
+Top=872
+Width=7948
+Height=9118
+MaxLeft=-5
+MaxTop=-10
+ClientWidth=7865
+ClientHeight=8740
+TBDockHeight=3169
 LRDockWidth=2854
 Dockable=1
 StayOnTop=0
@@ -576,12 +520,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
-Height=8488
+Width=2224
+Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
-ClientHeight=8488
+ClientWidth=2224
+ClientHeight=8721
 TBDockHeight=3682
 LRDockWidth=1896
 Dockable=1
@@ -595,14 +539,33 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=2333
+Width=2224
 Height=8721
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
+ClientWidth=2224
 ClientHeight=8721
 TBDockHeight=4884
 LRDockWidth=5307
+Dockable=1
+StayOnTop=0
+
+[HDTerminal]
+PercentageSizes=1
+Create=1
+Visible=0
+Docked=0
+State=0
+Left=0
+Top=0
+Width=4250
+Height=5223
+MaxLeft=-5
+MaxTop=-10
+ClientWidth=4167
+ClientHeight=4845
+TBDockHeight=5223
+LRDockWidth=4250
 Dockable=1
 StayOnTop=0
 
@@ -686,19 +649,19 @@ Docked=1
 State=0
 Left=0
 Top=28
-Width=2333
+Width=2224
 Height=8760
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=2333
+ClientWidth=2224
 ClientHeight=8760
-TBDockHeight=9012
-LRDockWidth=2333
+TBDockHeight=8760
+LRDockWidth=2224
 Dockable=1
 StayOnTop=0
 TabPosition=0
 ActiveTabID=ProjectManager
-TabDockClients=ProjectManager,StructureView,PropertyInspector,ClassBrowserTool,ModelViewTool,DataExplorerContainer,frmDesignPreview
+TabDockClients=StructureView,ProjectManager,PropertyInspector,ClassBrowserTool,ModelViewTool,DataExplorerContainer,frmDesignPreview
 
 [DockSite3]
 HostDockSite=RightTabDock
@@ -708,15 +671,15 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=4
-Top=29
+Left=1896
+Top=76
 Width=2000
-Height=8740
+Height=8992
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8740
-TBDockHeight=9012
+ClientHeight=8992
+TBDockHeight=8992
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0

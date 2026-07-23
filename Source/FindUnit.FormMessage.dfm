@@ -35,7 +35,6 @@ object frmMessage: TfrmMessage
     ParentFont = False
     TabOrder = 0
     StyleName = 'Windows'
-    ExplicitHeight = 50
   end
   object tmrClose: TTimer
     Enabled = False

@@ -45,8 +45,6 @@ implementation
 uses
   System.SysUtils{$IFDEF UNICODE}, System.AnsiStrings{$ENDIF}, Log4Pascal;
 
-{ TDcuDecompiler }
-
 function GetDcu32ExecutablePath: string;
 var
   Dcu: TDcuDecompiler;
@@ -133,7 +131,7 @@ function TDcuDecompiler.ProcessUnit(FileName: string; OutRedir: boolean): Intege
 //var
 //  UnitFromDcu: TUnit;
 begin
-//  Result := 0;
+  Result := 0;
 //  try
 //    FileName := ExpandFileName(FileName);
 //    UnitFromDcu := nil;

@@ -9,114 +9,94 @@ uses
 
 type
   TCacheSettings = record
-    AutoImportEnabled: Boolean;
-    AlwaysUseInterfaceSection: Boolean;
-    StoreChoices: Boolean;
-    BreakLine: Boolean;
-    SortUsesAfterAdding: Boolean;
-    UseDefaultSearchMatch: Boolean;
-    BlankLineBtwNamespaces: Boolean;
-    OrganizeUses: Boolean;
-    OrganizeUsesAfterAddingNewUses: Boolean;
-    BreakUsesLineAt: Cardinal;
-    GroupNonNamespaceUnits: Boolean;
-    SettingFormWidth: Cardinal;
-    SettingFormHeight: Cardinal;
-    SettingFormStartPosX: Cardinal;
-    SettingFormStartPosY: Cardinal;
-    IgnoreUsesUnused: string;
+    AutoImportEnabled               : Boolean;
+    AlwaysUseInterfaceSection       : Boolean;
+    StoreChoices                    : Boolean;
+    BreakLine                       : Boolean;
+    SortUsesAfterAdding             : Boolean;
+    UseDefaultSearchMatch           : Boolean;
+    BlankLineBtwNamespaces          : Boolean;
+    OrganizeUses                    : Boolean;
+    OrganizeUsesAfterAddingNewUses  : Boolean;
+    BreakUsesLineAt                 : Cardinal;
+    GroupNonNamespaceUnits          : Boolean;
+    SettingFormWidth                : Cardinal;
+    SettingFormHeight               : Cardinal;
+    SettingFormStartPosX            : Cardinal;
+    SettingFormStartPosY            : Cardinal;
+    IgnoreUsesUnused                : string;
     EnableExperimentalFindUnusedUses: Boolean;
-    BreakLineForNonDomainUses: Boolean;
-    RanOnceDcuDecompiler: Boolean;
+    BreakLineForNonDomainUses       : Boolean;
+    RanOnceDcuDecompiler            : Boolean;
   end;
 
   TSettings = class(TObject)
   private
     FIni: TIniFile;
-
-    function GetAutoImportEnabled: Boolean;
-    procedure SetAutoImportEnabled(const Value: Boolean);
-
-    function GetAutoImportValue: TStrings;
-    procedure SetAutoImportValue(const Value: TStrings);
-
-    function GetAlwaysUseInterfaceSection: Boolean;
-    procedure SetAlwaysUseInterfaceSection(const Value: Boolean);
-
-    function GetStoreChoices: Boolean;
-    procedure SetStoreChoices(const Value: Boolean);
-
-    function GetBreakLine: Boolean;
-    procedure SetBreakLine(const Value: Boolean);
-
-    function GetSortUsesAfterAdding: Boolean;
-    procedure SetSortUsesAfterAdding(const Value: Boolean);
-
-    function GetUseDefaultSearchMatch: Boolean;
-    procedure SetUseDefaultSearchMatch(const Value: Boolean);
-
-    function GetBlankLineBtwNameScapes: Boolean;
-    procedure SetBlankLineBtwNameScapes(const Value: Boolean);
-
-    function GetOrganizeUses: Boolean;
-    procedure SetOrganizeUses(const Value: Boolean);
-
-    function GetBreakUsesLineAtPosition: Cardinal;
-    procedure SetBreakUsesLineAtPosition(const Value: Cardinal);
-
-    function GetOrganizeUsesAfterAddingNewUsesUnit: Boolean;
-    procedure SetOrganizeUsesAfterAddingNewUsesUnit(const Value: Boolean);
-
-    function GetGroupNonNamespaceUnits: Boolean;
-    procedure SetGroupNonNamespaceUnits(const Value: Boolean);
-
-    function GetSettingFormHeight: Cardinal;
-    procedure SetSettingFormHeight(const Value: Cardinal);
-
-    function GetSettingFormStartPosX: Cardinal;
-    procedure SetSettingFormStartPosX(const Value: Cardinal);
-
-    function GetSettingFormStartPosY: Cardinal;
-    procedure SetSettingFormStartPosY(const Value: Cardinal);
-
-    function GetSettingFormWidth: Cardinal;
-    procedure SetSettingFormWidth(const Value: Cardinal);
-
-    function GetIgnoreUsesUnused: string;
-    procedure SetUsesUnused(const Value: string);
-
-    function GetEnableExperimentalFindUnusedUses: Boolean;
-    procedure SetEnableExperimentalFindUnusedUses(const Value: Boolean);
-
-    function GetBreakLineForNonDomainUses: Boolean;
-    procedure SetBreakLineForNonDomainUses(const Value: Boolean);
-    function GetRanOnceDcuDecompiler: Boolean;
-    procedure SetRanOnceDcuDecompiler(const Value: Boolean);
+    function  GetAutoImportEnabled                  : Boolean;
+    function  GetAutoImportValue                    : TStrings;
+    function  GetAlwaysUseInterfaceSection          : Boolean;
+    function  GetStoreChoices                       : Boolean;
+    function  GetBreakLine                          : Boolean;
+    function  GetSortUsesAfterAdding                : Boolean;
+    function  GetUseDefaultSearchMatch              : Boolean;
+    function  GetBlankLineBtwNameScapes             : Boolean;
+    function  GetOrganizeUses                       : Boolean;
+    function  GetBreakUsesLineAtPosition            : Cardinal;
+    function  GetOrganizeUsesAfterAddingNewUsesUnit : Boolean;
+    function  GetGroupNonNamespaceUnits             : Boolean;
+    function  GetSettingFormHeight                  : Cardinal;
+    function  GetSettingFormStartPosX               : Cardinal;
+    function  GetSettingFormStartPosY               : Cardinal;
+    function  GetSettingFormWidth                   : Cardinal;
+    function  GetIgnoreUsesUnused                   : string;
+    function  GetEnableExperimentalFindUnusedUses   : Boolean;
+    function  GetBreakLineForNonDomainUses          : Boolean;
+    function  GetRanOnceDcuDecompiler               : Boolean;
+    procedure SetAutoImportEnabled                  (const Value: Boolean);
+    procedure SetAutoImportValue                    (const Value: TStrings);
+    procedure SetAlwaysUseInterfaceSection          (const Value: Boolean);
+    procedure SetStoreChoices                       (const Value: Boolean);
+    procedure SetBreakLine                          (const Value: Boolean);
+    procedure SetSortUsesAfterAdding                (const Value: Boolean);
+    procedure SetUseDefaultSearchMatch              (const Value: Boolean);
+    procedure SetBlankLineBtwNameScapes             (const Value: Boolean);
+    procedure SetOrganizeUses                       (const Value: Boolean);
+    procedure SetBreakUsesLineAtPosition            (const Value: Cardinal);
+    procedure SetOrganizeUsesAfterAddingNewUsesUnit (const Value: Boolean);
+    procedure SetGroupNonNamespaceUnits             (const Value: Boolean);
+    procedure SetSettingFormHeight                  (const Value: Cardinal);
+    procedure SetSettingFormStartPosX               (const Value: Cardinal);
+    procedure SetSettingFormStartPosY               (const Value: Cardinal);
+    procedure SetSettingFormWidth                   (const Value: Cardinal);
+    procedure SetUsesUnused                         (const Value: string);
+    procedure SetEnableExperimentalFindUnusedUses   (const Value: Boolean);
+    procedure SetBreakLineForNonDomainUses          (const Value: Boolean);
+    procedure SetRanOnceDcuDecompiler               (const Value: Boolean);
   public
     constructor Create;
     destructor Destroy; override;
 
-    property AutoImportEnabled: Boolean read GetAutoImportEnabled write SetAutoImportEnabled;
-    property AutoImportValue: TStrings read GetAutoImportValue write SetAutoImportValue;
-    property AlwaysUseInterfaceSection: Boolean read GetAlwaysUseInterfaceSection write SetAlwaysUseInterfaceSection;
-    property StoreChoices: Boolean read GetStoreChoices write SetStoreChoices;
-    property BreakLine: Boolean read GetBreakLine write SetBreakLine;
-    property SortUsesAfterAdding: Boolean read GetSortUsesAfterAdding write SetSortUsesAfterAdding;
-    property UseDefaultSearchMatch: Boolean read GetUseDefaultSearchMatch write SetUseDefaultSearchMatch;
-    property BlankLineBtwNameScapes: Boolean read GetBlankLineBtwNameScapes write SetBlankLineBtwNameScapes;
-    property OrganizeUses: Boolean read GetOrganizeUses write SetOrganizeUses;
-    property BreakUsesLineAtPosition: Cardinal read GetBreakUsesLineAtPosition write SetBreakUsesLineAtPosition;
-    property OrganizeUsesAfterAddingNewUsesUnit: Boolean read GetOrganizeUsesAfterAddingNewUsesUnit write SetOrganizeUsesAfterAddingNewUsesUnit;
-    property GroupNonNamespaceUnits: Boolean read GetGroupNonNamespaceUnits write SetGroupNonNamespaceUnits;
-    property SettingFormWidth: Cardinal read GetSettingFormWidth write SetSettingFormWidth;
-    property SettingFormHeight: Cardinal read GetSettingFormHeight write SetSettingFormHeight;
-    property SettingFormStartPosX: Cardinal read GetSettingFormStartPosX write SetSettingFormStartPosX;
-    property SettingFormStartPosY: Cardinal read GetSettingFormStartPosY write SetSettingFormStartPosY;
-    property IgnoreUsesUnused: string read GetIgnoreUsesUnused write SetUsesUnused;
-    property EnableExperimentalFindUnusedUses: Boolean read GetEnableExperimentalFindUnusedUses write SetEnableExperimentalFindUnusedUses;
-    property BreakLineForNonDomainUses: Boolean read GetBreakLineForNonDomainUses write SetBreakLineForNonDomainUses;
-    property RanOnceDcuDecompiler: Boolean read GetRanOnceDcuDecompiler write SetRanOnceDcuDecompiler;
-
+    property AutoImportEnabled        : Boolean   read GetAutoImportEnabled         write SetAutoImportEnabled;
+    property AutoImportValue          : TStrings  read GetAutoImportValue           write SetAutoImportValue;
+    property AlwaysUseInterfaceSection: Boolean   read GetAlwaysUseInterfaceSection write SetAlwaysUseInterfaceSection;
+    property StoreChoices             : Boolean   read GetStoreChoices              write SetStoreChoices;
+    property BreakLine                : Boolean   read GetBreakLine                 write SetBreakLine;
+    property SortUsesAfterAdding      : Boolean   read GetSortUsesAfterAdding       write SetSortUsesAfterAdding;
+    property UseDefaultSearchMatch    : Boolean   read GetUseDefaultSearchMatch     write SetUseDefaultSearchMatch;
+    property BlankLineBtwNameScapes   : Boolean   read GetBlankLineBtwNameScapes    write SetBlankLineBtwNameScapes;
+    property OrganizeUses             : Boolean   read GetOrganizeUses              write SetOrganizeUses;
+    property BreakUsesLineAtPosition  : Cardinal  read GetBreakUsesLineAtPosition   write SetBreakUsesLineAtPosition;
+    property GroupNonNamespaceUnits   : Boolean   read GetGroupNonNamespaceUnits    write SetGroupNonNamespaceUnits;
+    property SettingFormWidth         : Cardinal  read GetSettingFormWidth          write SetSettingFormWidth;
+    property SettingFormHeight        : Cardinal  read GetSettingFormHeight         write SetSettingFormHeight;
+    property SettingFormStartPosX     : Cardinal  read GetSettingFormStartPosX      write SetSettingFormStartPosX;
+    property SettingFormStartPosY     : Cardinal  read GetSettingFormStartPosY      write SetSettingFormStartPosY;
+    property IgnoreUsesUnused         : string    read GetIgnoreUsesUnused          write SetUsesUnused;
+    property BreakLineForNonDomainUses: Boolean   read GetBreakLineForNonDomainUses write SetBreakLineForNonDomainUses;
+    property RanOnceDcuDecompiler     : Boolean   read GetRanOnceDcuDecompiler      write SetRanOnceDcuDecompiler;
+    property OrganizeUsesAfterAddingNewUsesUnit : Boolean read GetOrganizeUsesAfterAddingNewUsesUnit  write SetOrganizeUsesAfterAddingNewUsesUnit;
+    property EnableExperimentalFindUnusedUses   : Boolean read GetEnableExperimentalFindUnusedUses    write SetEnableExperimentalFindUnusedUses;
     class function GetCacheSettings: TCacheSettings;
     class procedure ReloadSettings;
     class function SettingsFilePath: string;
@@ -132,33 +112,28 @@ uses
   FindUnit.Utils;
 
 const
-  SETTINGS_SECTION = 'SETTINGS';
-  SEARCHFORM_SETTINGS_SECTION = 'SEARCHFORMSETTINGS';
-
-  AUTO_IMPORT_SECTION = 'MEMORIZEDUNIT';
-
-  CONF_AUTOIMPORT_ENABLED = 'AUTOIMPORT_ENABLED';
+  SETTINGS_SECTION                  = 'SETTINGS';
+  SEARCHFORM_SETTINGS_SECTION       = 'SEARCHFORMSETTINGS';
+  AUTO_IMPORT_SECTION               = 'MEMORIZEDUNIT';
+  CONF_AUTOIMPORT_ENABLED           = 'AUTOIMPORT_ENABLED';
+  CONF_STORE_CHOICES_ENABLED        = 'STORE_CHOICES_ENABLED';
+  CONF_BREAK_LINE                   = 'BREAK_LINE';
+  CONF_SORT_AFTER_ADDING            = 'SORT_AFTER_ADDING';
+  CONF_DEFAULT_SORT_MATCH           = 'DEFAULT_SORT_MATCH';
+  CONF_BLANKLINE_BTW_NAMESCAPE      = 'BLANKLINE_BTW_NAMESCAPE';
+  CONF_ORGANIZE_USES                = 'ORGANIZE_USES';
+  CONF_BREAK_USES_LINE_AT_POSITION  = 'BREAK_USES_LINE_AT_POSITION';
+  CONF_GROUP_NONNAMESPACE_UNITS     = 'GROUP_NONNAMESPACE_UNITS';
+  CONF_FORM_SETTINGS_WIDTH          = 'FORM_SETTINGS_WIDTH';
+  CONF_FORM_SETTINGS_HEIGHT         = 'FORM_SETTINGS_HEIGHT';
+  CONF_FORM_SETTINGS_START_X        = 'FORM_SETTINGS_START_X';
+  CONF_FORM_SETTINGS_START_Y        = 'FORM_SETTINGS_START_Y';
+  CONF_IGNORED_USES                 = 'IGNORED_USES';
+  CONF_EXPRIMENTAL_UNUSED_USES      = 'EXPRIMENTAL_UNUSED_USES';
+  CONF_BREAK_LINE_NON_DOMAIN_USES   = 'BREAK_LINE_NON_DOMAIN_USES';
+  STATUS_RAN_ONCE_DCUDECOMPILER     = 'RAN_ONCE_DCUDECOMPILER';
   CONF_ALWAYSUSEINTERFACESECTION_ENABLED = 'ALWAYSUSEINTERFACESECTION_ENABLED';
-  CONF_STORE_CHOICES_ENABLED = 'STORE_CHOICES_ENABLED';
-  CONF_BREAK_LINE = 'BREAK_LINE';
-  CONF_SORT_AFTER_ADDING = 'SORT_AFTER_ADDING';
-  CONF_DEFAULT_SORT_MATCH = 'DEFAULT_SORT_MATCH';
-  CONF_BLANKLINE_BTW_NAMESCAPE = 'BLANKLINE_BTW_NAMESCAPE';
-  CONF_ORGANIZE_USES = 'ORGANIZE_USES';
-  CONF_BREAK_USES_LINE_AT_POSITION = 'BREAK_USES_LINE_AT_POSITION';
   CONF_ORGANIZE_USES_AFTER_ADDING_NEW_USES_UNIT = 'ORGANIZE_USES_AFTER_ADDING_NEW_USES_UNIT';
-  CONF_GROUP_NONNAMESPACE_UNITS = 'GROUP_NONNAMESPACE_UNITS';
-  CONF_FORM_SETTINGS_WIDTH = 'FORM_SETTINGS_WIDTH';
-  CONF_FORM_SETTINGS_HEIGHT = 'FORM_SETTINGS_HEIGHT';
-  CONF_FORM_SETTINGS_START_X = 'FORM_SETTINGS_START_X';
-  CONF_FORM_SETTINGS_START_Y = 'FORM_SETTINGS_START_Y';
-  CONF_IGNORED_USES = 'IGNORED_USES';
-  CONF_EXPRIMENTAL_UNUSED_USES = 'EXPRIMENTAL_UNUSED_USES';
-  CONF_BREAK_LINE_NON_DOMAIN_USES = 'BREAK_LINE_NON_DOMAIN_USES';
-
-  STATUS_RAN_ONCE_DCUDECOMPILER = 'RAN_ONCE_DCUDECOMPILER';
-
-{ TSettings }
 
 class function TSettings.GetCacheSettings: TCacheSettings;
 var
@@ -166,25 +141,25 @@ var
 begin
   Settings := TSettings.Create;
   try
-    Result.AutoImportEnabled := Settings.AutoImportEnabled;
-    Result.AlwaysUseInterfaceSection := Settings.AlwaysUseInterfaceSection;
-    Result.StoreChoices := Settings.StoreChoices;
-    Result.BreakLine := Settings.BreakLine;
-    Result.SortUsesAfterAdding := Settings.SortUsesAfterAdding;
-    Result.UseDefaultSearchMatch := Settings.UseDefaultSearchMatch;
-    Result.BlankLineBtwNamespaces := Settings.BlankLineBtwNameScapes;
-    Result.OrganizeUses := Settings.OrganizeUses;
-    Result.BreakUsesLineAt := Settings.BreakUsesLineAtPosition;
-    Result.OrganizeUsesAfterAddingNewUses := Settings.OrganizeUsesAfterAddingNewUsesUnit;
-    Result.GroupNonNamespaceUnits := Settings.GroupNonNamespaceUnits;
-    Result.SettingFormWidth := Settings.SettingFormWidth;
-    Result.SettingFormHeight := Settings.SettingFormHeight;
-    Result.SettingFormStartPosX := Settings.SettingFormStartPosX;
-    Result.SettingFormStartPosY := Settings.SettingFormStartPosY;
-    Result.IgnoreUsesUnused := Settings.IgnoreUsesUnused;
+    Result.AutoImportEnabled                := Settings.AutoImportEnabled;
+    Result.AlwaysUseInterfaceSection        := Settings.AlwaysUseInterfaceSection;
+    Result.StoreChoices                     := Settings.StoreChoices;
+    Result.BreakLine                        := Settings.BreakLine;
+    Result.SortUsesAfterAdding              := Settings.SortUsesAfterAdding;
+    Result.UseDefaultSearchMatch            := Settings.UseDefaultSearchMatch;
+    Result.BlankLineBtwNamespaces           := Settings.BlankLineBtwNameScapes;
+    Result.OrganizeUses                     := Settings.OrganizeUses;
+    Result.BreakUsesLineAt                  := Settings.BreakUsesLineAtPosition;
+    Result.OrganizeUsesAfterAddingNewUses   := Settings.OrganizeUsesAfterAddingNewUsesUnit;
+    Result.GroupNonNamespaceUnits           := Settings.GroupNonNamespaceUnits;
+    Result.SettingFormWidth                 := Settings.SettingFormWidth;
+    Result.SettingFormHeight                := Settings.SettingFormHeight;
+    Result.SettingFormStartPosX             := Settings.SettingFormStartPosX;
+    Result.SettingFormStartPosY             := Settings.SettingFormStartPosY;
+    Result.IgnoreUsesUnused                 := Settings.IgnoreUsesUnused;
     Result.EnableExperimentalFindUnusedUses := Settings.EnableExperimentalFindUnusedUses;
-    Result.BreakLineForNonDomainUses := Settings.BreakLineForNonDomainUses;
-    Result.RanOnceDcuDecompiler := Settings.RanOnceDcuDecompiler;
+    Result.BreakLineForNonDomainUses        := Settings.BreakLineForNonDomainUses;
+    Result.RanOnceDcuDecompiler             := Settings.RanOnceDcuDecompiler;
   finally
     Settings.Free;
   end;

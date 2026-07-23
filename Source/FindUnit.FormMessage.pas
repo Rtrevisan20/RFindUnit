@@ -3,12 +3,17 @@ unit FindUnit.FormMessage;
 interface
 
 uses
-  Vcl.Forms, System.Classes, Vcl.ExtCtrls, Vcl.Controls, System.Types, Vcl.StdCtrls;
+  System.Classes,
+  System.Types,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.Forms,
+  Vcl.StdCtrls;
 
 type
   TfrmMessage = class(TForm)
     tmrClose: TTimer;
-    pnMsg: TPanel;
+    pnMsg   : TPanel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -35,9 +40,11 @@ implementation
 
 uses
   Log4Pascal,
-
-  FindUnit.DelphiVlcWrapper, Winapi.Windows, TransparentCanvas, Vcl.Graphics,
-  System.SysUtils;
+  TransparentCanvas,
+  FindUnit.DelphiVlcWrapper,
+  System.SysUtils,
+  Vcl.Graphics,
+  Winapi.Windows;
 
 const
   MARGIN_PADING   = 5;

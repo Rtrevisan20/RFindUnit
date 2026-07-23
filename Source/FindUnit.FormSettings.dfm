@@ -4,7 +4,7 @@ object frmSettings: TfrmSettings
   BorderStyle = bsSizeToolWin
   Caption = 'Settings'
   ClientHeight = 437
-  ClientWidth = 654
+  ClientWidth = 691
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,24 +19,28 @@ object frmSettings: TfrmSettings
   object pgcMain: TPageControl
     Left = 0
     Top = 0
-    Width = 654
+    Width = 691
     Height = 437
-    ActivePage = tsGeneral
+    ActivePage = tsAutoImport
     Align = alClient
     TabOrder = 0
     StyleName = 'Windows'
     OnChange = pgcMainChange
+    ExplicitWidth = 683
+    ExplicitHeight = 425
     object tsGeneral: TTabSheet
       Caption = 'Geral'
       ImageIndex = 1
       object grpGeneralSettings: TGroupBox
         Left = 0
         Top = 0
-        Width = 646
+        Width = 683
         Height = 409
         Align = alClient
         Caption = 'Settings'
         TabOrder = 0
+        ExplicitWidth = 675
+        ExplicitHeight = 397
         object lblLink: TLabel
           Left = 242
           Top = 387
@@ -254,7 +258,7 @@ object frmSettings: TfrmSettings
       object grdAutoImport: TDBGrid
         Left = 0
         Top = 48
-        Width = 646
+        Width = 683
         Height = 336
         Align = alClient
         DataSource = dtsAutoImport
@@ -282,7 +286,7 @@ object frmSettings: TfrmSettings
       object grpAutoSettings: TGroupBox
         Left = 0
         Top = 0
-        Width = 646
+        Width = 683
         Height = 48
         Align = alTop
         Caption = 'Configura'#231#245'es'
@@ -308,7 +312,7 @@ object frmSettings: TfrmSettings
       object nvgAutoImport: TDBNavigator
         Left = 0
         Top = 384
-        Width = 646
+        Width = 683
         Height = 25
         DataSource = dtsAutoImport
         Align = alBottom
@@ -329,7 +333,7 @@ object frmSettings: TfrmSettings
       object mmoIgnoreUses: TMemo
         Left = 0
         Top = 24
-        Width = 646
+        Width = 683
         Height = 385
         Align = alBottom
         Lines.Strings = (

@@ -70,18 +70,18 @@ var
 implementation
 
 uses
-  System.SysUtils, Vcl.Forms, Winapi.Windows;
+  System.SysUtils,
+  Vcl.Forms,
+  Winapi.Windows;
 
 const
   FORMAT_LOG = '%s %s';
   PREFIX_TRACE = 'TRACE|';
   PREFIX_DEBUG = 'DEBUG|';
-  PREFIX_INFO  = 'INFO|';
-  PREFIX_WARN  = 'WARN |';
+  PREFIX_INFO = 'INFO|';
+  PREFIX_WARN = 'WARN |';
   PREFIX_ERROR = 'ERROR|';
   PREFIX_FATAL = 'FATAL|';
-
-{ TLogger }
 
 procedure TLogger.Clear;
 begin
@@ -122,9 +122,9 @@ end;
 
 procedure TLogger.Debug(const Msg: string);
 begin
-  {$IFNDEF DEBUG}
+{$IFNDEF DEBUG}
   Exit;
-  {$ENDIF}
+{$ENDIF}
   if not (ltDebug in FQuietTypes) then
     Self.Write(Format(FORMAT_LOG, [PREFIX_DEBUG, Msg]));
 end;
@@ -231,8 +231,7 @@ begin
   if FIsInit then
     CloseFile(FOutFile);
 
-  if not FQuietMode then
-  begin
+  if not FQuietMode then begin
     Self.CreateFoldersIfNecessary;
 
     AssignFile(FOutFile, FFileName);
@@ -285,7 +284,10 @@ begin
     Self.Initialize;
     try
       if FIsInit then
-        Writeln(FOutFile, Format('[%s] [TID %d] %s ', [FormatDateTime(FORMAT_DATETIME_DEFAULT, Now), GetCurrentThreadId, Msg]));
+        Writeln(
+            FOutFile,
+            Format('[%s] [TID %d] %s ', [FormatDateTime(FORMAT_DATETIME_DEFAULT, Now), GetCurrentThreadId, Msg])
+        );
     finally
       Self.Finalize;
     end;
