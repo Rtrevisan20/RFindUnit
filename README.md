@@ -1,70 +1,110 @@
-# RFindUnit - Version 1.2.0
+# RFindUnit - Fork do RFindUnit Original
 
-Find unit (find uses) is a very simple tool and very used (Ctrl+Shift+A), but, as you know Delphi Find Unit doesn't work very well, in general it crashes or it's very slow.
+> **Fork do projeto [RFindUnit](https://github.com/Rtrevisan20/RFindUnit) de Rodrigo Farias Rezino**, com correções de bugs, novas funcionalidades e reestruturação do código.
 
-Currently it have the basics expected features, and I'm working to organize, optmize and give it new functions (as auto import for example).
-If you help, it'll be very good.
+O RFindUnit é um plugin para o IDE Delphi que substitui a funcionalidade nativa "Find Unit" (Ctrl+Shift+A), que é conhecida por ser lenta e instável.
 
-### How does it work in practice ?
-[![IMAGE ALT TEXT](https://i.ytimg.com/vi/SYNUQcg_y58/hqdefault.jpg)](https://www.youtube.com/watch?v=3Y1GengunuAE "Demonstration")
+**Repositório original:** https://github.com/Rtrevisan20/RFindUnit
+**Fork ativo:** https://github.com/Rtrevisan20/RFindUnit
 
+---
 
-### [Follow our updates on the blog](https://rfrezinos.wordpress.com/)
+## Funcionalidades
 
-### Automatically Identify unused imports
-First enable it: 
+| Atalho | Função | Descrição |
+|--------|--------|-----------|
+| **Ctrl+Shift+A** | Find Unit | Busca inteligente de units para importação |
+| **Ctrl+Shift+U** | Organize Uses | Ordena e organiza a cláusula uses |
+| **Ctrl+Shift+L** | Unused Uses | Detecta units não utilizadas no código |
+| **Ctrl+Space** | Auto Import | Importa units automaticamente (configurável) |
 
-![Enable feature](https://github.com/rfrezino/RFindUnit/blob/master/Resources/ExperimentalFeature.png)
+### Find Unit (Ctrl+Shift+A)
+Busca inteligente de units com suporte a namespaces fully qualified e ResourceString.
 
-Process: 
+![Find Unit](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/RFindUnitImage.png)
 
-![Process the file](https://github.com/rfrezino/RFindUnit/blob/master/Resources/ProcessingUses.png)
+### Organize Uses (Ctrl+Shift+U)
+Ordena e organiza a cláusula uses com várias opções:
+- Ordenação alfabética (padrão)
+- Ordenação por nível (RTL → VCL → FMX → Third-party → Project)
+- Agrupamento por namespace
+- Quebra de linha configurável
+- Preserva comentários no bloco uses
 
-Show if everything is right:
+![Organize Uses](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/organizeAfter.png)
 
-![Show all ok](https://github.com/rfrezino/RFindUnit/blob/master/Resources/CheckedAndOK.png)
+### Unused Uses (Ctrl+Shift+L)
+Detecta e destaca units que estão no bloco uses mas não são utilizadas no código.
 
-Or if there are some unused units:
+![Unused Uses](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/CheckedAndNotOk.png)
 
-![Highlight unused uses](https://github.com/rfrezino/RFindUnit/blob/master/Resources/CheckedAndNotOk.png)
+### Auto Import (Ctrl+Space)
+Importa units automaticamente quando o código referencia classes/procedimentos de units não importadas. Pode ser habilitado/desabilitado nas configurações.
 
-### Find unit feature
-Before: 
+### Internacionalização (i18n)
+Suporte a múltiplos idiomas (PT-BR / EN) com tradução dinâmica de todas as mensagens da interface.
 
-![Default Version](http://i.imgur.com/8DZPGSs.png)
+---
 
-After:
+## Bugs Corrigidos (neste fork)
 
-![RFindUnit Screen](https://github.com/rfrezino/RFindUnit/blob/master/Resources/RFindUnitImage.png)
+| Bug | Severidade | Descrição |
+|-----|-----------|-----------|
+| #76 | **Crítica** | Organize Uses destruía a cláusula uses (race condition + posições desatualizadas) |
+| #73 | **Alta** | Consumo excessivo de CPU (re-parse frequente + threads desnecessárias) |
+| #80 | Média | Não encontrava ResourceString/Constants no parser |
+| #72 | Média | Namespaces não eram fully qualified na busca |
+| Ctrl+Shift+L sem resultado | **Alta** | LoadProjectPath nunca era chamado na inicialização |
+| Ctrl+Shift+L só analisava interface | Média | Bloco implementation era ignorado no Unused Uses |
+| Ctrl+Shift+U corrompia classes | **Alta** | Posições stale inseria tokens dentro de declarações de classe |
+| Ctrl+Shift+U linhas em branco | Média | Removia/adicionava linhas em branco incorretamente |
+| Import com comments | Média | Units comentadas no uses não eram importadas/descomentadas |
+| Acentuação PT-BR | Baixa | Strings com caracteres corrompidos (encoding sem BOM) |
 
-### Auto organize uses feature
-It's possible to auto organize uses (Ctrl + Shift + U). It's possible to sort then by alphabetical order and split it by line and namespae, as you can see: 
+---
 
-Before:
+## Estrutura do Projeto
 
-![Before](https://github.com/rfrezino/RFindUnit/blob/master/Resources/organizeBefore.png)
+O projeto segue arquitetura **MVC** com prefixo **HD** nas units:
 
-After:
+```
+src/
+  Model/          - Lógica de negócio (20 units)
+  View/           - Interface do usuário (4 units + 3 dfm)
+  Controller/     - Controle e orquestração (5 units)
+  Utils/          - Funções auxiliares (1 unit)
+```
 
-![After](https://github.com/rfrezino/RFindUnit/blob/master/Resources/organizeAfter.png)
+---
 
-### Instalation
-Delphi Berlin or newer
-1. Download [the project](https://github.com/rfrezino/RFindUnit/archive/master.zip), or clone the project.
-1. Go to the Packages directory and choose your corresponding version
-2. Open the RFindUnit.dproj on your Delphi and right click on the project and install it.
+## Instalação
 
-![Example](https://github.com/rfrezino/RFindUnit/blob/master/Resources/InstallationHelp.png)
+**Requisito:** Delphi Berlin ou superior (Tokyo testado)
 
-You can also install [Delphinus package manager](https://github.com/Memnarch/Delphinus/wiki/Installing-Delphinus) and then install RFindUnit as a package there. (Delphinus-Support)
+1. Baixe o [repositório](https://github.com/Rtrevisan20/RFindUnit/archive/main.zip) ou clone:
+   ```
+   git clone https://github.com/Rtrevisan20/RFindUnit.git
+   ```
+2. Abra `Packages/DelphiTokyo/RFindUnit.dproj` no Delphi
+3. Clique com o botão direito no projeto → **Install**
 
-#### Contact
-Rodrigo Farias Rezino
+---
 
-rodrigofrezino@gmail.com
+## Projetos Referenciados
 
-#### Referenced Projects
-* [DelphiAST](https://github.com/RomanYankovsky/DelphiAST)
-* [Log4Pascal](https://github.com/martinusso/log4pascal)
-* [Dcu32Int](https://github.com/rfrezino/DCU32INT)
+- [DelphiAST](https://github.com/RomanYankovsky/DelphiAST) — Parser de código Delphi
+- [Log4Pascal](https://github.com/martinusso/log4pascal) — Sistema de logging
+- [DCU32INT](https://github.com/rfrezino/DCU32INT) — Descompilador DCU
 
+---
+
+## Contato
+
+**Fork mantido por:** Rtrevisan20
+**Autor original:** Rodrigo Farias Rezino — rodrigofrezino@gmail.com
+
+---
+
+## Licença
+
+MIT License — Veja o arquivo [LICENSE](LICENSE) para detalhes.

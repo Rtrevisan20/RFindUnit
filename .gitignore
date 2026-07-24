@@ -15,3 +15,4 @@ Installer/Installer.~dsk
 Installer-deprecated/Installer.exe
 *.tvsconfig
 *.mes
+/AGENTS.md

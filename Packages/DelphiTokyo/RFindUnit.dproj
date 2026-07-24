@@ -131,17 +131,17 @@
         <DCCReference Include="dsnap.dcp"/>
         <DCCReference Include="dbrtl.dcp"/>
         <DCCReference Include="vcldb.dcp"/>
-        <DCCReference Include="..\..\Source\FindUnit.PasParser.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.SearchString.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.EnvironmentController.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.Utils.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.Worker.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.OTAUtils.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.FileEditor.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.Main.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.FileCache.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.IncluderHandlerInc.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.Header.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.PasParser.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.SearchString.pas"/>
+        <DCCReference Include="..\..\src\Controller\HDFindUnit.Controller.EnvironmentController.pas"/>
+        <DCCReference Include="..\..\src\Utils\HDFindUnit.Utils.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Worker.pas"/>
+        <DCCReference Include="..\..\src\Controller\HDFindUnit.Controller.OTAUtils.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.FileEditor.pas"/>
+        <DCCReference Include="..\..\src\Controller\HDFindUnit.Controller.Main.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.FileCache.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.IncluderHandlerInc.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Header.pas"/>
         <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Classes.pas"/>
         <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Consts.pas"/>
         <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.pas"/>
@@ -152,30 +152,32 @@
         <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.pas"/>
         <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Types.pas"/>
         <DCCReference Include="..\..\Thirdy\TransparentCanvas\TransparentCanvas.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.FormMessage.pas">
+        <DCCReference Include="..\..\src\View\HDFindUnit.View.FormMessage.pas">
             <Form>frmMessage</Form>
         </DCCReference>
-        <DCCReference Include="..\..\Source\FindUnit.DelphiVlcWrapper.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.DcuDecompiler.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.FormSettings.pas">
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.DelphiVlcWrapper.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.DcuDecompiler.pas"/>
+        <DCCReference Include="..\..\src\View\HDFindUnit.View.FormSettings.pas">
             <Form>frmSettings</Form>
         </DCCReference>
-        <DCCReference Include="..\..\Source\FindUnit.AutoImport.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.CompilerInterceptor.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.StringPositionList.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.AutoImport.pas"/>
+        <DCCReference Include="..\..\src\Controller\HDFindUnit.Controller.CompilerInterceptor.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.StringPositionList.pas"/>
         <DCCReference Include="..\..\Thirdy\Andrey\RegExpr.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.ResultsImportanceCalculator.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.Settings.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.UnusedUses.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.DelphiReservedWords.pas"/>
-        <DCCReference Include="..\..\Interfaces\Interf.EnvironmentController.pas"/>
-        <DCCReference Include="..\..\ideInteraction\implementations\FindUnit.PaintUnusedUses.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.ImageRepository.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.SearchStringCache.pas"/>
-        <DCCReference Include="..\..\Interfaces\Interf.SearchStringCache.pas"/>
-        <DCCReference Include="..\..\Source\FindUnit.FormSearch.pas">
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.ResultsImportanceCalculator.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Settings.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.UnusedUses.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.DelphiReservedWords.pas"/>
+        <DCCReference Include="..\..\src\Controller\HDFindUnit.Controller.Interf.EnvironmentController.pas"/>
+        <DCCReference Include="..\..\src\View\HDFindUnit.View.PaintUnusedUses.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.ImageRepository.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.SearchStringCache.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Interf.SearchStringCache.pas"/>
+        <DCCReference Include="..\..\src\View\HDFindUnit.View.FormSearch.pas">
             <Form>frmFindUnit</Form>
         </DCCReference>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Interf.Translation.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Translation.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -200,9 +202,7 @@
                 <Source>
                     <Source Name="MainSource">RFindUnit.dpk</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>
@@ -212,6 +212,12 @@
             <Deployment Version="4">
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\RFindUnit.bpl" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\RFindUnit.bpl" Configuration="RAISEMAD" Class="ProjectOutput"/>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\RFindUnit290.1.0.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>RFindUnit.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">
                         <Operation>1</Operation>

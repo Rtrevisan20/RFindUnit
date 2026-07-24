@@ -1,8 +1,8 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.SearchStringCache.pas',0,1,1,21,15,0,0,,
-File_1=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Interfaces\Interf.EnvironmentController.pas',0,1,1,35,14,0,0,,
-File_2=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Source\FindUnit.SearchString.pas',0,1,10,1,16,0,0,,
-File_3=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Source\FindUnit.FileCache.pas',0,1,25,1,43,0,0,,
+File_0=TSourceModule,'D:\Recursos GitHub\HDFindUnit\src\Utils\HDFindUnit.Utils.pas',0,1,1,27,5,0,0,,
+File_1=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Thirdy\TransparentCanvas\TransparentCanvas.pas',0,1,22,13,13,0,0,,
+File_2=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas',0,1,1,1,1,0,0,,
+File_3=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Thirdy\Andrey\RegExpr.pas',0,1,1,1,1,0,0,,
 
 [Modules]
 Count=0
@@ -211,8 +211,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-64
-Top=-93
+Left=-40
+Top=-96
 Width=1849
 Height=3140
 MaxLeft=-1
@@ -671,8 +671,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=1896
-Top=76
+Left=8
+Top=8
 Width=2000
 Height=8992
 MaxLeft=-1

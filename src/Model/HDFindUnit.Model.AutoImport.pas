@@ -1,0 +1,154 @@
+﻿unit HDFindUnit.Model.AutoImport;
+
+interface
+
+uses
+  HDFindUnit.Model.Header,
+  HDFindUnit.Controller.OTAUtils,
+  HDFindUnit.Model.StringPositionList,
+  HDFindUnit.Utils,
+  System.IniFiles;
+
+type
+  TAutoImport = class(TObject)
+  private
+    FIniFilePath: string;
+    FSearchMemory: TIniFile;
+
+    procedure LoadIniFile;
+    procedure SaveIniFile;
+
+    function LoadClassesToImport: TStringPositionList;
+  public
+    constructor Create(const IniFilePath: string);
+    destructor Destroy; override;
+
+    procedure Load;
+
+    function GetMemorizedUnit(Search: string; out MemUnit: string): Boolean;
+    procedure SetMemorizedUnit(NameClass, MemUnit: string);
+
+    function LoadUnitListToImport: TStringPositionList;
+  end;
+
+implementation
+
+uses
+  System.SysUtils, System.Classes, Log4Pascal, ToolsAPI;
+
+const
+  SECTION = 'MEMORIZEDUNIT';
+
+constructor TAutoImport.Create(const IniFilePath: string);
+begin
+  inherited Create;
+  FIniFilePath := IniFilePath;
+end;
+
+destructor TAutoImport.Destroy;
+begin
+  FSearchMemory.Free;
+  inherited;
+end;
+
+function TAutoImport.GetMemorizedUnit(Search: string; out MemUnit: string): Boolean;
+begin
+  Search := UpperCase(Search);
+  MemUnit := FSearchMemory.ReadString(SECTION, Search, '');
+  Result := MemUnit <> '';
+end;
+
+function TAutoImport.LoadUnitListToImport: TStringPositionList;
+var
+  ClassesList: TStringPositionList;
+  ClassItem: TStringPosition;
+  UnitItem: string;
+  ItemReturn: TStringPosition;
+begin
+  Result := TStringPositionList.Create;
+  Result.Duplicates := dupIgnore;
+
+  ClassesList := LoadClassesToImport;
+  try
+    for ClassItem in ClassesList do
+    begin
+      UnitItem := FSearchMemory.ReadString(SECTION, ClassItem.Value, '');
+      if UnitItem <> '' then
+      begin
+        ItemReturn.Value := UnitItem;
+        ItemReturn.Line := ClassItem.Line;
+        Result.Add(ItemReturn);
+      end;
+    end;
+  finally
+    ClassesList.Free;
+  end;
+end;
+
+procedure TAutoImport.Load;
+begin
+  LoadIniFile;
+end;
+
+procedure TAutoImport.LoadIniFile;
+var
+  DirPath: string;
+begin
+  Logger.Debug('TAutoImport.LoadIniFile: %s', [FIniFilePath]);
+  DirPath := ExtractFilePath(FIniFilePath);
+  ForceDirectories(DirPath);
+  FSearchMemory := TIniFile.Create(FIniFilePath);
+end;
+
+function TAutoImport.LoadClassesToImport: TStringPositionList;
+var
+  Errors: TOTAErrors;
+  ErrorItem: TOTAError;
+  Item: TStringPosition;
+
+  function GetUndeclaredIdentifier(Text: string): string;
+  const
+    ERROR_CODE = 'Undeclared identifier';
+  begin
+    Result := '';
+    if Pos(ERROR_CODE, Text) = 0 then
+      Exit;
+
+    Fetch(Text, #39);
+    Result := Fetch(Text, #39);
+  end;
+begin
+  Result := TStringPositionList.Create;
+  try
+    Errors := GetErrorListFromActiveModule;
+    if Errors = nil then
+      Exit;
+
+    for ErrorItem in Errors do
+    begin
+      Item.Value := UpperCase(GetUndeclaredIdentifier(ErrorItem.Text));
+      if Item.Value = '' then
+        Continue;
+
+      Item.Line := ErrorItem.Start.Line;
+      Result.Add(Item);
+    end;
+  except
+    on E: Exception do
+      Logger.Error('TAutoImport.LoadClassesToImport: %s', [E.Message]);
+  end;
+end;
+
+procedure TAutoImport.SaveIniFile;
+begin
+  FSearchMemory.UpdateFile;
+end;
+
+procedure TAutoImport.SetMemorizedUnit(NameClass, MemUnit: string);
+begin
+  NameClass := UpperCase(NameClass);
+  FSearchMemory.WriteString(SECTION, NameClass, MemUnit);
+  SaveIniFile;
+end;
+
+end.
