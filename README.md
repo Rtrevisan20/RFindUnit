@@ -5,6 +5,7 @@
 O RFindUnit é um plugin para o IDE Delphi que substitui a funcionalidade nativa "Find Unit" (Ctrl+Shift+A), que é conhecida por ser lenta e instável.
 
 **Repositório original:** https://github.com/rfrezino/RFindUnit
+
 **Fork ativo:** https://github.com/Rtrevisan20/RFindUnit
 
 ---
