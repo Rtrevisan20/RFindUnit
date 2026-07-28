@@ -5,10 +5,10 @@ interface
 uses
   HDFindUnit.Controller.EnvironmentController,
   HDFindUnit.Model.FileEditor,
-  HDFindUnit.View.FormSettings,
   HDFindUnit.Model.Header,
-  HDFindUnit.Model.Translation,
   HDFindUnit.Model.Interf.Translation,
+  HDFindUnit.Model.Translation,
+  HDFindUnit.View.FormSettings,
   System.Classes,
   System.ImageList,
   Vcl.AppEvnts,
@@ -115,12 +115,12 @@ implementation
 
 uses
   ToolsAPI,
-  HDFindUnit.Model.DcuDecompiler,
-  HDFindUnit.View.FormMessage,
   HDFindUnit.Controller.OTAUtils,
+  HDFindUnit.Model.DcuDecompiler,
   HDFindUnit.Model.ResultsImportanceCalculator,
   HDFindUnit.Model.Settings,
   HDFindUnit.Utils,
+  HDFindUnit.View.FormMessage,
   System.SysUtils,
   Vcl.Dialogs,
   Vcl.Graphics,

@@ -1,8 +1,8 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\Recursos GitHub\HDFindUnit\src\Utils\HDFindUnit.Utils.pas',0,1,1,27,5,0,0,,
-File_1=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Thirdy\TransparentCanvas\TransparentCanvas.pas',0,1,22,13,13,0,0,,
-File_2=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Thirdy\Log4pascal\Log4Pascal.pas',0,1,1,1,1,0,0,,
-File_3=TSourceModule,'D:\Recursos GitHub\HDFindUnit\Thirdy\Andrey\RegExpr.pas',0,1,1,1,1,0,0,,
+File_0=TSourceModule,'D:\Recursos GitHub\HDFindUnit\src\Utils\HDFindUnit.Utils.pas',0,1,1,10,12,0,0,,
+File_1=TSourceModule,'D:\Recursos GitHub\HDFindUnit\src\View\HDFindUnit.View.FormSearch.pas',0,1,1,15,19,0,0,,
+File_2=TSourceModule,'D:\Recursos GitHub\HDFindUnit\src\View\HDFindUnit.View.FormSettings.pas',0,1,1,17,8,0,0,,
+File_3=TSourceModule,'D:\Recursos GitHub\HDFindUnit\src\View\HDFindUnit.View.PaintUnusedUses.pas',0,1,1,14,9,0,0,{{229,2},{243,13},{'Paint the left status'}},
 
 [Modules]
 Count=0
@@ -134,13 +134,13 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=1
-Top=32
-Width=9906
+Left=8
+Top=1024
+Width=2771
 Height=1376
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=9906
+ClientWidth=2771
 ClientHeight=1376
 TBDockHeight=1376
 LRDockWidth=2771

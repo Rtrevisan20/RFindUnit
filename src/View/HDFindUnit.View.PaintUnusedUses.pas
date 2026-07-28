@@ -7,7 +7,6 @@ uses
   ToolsAPI,
   HDFindUnit.Model.ImageRepository,
   HDFindUnit.Model.UnusedUses,
-  HDFindUnit.Utils,
   HDFindUnit.Controller.Interf.EnvironmentController,
   System.Classes,
   System.DateUtils,

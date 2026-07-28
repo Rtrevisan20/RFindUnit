@@ -1,30 +1,33 @@
 # RFindUnit - Fork do RFindUnit Original
 
-> **Fork do projeto [RFindUnit](https://github.com/Rtrevisan20/RFindUnit) de Rodrigo Farias Rezino**, com correções de bugs, novas funcionalidades e reestruturação do código.
+> **Fork do projeto [RFindUnit](https://github.com/rfrezino/RFindUnit) de Rodrigo Farias Rezino**, com correções de bugs, novas funcionalidades e reestruturação do código.
 
 O RFindUnit é um plugin para o IDE Delphi que substitui a funcionalidade nativa "Find Unit" (Ctrl+Shift+A), que é conhecida por ser lenta e instável.
 
-**Repositório original:** https://github.com/Rtrevisan20/RFindUnit
+**Repositório original:** https://github.com/rfrezino/RFindUnit
 **Fork ativo:** https://github.com/Rtrevisan20/RFindUnit
 
 ---
 
 ## Funcionalidades
 
-| Atalho | Função | Descrição |
-|--------|--------|-----------|
-| **Ctrl+Shift+A** | Find Unit | Busca inteligente de units para importação |
-| **Ctrl+Shift+U** | Organize Uses | Ordena e organiza a cláusula uses |
-| **Ctrl+Shift+L** | Unused Uses | Detecta units não utilizadas no código |
-| **Ctrl+Space** | Auto Import | Importa units automaticamente (configurável) |
+| Atalho           | Função        | Descrição                                    |
+| ---------------- | ------------- | -------------------------------------------- |
+| **Ctrl+Shift+A** | Find Unit     | Busca inteligente de units para importação   |
+| **Ctrl+Shift+U** | Organize Uses | Ordena e organiza a cláusula uses            |
+| **Ctrl+Shift+L** | Unused Uses   | Detecta units não utilizadas no código       |
+| **Ctrl+Space**   | Auto Import   | Importa units automaticamente (configurável) |
 
 ### Find Unit (Ctrl+Shift+A)
+
 Busca inteligente de units com suporte a namespaces fully qualified e ResourceString.
 
 ![Find Unit](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/RFindUnitImage.png)
 
 ### Organize Uses (Ctrl+Shift+U)
+
 Ordena e organiza a cláusula uses com várias opções:
+
 - Ordenação alfabética (padrão)
 - Ordenação por nível (RTL → VCL → FMX → Third-party → Project)
 - Agrupamento por namespace
@@ -34,32 +37,35 @@ Ordena e organiza a cláusula uses com várias opções:
 ![Organize Uses](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/organizeAfter.png)
 
 ### Unused Uses (Ctrl+Shift+L)
+
 Detecta e destaca units que estão no bloco uses mas não são utilizadas no código.
 
 ![Unused Uses](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/CheckedAndNotOk.png)
 
 ### Auto Import (Ctrl+Space)
+
 Importa units automaticamente quando o código referencia classes/procedimentos de units não importadas. Pode ser habilitado/desabilitado nas configurações.
 
 ### Internacionalização (i18n)
+
 Suporte a múltiplos idiomas (PT-BR / EN) com tradução dinâmica de todas as mensagens da interface.
 
 ---
 
 ## Bugs Corrigidos (neste fork)
 
-| Bug | Severidade | Descrição |
-|-----|-----------|-----------|
-| #76 | **Crítica** | Organize Uses destruía a cláusula uses (race condition + posições desatualizadas) |
-| #73 | **Alta** | Consumo excessivo de CPU (re-parse frequente + threads desnecessárias) |
-| #80 | Média | Não encontrava ResourceString/Constants no parser |
-| #72 | Média | Namespaces não eram fully qualified na busca |
-| Ctrl+Shift+L sem resultado | **Alta** | LoadProjectPath nunca era chamado na inicialização |
-| Ctrl+Shift+L só analisava interface | Média | Bloco implementation era ignorado no Unused Uses |
-| Ctrl+Shift+U corrompia classes | **Alta** | Posições stale inseria tokens dentro de declarações de classe |
-| Ctrl+Shift+U linhas em branco | Média | Removia/adicionava linhas em branco incorretamente |
-| Import com comments | Média | Units comentadas no uses não eram importadas/descomentadas |
-| Acentuação PT-BR | Baixa | Strings com caracteres corrompidos (encoding sem BOM) |
+| Bug                                 | Severidade  | Descrição                                                                         |
+| ----------------------------------- | ----------- | --------------------------------------------------------------------------------- |
+| #76                                 | **Crítica** | Organize Uses destruía a cláusula uses (race condition + posições desatualizadas) |
+| #73                                 | **Alta**    | Consumo excessivo de CPU (re-parse frequente + threads desnecessárias)            |
+| #80                                 | Média       | Não encontrava ResourceString/Constants no parser                                 |
+| #72                                 | Média       | Namespaces não eram fully qualified na busca                                      |
+| Ctrl+Shift+L sem resultado          | **Alta**    | LoadProjectPath nunca era chamado na inicialização                                |
+| Ctrl+Shift+L só analisava interface | Média       | Bloco implementation era ignorado no Unused Uses                                  |
+| Ctrl+Shift+U corrompia classes      | **Alta**    | Posições stale inseria tokens dentro de declarações de classe                     |
+| Ctrl+Shift+U linhas em branco       | Média       | Removia/adicionava linhas em branco incorretamente                                |
+| Import com comments                 | Média       | Units comentadas no uses não eram importadas/descomentadas                        |
+| Acentuação PT-BR                    | Baixa       | Strings com caracteres corrompidos (encoding sem BOM)                             |
 
 ---
 
