@@ -21,6 +21,7 @@ uses
   System.Classes,
   System.Generics.Collections,
   System.SysUtils,
+  Winapi.ActiveX,
   Winapi.Windows,
   Xml.XMLIntf;
 
@@ -43,6 +44,7 @@ type
     procedure OnFinishedLibraryPathScan(FindUnits: TUnits);
 
     procedure CreateProjectPathUnits(NewFiles: TDictionary<string, TFileInfo>; OldFiles: TUnits);
+    procedure AddFilesFromProjectSearchPaths(Files: TDictionary<string, TFileInfo>; SearchPaths: TStringList);
     procedure OnFinishedProjectPathScan(FindUnits: TUnits);
 
     procedure CreatingProject(const ProjectOrGroup: IOTAModule);
@@ -208,8 +210,7 @@ end;
 
 procedure TEnvironmentController.ForceLoadProjectPath;
 begin
-  if FProjectUnits = nil then
-    LoadProjectPath;
+  LoadProjectPath;
 end;
 
 procedure TEnvironmentController.ForceRunDependencies;
@@ -374,11 +375,41 @@ begin
   LocalThread.Start;
 end;
 
+procedure TEnvironmentController.AddFilesFromProjectSearchPaths(
+  Files: TDictionary<string, TFileInfo>;
+  SearchPaths: TStringList
+);
+var
+  I: Integer;
+  DirFiles: TDictionary<string, TFileInfo>;
+  FileInfo: TFileInfo;
+begin
+  try
+    for I := 0 to SearchPaths.Count - 1 do
+    begin
+      if not DirectoryExists(SearchPaths[I]) then
+        Continue;
+
+      DirFiles := GetAllPasFilesFromPathRecursive(SearchPaths[I]);
+      try
+        for FileInfo in DirFiles.Values do
+          Files.AddOrSetValue(FileInfo.Path, FileInfo);
+      finally
+        DirFiles.Free;
+      end;
+    end;
+  except
+    on E: Exception do
+      Logger.Error('TEnvironmentController.AddFilesFromProjectSearchPaths: ' + E.Message);
+  end;
+end;
+
 procedure TEnvironmentController.LoadProjectPath;
 var
   LocalThread: TThread;
   OldFiles: TUnits;
   Files: TDictionary<string, TFileInfo>;
+  DprojPaths: TStringList;
 begin
   Logger.Debug('TEnvironmentController.LoadProjectPath');
   if FProjectPathLoading then
@@ -408,13 +439,18 @@ begin
   end;
 
   Files := GetAllFilesFromProjectGroup;
+  DprojPaths := GetProjectSearchPathsFromDproj;
 
   LocalThread := TThread.CreateAnonymousThread(
     procedure
     begin
+      CoInitialize(nil);
       try
+        AddFilesFromProjectSearchPaths(Files, DprojPaths);
         CreateProjectPathUnits(Files, OldFiles);
       finally
+        DprojPaths.Free;
+        CoUninitialize;
         FProjectPathLoading := False;
       end;
     end
@@ -436,8 +472,8 @@ begin
     Exit;
   end;
 
-  FProjectUnits.Ready := True;
   FProjectUnits.Units := FindUnits;
+  FProjectUnits.Ready := True;
 end;
 
 procedure TEnvironmentController.OrganizeUses;

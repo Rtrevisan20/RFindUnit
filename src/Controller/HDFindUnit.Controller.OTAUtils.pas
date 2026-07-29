@@ -30,6 +30,7 @@ function GetErrorListFromActiveModule: TOTAErrors;
 procedure GetLibraryPath(Paths: TStrings; PlatformName: string);
 
 function GetAllFilesFromProjectGroup: TDictionary<string, TFileInfo>;
+function GetProjectSearchPathsFromDproj: TStringList;
 
 function GetWordAtCursor(DeltaCharPosition: Integer = 0): TStringPosition;
 
@@ -41,8 +42,12 @@ implementation
 uses
   System.SysUtils,
   System.IOUtils,
+  System.Variants,
   System.Win.Registry,
-  Winapi.Windows;
+  Winapi.Windows,
+  Xml.XMLDoc,
+  Xml.XMLIntf,
+  Log4Pascal;
 
 function SourceEditor(Module: IOTAMOdule): IOTASourceEditor;
 var
@@ -137,6 +142,83 @@ begin
         end;
       end;
     end;
+  end;
+end;
+
+function GetProjectSearchPathsFromDproj: TStringList;
+var
+  Project: IOTAProject;
+  DprojFile: string;
+  ProjDir: string;
+  XMLDoc: IXMLDocument;
+  Node: IXMLNode;
+  SearchPath: string;
+  I: Integer;
+  PathValue: string;
+begin
+  Result := TStringList.Create;
+  Result.Delimiter := ';';
+  Result.StrictDelimiter := True;
+  Result.Duplicates := dupIgnore;
+
+  Project := GetCurrentProject;
+  if Project = nil then
+    Exit;
+
+  DprojFile := Project.FileName;
+  if not FileExists(DprojFile) then
+    Exit;
+
+  ProjDir := ExtractFilePath(DprojFile);
+
+  try
+    XMLDoc := LoadXMLDocument(DprojFile);
+    Node := XMLDoc.DocumentElement;
+    if Node = nil then
+      Exit;
+
+    Node := Node.ChildNodes.First;
+    while Node <> nil do
+    begin
+      if SameText(Node.NodeName, 'PropertyGroup') then
+      begin
+        SearchPath := '';
+        if Node.ChildNodes.FindNode('DCC_UnitSearchPath') <> nil then
+          SearchPath := VarToStr(Node.ChildNodes.FindNode('DCC_UnitSearchPath').NodeValue);
+
+        if SearchPath <> '' then
+        begin
+          Result.DelimitedText := SearchPath;
+          for I := Result.Count - 1 downto 0 do
+          begin
+            PathValue := Trim(Result[I]);
+            if PathValue = '' then
+              Result.Delete(I)
+            else if Pos('$(DCC_UnitSearchPath)', PathValue) = 1 then
+              Result.Delete(I)
+            else
+            begin
+              PathValue := TPathConverter.ConvertPathsToFullPath(PathValue);
+
+              if not TPath.IsPathRooted(PathValue) then
+                PathValue := TPath.Combine(ProjDir, PathValue);
+
+              PathValue := TPath.GetFullPath(PathValue);
+
+              if DirectoryExists(PathValue) then
+                Result[I] := PathValue
+              else
+                Result.Delete(I);
+            end;
+          end;
+          Break;
+        end;
+      end;
+      Node := Node.NextSibling;
+    end;
+  except
+    on E: Exception do
+      Logger.Error('GetProjectSearchPathsFromDproj: ' + E.Message);
   end;
 end;
 

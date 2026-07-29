@@ -21,7 +21,7 @@ O RFindUnit é um plugin para o IDE Delphi que substitui a funcionalidade nativa
 
 ### Find Unit (Ctrl+Shift+A)
 
-Busca inteligente de units com suporte a namespaces fully qualified e ResourceString.
+Busca inteligente de units com suporte a namespaces fully qualified e ResourceString. Encontra as Units instaladas com o gerenciador de dependências o [Boss](https://github.com/HashLoad/boss).
 
 ![Find Unit](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/RFindUnitImage.png)
 

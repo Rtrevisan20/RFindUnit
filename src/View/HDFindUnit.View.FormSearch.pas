@@ -490,6 +490,11 @@ begin
   edtSearch.SelectAll;
   edtSearch.SetFocus;
   LoadConfigs;
+
+  if FEnvControl <> nil then
+  begin
+    CheckLibraryStatus;
+  end;
 end;
 
 procedure TfrmFindUnit.GetSelectedItem(out UnitName, ClassName: string);

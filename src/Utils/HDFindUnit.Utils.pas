@@ -31,7 +31,9 @@ type
   end;
 
 function GetAllFilesFromPath(const Path, Filter: string): TDictionary<string, TFileInfo>;
+function GetAllFilesFromPathRecursive(const Path, Filter: string): TDictionary<string, TFileInfo>;
 function GetAllPasFilesFromPath(const Path: string): TDictionary<string, TFileInfo>;
+function GetAllPasFilesFromPathRecursive(const Path: string): TDictionary<string, TFileInfo>;
 function GetAllDcuFilesFromPath(const Path: string): TDictionary<string, TFileInfo>;
 
 function Fetch(
@@ -251,6 +253,26 @@ begin
   end;
 end;
 
+function GetAllFilesFromPathRecursive(const Path, Filter: string): TDictionary<string, TFileInfo>;
+var
+  Files: TStringDynArray;
+  FilePath: string;
+  FileInfo: TFileInfo;
+begin
+  Files := System.IOUtils.TDirectory.GetFiles(Path, Filter, TSearchOption.soAllDirectories);
+
+  Result := TDictionary<string, TFileInfo>.Create;
+  for FilePath in Files do begin
+    FileInfo.Path := Trim(FilePath);
+    if FileExists(FilePath) then
+      FileInfo.LastAccess := System.IOUtils.TFile.GetLastWriteTime(FilePath)
+    else
+      FileInfo.LastAccess := 0;
+
+    Result.Add(FileInfo.Path, FileInfo);
+  end;
+end;
+
 function GetAllDcuFilesFromPath(const Path: string): TDictionary<string, TFileInfo>;
 begin
   Result := GetAllFilesFromPath(Path, '*.dcu');
@@ -259,6 +281,11 @@ end;
 function GetAllPasFilesFromPath(const Path: string): TDictionary<string, TFileInfo>;
 begin
   Result := GetAllFilesFromPath(Path, '*.pas');
+end;
+
+function GetAllPasFilesFromPathRecursive(const Path: string): TDictionary<string, TFileInfo>;
+begin
+  Result := GetAllFilesFromPathRecursive(Path, '*.pas');
 end;
 
 { TIncludeHandler }
