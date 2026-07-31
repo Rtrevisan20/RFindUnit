@@ -16,9 +16,11 @@ uses
 type
   TTestEnv = class(TInterfacedObject, IRFUEnvironmentController)
     function GetFullMatch(const SearchString: string): TStringList;
+    function GetElementMatches(const ElementName: string): TStringList;
     function AreDependenciasReady: Boolean;
     procedure ForceRunDependencies;
     function PasExists(PasName: string): Boolean;
+    function IsFileIndexed(FilePath: string): Boolean;
   end;
 
   TestTUnsedUsesProcessor = class(TTestCase)
@@ -107,6 +109,16 @@ end;
 procedure TTestEnv.ForceRunDependencies;
 begin
 
+end;
+
+function TTestEnv.GetElementMatches(const ElementName: string): TStringList;
+begin
+  Result := GetFullMatch(ElementName);
+end;
+
+function TTestEnv.IsFileIndexed(FilePath: string): Boolean;
+begin
+  Result := True;
 end;
 
 function TTestEnv.GetFullMatch(const SearchString: string): TStringList;

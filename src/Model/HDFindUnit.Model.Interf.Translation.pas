@@ -13,6 +13,7 @@ type
     function GetUnusedUsesAllUsed: string;
     function GetUnusedUsesUnused(const Units: string): string;
     function GetUnusedUsesError(const Msg: string): string;
+    function GetUnusedUsesNotIndexed: string;
 
     function GetOrganizeUsesDone: string;
     function GetOrganizeUsesWarning: string;

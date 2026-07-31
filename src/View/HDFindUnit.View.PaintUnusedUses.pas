@@ -34,6 +34,8 @@ type
 
     FNeedRepaint: Boolean;
     FProcessed: TRfUnusedProcessStatus;
+    FNotIndexed: Boolean;
+    FLastCheck: TDateTime;
     FUnusedUses: TList<TUsesUnit>;
     FRcDir: TCriticalSection;
     FLowestLine: Integer;
@@ -149,6 +151,8 @@ begin
   FNotifierIndex := FEditView.AddNotifier(Self);
   FRcDir := TCriticalSection.Create;
   FProcessed := uspPending;
+  FNotIndexed := False;
+  FLastCheck := 0;
   FUnusedUses := TList<TUsesUnit>.Create;
   FUsesStartLine := -1;
 
@@ -286,17 +290,36 @@ begin
   end;
 
   CurModification := TFile.GetLastWriteTime(FFileName);
-  if (FUsesStartLine > -1) and
-    (SecondsBetween(CurModification, FFileLastModification) = 0)
-    then
+  if FProcessed = uspComplete then
   begin
-    FProcessed := uspComplete;
-    Exit;
+    if (FNotIndexed) and (SecondsBetween(Now, FLastCheck) >= 2) then
+    begin
+      FLastCheck := Now;
+      if EnvControl.IsFileIndexed(FFileName) then
+        FNotIndexed := False
+      else
+      begin
+        FFileLastModification := CurModification;
+        Exit;
+      end;
+    end
+    else if SecondsBetween(CurModification, FFileLastModification) = 0 then
+      Exit;
   end;
 
   if not EnvControl.AreDependenciasReady then
   begin
     EnvControl.ForceRunDependencies;
+    Exit;
+  end;
+
+  if not EnvControl.IsFileIndexed(FFileName) then
+  begin
+    Logger.Debug('Unused : file not indexed, skipping paint: ' + FFileName);
+    FNotIndexed := True;
+    FLastCheck := Now;
+    FFileLastModification := CurModification;
+    FProcessed := uspComplete;
     Exit;
   end;
 

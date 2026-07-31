@@ -63,15 +63,17 @@ type
     procedure ForceRunDependencies;
 
     procedure LoadLibraryPath;
-    procedure LoadProjectPath;
+    procedure LoadProjectPath(AWaitForProject: Boolean = False);
     procedure ForceLoadProjectPath;
 
     function GetProjectUnits(const SearchString: string): TStringList;
     function GetLibraryPathUnits(const SearchString: string): TStringList;
 
     function PasExists(PasName: string): Boolean;
+    function IsFileIndexed(FilePath: string): Boolean;
 
     function GetFullMatch(const SearchString: string): TStringList;
+    function GetElementMatches(const ElementName: string): TStringList;
 
     function IsProjectsUnitReady: Boolean;
     function IsLibraryPathsUnitReady: Boolean;
@@ -194,7 +196,7 @@ end;
 
 procedure TEnvironmentController.CreatingProject(const ProjectOrGroup: IOTAModule);
 begin
-  LoadProjectPath;
+  LoadProjectPath(True);
 end;
 
 destructor TEnvironmentController.Destroy;
@@ -240,6 +242,35 @@ begin
     if IsLibraryPathsUnitReady then
     begin
       LibraryUnits := FLibraryPath.GetFindInfoFullMatch(SearchString);
+      Result.AddStrings(LibraryUnits);
+    end;
+  finally
+    LibraryUnits.Free;
+    ProjectUnits.Free;
+  end;
+end;
+
+function TEnvironmentController.GetElementMatches(const ElementName: string): TStringList;
+var
+  ProjectUnits: TStringList;
+  LibraryUnits: TStringList;
+begin
+  ProjectUnits := nil;
+  LibraryUnits := nil;
+  Result := TStringList.Create;
+  Result.Sorted := True;
+  Result.Duplicates := dupIgnore;
+
+  try
+    if IsProjectsUnitReady then
+    begin
+      ProjectUnits := FProjectUnits.GetElementMatches(ElementName);
+      Result.AddStrings(ProjectUnits);
+    end;
+
+    if IsLibraryPathsUnitReady then
+    begin
+      LibraryUnits := FLibraryPath.GetElementMatches(ElementName);
       Result.AddStrings(LibraryUnits);
     end;
   finally
@@ -404,12 +435,13 @@ begin
   end;
 end;
 
-procedure TEnvironmentController.LoadProjectPath;
+procedure TEnvironmentController.LoadProjectPath(AWaitForProject: Boolean);
 var
   LocalThread: TThread;
   OldFiles: TUnits;
   Files: TDictionary<string, TFileInfo>;
   DprojPaths: TStringList;
+  WaitCount: Integer;
 begin
   Logger.Debug('TEnvironmentController.LoadProjectPath');
   if FProjectPathLoading then
@@ -417,14 +449,21 @@ begin
     Logger.Debug('TEnvironmentController.LoadProjectPath: already loading');
     Exit;
   end;
-  if (FProjectUnits <> nil) and (not FProjectUnits.Ready) then
-  begin
-    Logger.Debug('TEnvironmentController.LoadProjectPath: no');
-    Exit;
-  end;
 
   if GetCurrentProject = nil then
-    Exit;
+  begin
+    if AWaitForProject then
+    begin
+      WaitCount := 0;
+      while (GetCurrentProject = nil) and (WaitCount < 20) do
+      begin
+        Sleep(100);
+        Inc(WaitCount);
+      end;
+    end;
+    if GetCurrentProject = nil then
+      Exit;
+  end;
 
   Logger.Debug('TEnvironmentController.LoadProjectPath: yes');
 
@@ -507,6 +546,18 @@ begin
       Exit(True);
 end;
 
+function TEnvironmentController.IsFileIndexed(FilePath: string): Boolean;
+begin
+  Result := False;
+  if Assigned(FProjectUnits) and FProjectUnits.Ready then
+    if FProjectUnits.ContainsFilePath(FilePath) then
+      Exit(True);
+
+  if Assigned(FLibraryPath) and FLibraryPath.Ready then
+    if FLibraryPath.ContainsFilePath(FilePath) then
+      Exit(True);
+end;
+
 procedure TEnvironmentController.ProcessDCUFiles;
 var
   LocalThread: TThread;
@@ -568,11 +619,20 @@ end;
 procedure TEnvironmentController.ProjectClosing(const ProjectOrGroup: IOTAModule);
 begin
   Logger.Debug('TEnvironmentController.ProjectClosing');
+  if FProjectUnits <> nil then
+  begin
+    FProjectUnits.Ready := False;
+    FProjectUnits.Units := nil;
+  end;
 end;
 
 procedure TEnvironmentController.ProjectLoaded(const ProjectOrGroup: IOTAModule; const Node: IXMLNode);
 begin
   Logger.Debug('TEnvironmentController.ProjectLoaded');
+  if FProjectUnits = nil then
+    Exit;
+  if not FProjectUnits.Ready then
+    LoadProjectPath;
 end;
 
 procedure TEnvironmentController.ProjectSaving(const ProjectOrGroup: IOTAModule; const Node: IXMLNode);

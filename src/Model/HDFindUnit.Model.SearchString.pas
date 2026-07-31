@@ -96,7 +96,8 @@ begin
 
     if Line.StartsWith(UpSS + '.')
       or Line.Contains('.' + UpSS + '.')
-      or Line.Contains('.' + UpSS + ' -') then
+      or Line.Contains('.' + UpSS + ' -')
+      or Line.EndsWith('.' + UpSS) then
       Continue;
 
     Result.Delete(I);

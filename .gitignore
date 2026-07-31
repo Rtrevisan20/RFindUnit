@@ -16,3 +16,11 @@ Installer-deprecated/Installer.exe
 *.tvsconfig
 *.mes
 /AGENTS.md
+
+*.dcp
+*.bpl
+*.bpi
+*.dsk
+*.map
+*.drc
+Bpl/

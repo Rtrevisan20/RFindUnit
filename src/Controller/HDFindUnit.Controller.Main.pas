@@ -274,21 +274,43 @@ begin
   FilePath := CurEditor.FileName;
   EnvControl := FEnvControl;
 
-  if not EnvControl.AreDependenciasReady then
-  begin
-    Logger.Debug('TRFindUnitMain.GetUnusedUses: Dependencias nao prontas, iniciando carregamento...');
-    EnvControl.ForceRunDependencies;
-    TfrmMessage.ShowInfoToUser(Translation.GetUnusedUsesIndexing);
-    Exit;
-  end;
-
   TfrmMessage.ShowInfoToUser(Translation.GetUnusedUsesAnalyzing);
 
   TTask.Run(procedure
   var
     UnusedUses: TUnsedUsesProcessor;
     ResultMsg: string;
+    WaitCount: Integer;
   begin
+    if not EnvControl.AreDependenciasReady then
+    begin
+      EnvControl.ForceRunDependencies;
+      WaitCount := 0;
+      while not EnvControl.AreDependenciasReady do
+      begin
+        Sleep(200);
+        Inc(WaitCount);
+        if WaitCount >= 50 then
+        begin
+          TThread.Synchronize(nil, procedure
+          begin
+            TfrmMessage.ShowInfoToUser(Translation.GetUnusedUsesIndexing);
+          end);
+          Exit;
+        end;
+      end;
+    end;
+
+    if not EnvControl.IsFileIndexed(FilePath) then
+    begin
+      Logger.Debug('GetUnusedUses: file not indexed, skipping: %s', [FilePath]);
+      TThread.Synchronize(nil, procedure
+      begin
+        TfrmMessage.ShowInfoToUser(Translation.GetUnusedUsesNotIndexed);
+      end);
+      Exit;
+    end;
+
     try
       UnusedUses := TUnsedUsesProcessor.Create(FilePath);
       try

@@ -23,6 +23,7 @@ type
     function GetUnusedUsesAllUsed: string; virtual; abstract;
     function GetUnusedUsesUnused(const Units: string): string; virtual; abstract;
     function GetUnusedUsesError(const Msg: string): string; virtual; abstract;
+    function GetUnusedUsesNotIndexed: string; virtual; abstract;
 
     function GetOrganizeUsesDone: string; virtual; abstract;
     function GetOrganizeUsesWarning: string; virtual; abstract;
@@ -106,6 +107,7 @@ type
     function GetUnusedUsesAllUsed: string; override;
     function GetUnusedUsesUnused(const Units: string): string; override;
     function GetUnusedUsesError(const Msg: string): string; override;
+    function GetUnusedUsesNotIndexed: string; override;
 
     function GetOrganizeUsesDone: string; override;
     function GetOrganizeUsesWarning: string; override;
@@ -189,6 +191,7 @@ type
     function GetUnusedUsesAllUsed: string; override;
     function GetUnusedUsesUnused(const Units: string): string; override;
     function GetUnusedUsesError(const Msg: string): string; override;
+    function GetUnusedUsesNotIndexed: string; override;
 
     function GetOrganizeUsesDone: string; override;
     function GetOrganizeUsesWarning: string; override;
@@ -313,6 +316,11 @@ end;
 function TTranslationPTBR.GetUnusedUsesError(const Msg: string): string;
 begin
   Result := 'Erro ao analisar units: ' + Msg;
+end;
+
+function TTranslationPTBR.GetUnusedUsesNotIndexed: string;
+begin
+  Result := 'O arquivo atual não pertence ao projeto ou biblioteca indexados. Abra o projeto correto (ou aguarde a indexação terminar) e tente novamente.';
 end;
 
 function TTranslationPTBR.GetOrganizeUsesDone: string;
@@ -667,6 +675,11 @@ end;
 function TTranslationEN.GetUnusedUsesError(const Msg: string): string;
 begin
   Result := 'Error analyzing units: ' + Msg;
+end;
+
+function TTranslationEN.GetUnusedUsesNotIndexed: string;
+begin
+  Result := 'The current file is not part of the indexed project or library. Open the correct project (or wait for indexing to finish) and try again.';
 end;
 
 function TTranslationEN.GetOrganizeUsesDone: string;

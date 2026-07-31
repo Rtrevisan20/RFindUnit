@@ -3,7 +3,7 @@
 interface
 
 const
-  VERSION: array[0..2] of Word = (1,2,0);//(MAJOR, RELEASE, BUILD)
+  VERSION: array[0..2] of Word = (1,2,2);//(MAJOR, RELEASE, BUILD)
 
 type
   TListType = (ltClasses = 0,

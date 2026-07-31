@@ -73,9 +73,9 @@ type
     //sub rotines
     procedure GetRecords(Types: TSyntaxNode);
     procedure GetInterfaceDescription(Types: TSyntaxNode);
-    procedure GetClassDescription(Types: TSyntaxNode);
+    procedure GetClassDescription(Types: TSyntaxNode; IsHelper: Boolean = False);
     procedure GetEnumerationDescription(Types: TSyntaxNode);
-    procedure GetClassMethodsFromClassNode(AClassName: string; ClassNode: TSyntaxNode);
+    procedure GetClassMethodsFromClassNode(AClassName: string; ClassNode: TSyntaxNode; IsHelper: Boolean = False);
     procedure GetProcedureReferenceDescription(Types: TSyntaxNode);
     procedure GetFunctionReferenceDescription(Types: TSyntaxNode);
     procedure GetReference(Types: TSyntaxNode);
@@ -201,7 +201,7 @@ begin
             if TypeType.Equals('interface') then
               GetInterfaceDescription(TypeNode)
             else if TypeType.Equals('class') then
-              GetClassDescription(TypeNode)
+              GetClassDescription(TypeNode, TypeDesc.FindNode(ntHelper) <> nil)
             else if TypeType.Equals('enum') or TypeType.Equals('set') then
               GetEnumerationDescription(TypeNode)
             else if TypeType.Equals('record') then
@@ -239,36 +239,53 @@ begin
   end;
 end;
 
-procedure TPasFileParser.GetClassDescription(Types: TSyntaxNode);
+procedure TPasFileParser.GetClassDescription(Types: TSyntaxNode; IsHelper: Boolean = False);
 var
   Description: string;
 begin
   Description := Types.GetAttribute(anName);
   FResultItem.FClasses.Add(Description + '.* - Class');
 
-  GetClassMethodsFromClassNode(Description, Types);
+  GetClassMethodsFromClassNode(Description, Types, IsHelper);
 end;
 
-procedure TPasFileParser.GetClassMethodsFromClassNode(AClassName: string; ClassNode: TSyntaxNode);
+procedure TPasFileParser.GetClassMethodsFromClassNode(AClassName: string; ClassNode: TSyntaxNode; IsHelper: Boolean = False);
 var
   MethodNode: TSyntaxNode;
   IsClassMethod: Boolean;
   MethodType: string;
   MethodNameDesc: string;
   PublicNode: TSyntaxNode;
+  SectionNode: TSyntaxNode;
 begin
   PublicNode := ClassNode.FindNode(ntType);
   if PublicNode = nil then
     Exit;
 
-  PublicNode := PublicNode.FindNode(ntPublic);
-  if PublicNode = nil then
-    Exit;
+  if IsHelper then
+  begin
+    // Helper methods sit DIRECTLY under the ntType node - the ntHelper node
+    // only holds the base type (e.g. TField). With explicit visibility
+    // sections they may live under an ntPublic instead.
+    SectionNode := PublicNode;
+    if SectionNode.FindNode(ntMethod) = nil then
+    begin
+      SectionNode := SectionNode.FindNode(ntPublic);
+      if SectionNode = nil then
+        Exit;
+    end;
+  end
+  else
+  begin
+    SectionNode := PublicNode.FindNode(ntPublic);
+    if SectionNode = nil then
+      Exit;
+  end;
 
-  MethodNode := PublicNode.FindNode(ntMethod);
+  MethodNode := SectionNode.FindNode(ntMethod);
   while MethodNode <> nil do begin
     IsClassMethod := MethodNode.HasAttribute(anClass) and MethodNode.GetAttribute(anClass).Equals('true');
-    if IsClassMethod then begin
+    if IsClassMethod or IsHelper then begin
       MethodNameDesc := AClassName + '.' + MethodNode.GetAttribute(anName);
       MethodType := MethodNode.GetAttribute(anKind);
       if MethodType = 'procedure' then
@@ -277,8 +294,8 @@ begin
         FResultItem.FClassFunctions.Add(MethodNameDesc + strListTypeDescription[ltClassFunctions]);
     end;
 
-    PublicNode.DeleteChild(MethodNode);
-    MethodNode := PublicNode.FindNode(ntMethod);
+    SectionNode.DeleteChild(MethodNode);
+    MethodNode := SectionNode.FindNode(ntMethod);
   end;
 end;
 
@@ -427,8 +444,14 @@ begin
 end;
 
 procedure TPasFileParser.GetRecords(Types: TSyntaxNode);
+var
+  TypeDesc: TSyntaxNode;
 begin
   FResultItem.FRecords.Add(Types.GetAttribute(anName) + '.* - Record');
+
+  TypeDesc := Types.FindNode(ntType);
+  if (TypeDesc <> nil) and (TypeDesc.FindNode(ntHelper) <> nil) then
+    GetClassMethodsFromClassNode(Types.GetAttribute(anName), Types, True);
 end;
 
 procedure TPasFileParser.GetReference(Types: TSyntaxNode);
