@@ -70,6 +70,35 @@ Suporte a múltiplos idiomas (PT-BR / EN) com tradução dinâmica de todas as m
 
 ---
 
+## Desempenho
+
+O **Unused Uses (Ctrl+Shift+L)** foi otimizado com um índice de elementos em memória, reduzindo drasticamente o tempo de análise:
+
+| Fase | Tempo por unit |
+|---|---|
+| Antes das otimizações | ~14.000 ms (pior caso) |
+| Após as otimizações | **1–58 ms** (média ~13 ms) |
+
+**Melhoria de ~1.000x** no pior caso.
+
+### Otimizações aplicadas
+
+- **Índice de element names em memória** — lookup O(1), substituindo a varredura de todas as units indexadas por palavra buscada
+- **Cache de parsing** — arquivos não modificados não são re-parseados (threshold de 1s)
+- **Fallback pattern-based** — tipos, variáveis e valores de enum que o parser não extrai são detectados por varredura do código real (comentários/strings ignorados)
+- **Detecção de dependências implícitas** — drivers FireDAC (ex: `FireDAC.Phys.PG` via `*Def`), infraestrutura de forms (FMX/FireDAC/Data.Bind por namespace), helpers
+- **Guard de escopo de projeto** — arquivos fora do projeto/biblioteca indexados não geram falsos "unused"
+
+### Métricas atuais (97 units analisadas)
+
+| Métrica | Valor |
+|---|---|
+| Média por unit | 12,9 ms |
+| Mediana | 9 ms |
+| Min / Max | 1 ms / 58 ms |
+
+---
+
 ## Estrutura do Projeto
 
 O projeto segue arquitetura **MVC** com prefixo **HD** nas units:
