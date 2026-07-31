@@ -70,6 +70,7 @@ type
     function GetSettingsUnderlineMeaning: string; virtual; abstract;
     function GetSettingsImportNotUsed: string; virtual; abstract;
     function GetSettingsDCUNoAccess: string; virtual; abstract;
+function GetSettingsDCPDistributed: string; virtual; abstract;
     function GetSettingsMatchAlgorithm: string; virtual; abstract;
     function GetSettingsRememberChoices: string; virtual; abstract;
     function GetSettingsOrganizeUses: string; virtual; abstract;
@@ -154,6 +155,7 @@ type
     function GetSettingsUnderlineMeaning: string; override;
     function GetSettingsImportNotUsed: string; override;
     function GetSettingsDCUNoAccess: string; override;
+    function GetSettingsDCPDistributed: string; override;
     function GetSettingsMatchAlgorithm: string; override;
     function GetSettingsRememberChoices: string; override;
     function GetSettingsOrganizeUses: string; override;
@@ -238,6 +240,7 @@ type
     function GetSettingsUnderlineMeaning: string; override;
     function GetSettingsImportNotUsed: string; override;
     function GetSettingsDCUNoAccess: string; override;
+    function GetSettingsDCPDistributed: string; override;
     function GetSettingsMatchAlgorithm: string; override;
     function GetSettingsRememberChoices: string; override;
     function GetSettingsOrganizeUses: string; override;
@@ -528,6 +531,11 @@ begin
       + #10'Para corrigi-lo, clique no botão'
       + #10'"Processar arquivos DCUs do caminho da biblioteca"'
       + #10'Na tela de pesquisa';
+end;
+
+function TTranslationPTBR.GetSettingsDCPDistributed: string;
+begin
+  Result := 'Unit distribuída apenas via .dcp da IDE (ex: DockForm, DeskUtil)';
 end;
 
 function TTranslationPTBR.GetSettingsMatchAlgorithm: string;
@@ -887,6 +895,11 @@ begin
       + #10'To fix it, click the button'
       + #10'"Process DCU files from library path"'
       + #10'On the search screen';
+end;
+
+function TTranslationEN.GetSettingsDCPDistributed: string;
+begin
+  Result := 'Unit distributed only via IDE .dcp (e.g.: DockForm, DeskUtil)';
 end;
 
 function TTranslationEN.GetSettingsMatchAlgorithm: string;

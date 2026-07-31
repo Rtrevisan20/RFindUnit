@@ -60,6 +60,7 @@ type
     function GetSettingsUnderlineMeaning: string;
     function GetSettingsImportNotUsed: string;
     function GetSettingsDCUNoAccess: string;
+    function GetSettingsDCPDistributed: string;
     function GetSettingsMatchAlgorithm: string;
     function GetSettingsRememberChoices: string;
     function GetSettingsOrganizeUses: string;

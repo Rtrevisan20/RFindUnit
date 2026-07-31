@@ -82,7 +82,7 @@ object frmSettings: TfrmSettings
         end
         object lblLanguage: TLabel
           Left = 335
-          Top = 300
+          Top = 306
           Width = 36
           Height = 13
           Caption = 'Idioma:'
@@ -97,6 +97,21 @@ object frmSettings: TfrmSettings
             'nado no caminho da biblioteca.'#10'Para corrigi-lo, clique no bot'#227'o'#10 +
             '"Processar arquivos DCUs do caminho da biblioteca"'#10'Na tela de pe' +
             'squisa'
+        end
+        object Shape3: TShape
+          Left = 368
+          Top = 283
+          Width = 23
+          Height = 17
+          Brush.Color = 10086911
+        end
+        object Label5: TLabel
+          Left = 397
+          Top = 285
+          Width = 276
+          Height = 13
+          Caption = 
+            'Unit distribu'#237'da apenas via .dcp da IDE (ex: DockForm, DeskUtil)'
         end
         object cbbLanguage: TComboBox
           Left = 335

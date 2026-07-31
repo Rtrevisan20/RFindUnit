@@ -7,6 +7,7 @@ uses
   Data.DB,
   Datasnap.DBClient,
   HDFindUnit.Controller.OTAUtils,
+  HDFindUnit.Model.ImageRepository,
   HDFindUnit.Model.Settings,
   HDFindUnit.Model.Translation,
   HDFindUnit.Model.Interf.Translation,
@@ -63,9 +64,11 @@ type
     chkSortUsesByLevel: TCheckBox;
     shpUnused: TShape;
     Shape2: TShape;
+    Shape3: TShape;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Label5: TLabel;
     chbEnableHighlight: TCheckBox;
     lblLanguage: TLabel;
     cbbLanguage: TComboBox;
@@ -237,6 +240,8 @@ begin
   Label3.Caption := Translation.GetSettingsUnderlineMeaning;
   Label2.Caption := Translation.GetSettingsImportNotUsed;
   Label4.Caption := Translation.GetSettingsDCUNoAccess;
+  Label5.Caption := Translation.GetSettingsDCPDistributed;
+  Shape3.Brush.Color := RFUWarningColor;
   grpSearchAlgorithm.Caption := Translation.GetSettingsMatchAlgorithm;
   chkMemorize.Caption := Translation.GetSettingsRememberChoices;
   chkOrganizeUses.Caption := Translation.GetSettingsOrganizeUses;

@@ -47,7 +47,7 @@ A detecção usa um índice de element names em memória (lookup O(1)) e o resul
 |---|---|
 | Laranja | Unit indexada e não utilizada no código |
 | Cinza | Unit não indexada mas com `.dcu`/`.pas` no disco (ex: `ToolsAPI`, RTL/VCL fora do índice) |
-| Azul claro | Unit distribuída apenas via `.dcp` da IDE (ex: `DockForm`, `DeskUtil`) |
+| Amarelo | Unit distribuída apenas via `.dcp` da IDE (ex: `DockForm`, `DeskUtil`) |
 
 O check no gutter (unit sem uses não utilizadas) é renderizado com **SVG** (componente [SVG-Ekot](https://github.com/EKot/SVG)), com cor que acompanha o tema da IDE (claro/escuro) automaticamente.
 
