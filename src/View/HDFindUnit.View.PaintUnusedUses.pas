@@ -18,8 +18,10 @@ uses
   System.SysUtils,
   System.Threading,
   System.Types,
+  RFUSVG,
   Vcl.Graphics,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage,
+  Winapi.GDIPAPI;
 
 type
   TRfUnusedProcessStatus = (uspRunning, uspPending, uspComplete);
@@ -235,7 +237,11 @@ begin
   begin
     if ((FProcessed in [uspRunning, uspPending]) or (not Assigned(FUnusedUses))) then
     begin
-      Canvas.Draw(LineRect.Left, LineRect.Top, HourGlass);
+      if TFindUnitImageRepository.GetHourGlassSVG <> nil then
+        TFindUnitImageRepository.GetHourGlassSVG.PaintTo(Canvas.Handle,
+          MakeRect(Single(LineRect.Left), Single(LineRect.Top), 24, 24), nil, 0)
+      else
+        Canvas.Draw(LineRect.Left, LineRect.Top, HourGlass);
       Exit;
     end
     else if (FProcessed = uspComplete) and (FUnusedUses.Count = 0) then
@@ -256,16 +262,19 @@ begin
     if (FUsesStartLine = LineNumber) then
     begin
       if (FProcessed = uspComplete) and (FUnusedUses.Count > 0) then
-        Canvas.Draw(LineRect.Left, LineRect.Top, CheckedWarn)
+        TFindUnitImageRepository.GetCheckWarningsSVG.PaintTo(Canvas.Handle,
+          MakeRect(Single(LineRect.Left), Single(LineRect.Top), 24, 24), nil, 0)
     end;
 
     Line := string(LineText);
     for I := 0 to FUnusedUses.Count -1 do
     begin
-      if FUnusedUses[I].UnusedType = uetNoPasFile then
-        FBackgroundColor := clLtGray
+      case FUnusedUses[I].UnusedType of
+        uetNoPasFile: FBackgroundColor := clLtGray;
+        uetDcp: FBackgroundColor := RFUWarningColor;
       else
         FBackgroundColor := clWebOrange;
+      end;
 
       RegReturn := TRegEx.Matches(Line, '\b' + FUnusedUses[I].Name + '[^<.>]');
       if RegReturn.Count > 0 then

@@ -1,4 +1,4 @@
-﻿package RFindUnit;
+package RFindUnit;
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
@@ -74,10 +74,24 @@ contains
   HDFindUnit.Controller.Interf.EnvironmentController in '..\..\src\Controller\HDFindUnit.Controller.Interf.EnvironmentController.pas',
   HDFindUnit.View.PaintUnusedUses in '..\..\src\View\HDFindUnit.View.PaintUnusedUses.pas',
   HDFindUnit.Model.ImageRepository in '..\..\src\Model\HDFindUnit.Model.ImageRepository.pas',
+  HDFindUnit.Model.SVGConsts in '..\..\src\Model\HDFindUnit.Model.SVGConsts.pas',
   HDFindUnit.Model.SearchStringCache in '..\..\src\Model\HDFindUnit.Model.SearchStringCache.pas',
   HDFindUnit.Model.Interf.SearchStringCache in '..\..\src\Model\HDFindUnit.Model.Interf.SearchStringCache.pas',
   HDFindUnit.View.FormSearch in '..\..\src\View\HDFindUnit.View.FormSearch.pas' {frmFindUnit},
   HDFindUnit.Model.Interf.Translation in '..\..\src\Model\HDFindUnit.Model.Interf.Translation.pas',
-  HDFindUnit.Model.Translation in '..\..\src\Model\HDFindUnit.Model.Translation.pas';
+  HDFindUnit.Model.Translation in '..\..\src\Model\HDFindUnit.Model.Translation.pas',
+  RFUSVG in '..\..\Thirdy\RFUSVG-Ekot\RFUSVG.pas',
+  RFUSVGColor in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGColor.pas',
+  RFUSVGCommon in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGCommon.pas',
+  RFUSVGPaint in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGPaint.pas',
+  RFUSVGParse in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGParse.pas',
+  RFUSVGPath in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGPath.pas',
+  RFUSVGProperties in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGProperties.pas',
+  RFUSVGStyle in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGStyle.pas',
+  RFUSVGTypes in '..\..\Thirdy\RFUSVG-Ekot\RFUSVGTypes.pas',
+  RFUGDIPKerning in '..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPKerning.pas',
+  RFUGDIPOBJ2 in '..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPOBJ2.pas',
+  RFUGDIPPathText in '..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPPathText.pas',
+  RFUGDIPUtils in '..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPUtils.pas';
 
 end.

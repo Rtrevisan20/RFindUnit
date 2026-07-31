@@ -171,6 +171,7 @@
         <DCCReference Include="..\..\src\Controller\HDFindUnit.Controller.Interf.EnvironmentController.pas"/>
         <DCCReference Include="..\..\src\View\HDFindUnit.View.PaintUnusedUses.pas"/>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.ImageRepository.pas"/>
+        <DCCReference Include="..\..\src\Model\HDFindUnit.Model.SVGConsts.pas"/>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.SearchStringCache.pas"/>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Interf.SearchStringCache.pas"/>
         <DCCReference Include="..\..\src\View\HDFindUnit.View.FormSearch.pas">
@@ -178,6 +179,19 @@
         </DCCReference>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Interf.Translation.pas"/>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Translation.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVG.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGColor.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGCommon.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGPaint.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGParse.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGPath.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGProperties.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGStyle.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGTypes.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPKerning.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPOBJ2.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPPathText.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPUtils.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -213,6 +227,12 @@
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\RFindUnit.bpl" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\RFindUnit.bpl" Configuration="RAISEMAD" Class="ProjectOutput"/>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\RFindUnit290.1.0.bpl" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\37.0\Bpl\RFindUnit370.1.0.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>RFindUnit.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">
                         <Operation>1</Operation>

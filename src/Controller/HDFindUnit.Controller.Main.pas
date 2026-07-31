@@ -317,7 +317,7 @@ begin
         UnusedUses.SetEnvControl(EnvControl);
         UnusedUses.Process;
 
-        if UnusedUses.UnusedUses.Count = 0 then
+        if not UnusedUses.HasUnusedUses then
           ResultMsg := Translation.GetUnusedUsesAllUsed
         else
           ResultMsg := Translation.GetUnusedUsesUnused(UnusedUses.GetUnusedUsesAsString);

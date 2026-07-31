@@ -21,7 +21,7 @@ uses
   HDFindUnit.Controller.Interf.EnvironmentController;
 
 type
-  TUnusedErrorType = (uetUnused, uetNoPasFile);
+  TUnusedErrorType = (uetUnused, uetNoPasFile, uetDcp);
 
   TUsesUnit = record
     Line: Integer;
@@ -52,6 +52,7 @@ type
     procedure FallbackAddTypesFromSource(Result: TDictionary<string, string>);
     procedure FallbackAddImplicitDeps;
     function GetUnitSpecifiedOnUses: TDictionary<string, TUsesUnit>;
+    function GetNotIndexedUnusedType(UnitName: string): TUnusedErrorType;
     function GetFullMatchsForUses: TDictionary<string, string>;
     function GetIgnoredTypes: TDictionary<string, string>;
     function GetIgnoredUses: TDictionary<string, string>;
@@ -67,6 +68,7 @@ type
     procedure SetEnvControl(EnvControl: IRFUEnvironmentController);
 
     function GetUnusedUsesAsString: string;
+    function HasUnusedUses: Boolean;
 
     property UnusedUses: TDictionary<string, TUsesUnit> read FUnusedUses;
     property UsesStartLine: Integer read FUsesStartLine write FUsesStartLine;
@@ -75,7 +77,16 @@ type
 implementation
 
 uses
+  System.IOUtils,
+  System.SyncObjs,
+  Winapi.Windows,
   HDFindUnit.Model.Header;
+
+var
+  GNotIndexedCache: TDictionary<string, TUnusedErrorType>;
+  GIdesourcePasNames: TDictionary<string, Boolean>;
+  GIdesourceScanDone: Boolean;
+  GNotIndexedCacheLock: TCriticalSection;
 
 type
   TCodeScanState = (csCode, csBraceComment, csParenComment);
@@ -362,7 +373,12 @@ begin
           end;
 
         if not FoundNamespace then
+        begin
+          if not FEnvControl.PasExists(UseFound.Key + '.pas') then
+            Logger.Debug('GetUnusedUses: not indexed %s (usage cannot be verified)', [UseFound.Key]);
+
           Result.Add(UseFound.Key, UseFound.Value);
+        end;
       end;
 
   AllPossibleMatches.Free;
@@ -378,7 +394,22 @@ begin
     Exit;
 
   for Value in FUnusedUses.Values do
-    Result := Result + Value.Name + ',';
+    if Value.UnusedType = uetUnused then
+      Result := Result + Value.Name + ',';
+end;
+
+function TUnsedUsesProcessor.HasUnusedUses: Boolean;
+var
+  Value: TUsesUnit;
+begin
+  Result := False;
+
+  if FUnusedUses = nil then
+    Exit;
+
+  for Value in FUnusedUses.Values do
+    if Value.UnusedType = uetUnused then
+      Exit(True);
 end;
 
 function TUnsedUsesProcessor.GetUsedTypes: TDictionary<string, string>;
@@ -590,11 +621,74 @@ begin
     if FEnvControl.PasExists(UsesUnit.Name.ToUpper + '.pas') then
       UsesUnit.UnusedType := uetUnused
     else
-      UsesUnit.UnusedType := uetNoPasFile;
+      UsesUnit.UnusedType := GetNotIndexedUnusedType(UsesUnit.Name);
 
     Result.AddOrSetValue(UsesUnit.Name.ToUpper, UsesUnit);
   end;
   XmlFile.Free;
+end;
+
+function TUnsedUsesProcessor.GetNotIndexedUnusedType(UnitName: string): TUnusedErrorType;
+var
+  UpperName: string;
+  BDSDir: string;
+  DcuDir: string;
+  SourceFile: string;
+begin
+  UpperName := UnitName.ToUpper;
+
+  GNotIndexedCacheLock.Acquire;
+  try
+    if GNotIndexedCache.TryGetValue(UpperName, Result) then
+      Exit;
+  finally
+    GNotIndexedCacheLock.Release;
+  end;
+
+  Result := uetDcp;
+  BDSDir := GetEnvironmentVariable('BDS');
+  if BDSDir = '' then
+  begin
+    GNotIndexedCacheLock.Acquire;
+    try
+      GNotIndexedCache.AddOrSetValue(UpperName, Result);
+    finally
+      GNotIndexedCacheLock.Release;
+    end;
+    Exit;
+  end;
+
+  for DcuDir in [BDSDir + '\lib\win32\release', BDSDir + '\lib\win32\debug'] do
+    if FileExists(DcuDir + '\' + UpperName + '.dcu') then
+    begin
+      Result := uetNoPasFile;
+      Break;
+    end;
+
+  if (Result = uetDcp) and TDirectory.Exists(BDSDir + '\source') then
+  begin
+    GNotIndexedCacheLock.Acquire;
+    try
+      if not GIdesourceScanDone then
+      begin
+        for SourceFile in TDirectory.GetFiles(BDSDir + '\source', '*.pas', TSearchOption.soAllDirectories) do
+          GIdesourcePasNames.AddOrSetValue(ExtractFileName(SourceFile).ToUpper, True);
+        GIdesourceScanDone := True;
+        Logger.Debug('GetNotIndexedUnusedType: IDE source scanned, %d files', [GIdesourcePasNames.Count]);
+      end;
+      if GIdesourcePasNames.ContainsKey(UpperName + '.PAS') then
+        Result := uetNoPasFile;
+    finally
+      GNotIndexedCacheLock.Release;
+    end;
+  end;
+
+  GNotIndexedCacheLock.Acquire;
+  try
+    GNotIndexedCache.AddOrSetValue(UpperName, Result);
+  finally
+    GNotIndexedCacheLock.Release;
+  end;
 end;
 
 function TUnsedUsesProcessor.GetOptionalUsesPrefix: TStringList;
@@ -842,5 +936,16 @@ procedure TUnsedUsesProcessor.SetIncluder(Includer: IIncludeHandler);
 begin
   FIncluder := Includer;
 end;
+
+initialization
+  GNotIndexedCacheLock := TCriticalSection.Create;
+  GNotIndexedCache := TDictionary<string, TUnusedErrorType>.Create;
+  GIdesourcePasNames := TDictionary<string, Boolean>.Create;
+  GIdesourceScanDone := False;
+
+finalization
+  GNotIndexedCache.Free;
+  GIdesourcePasNames.Free;
+  GNotIndexedCacheLock.Free;
 
 end.
