@@ -79,7 +79,8 @@ type
         Func: TFuncBoolean;
         FuncStatus: TFuncString;
         LabelDesc: TLabel;
-        RefreshButton: TSpeedButton
+        RefreshButton: TSpeedButton;
+        var BecameReady: Boolean
     );
     procedure CheckLibraryStatus;
     procedure FilterItemFromSearchString;
@@ -328,29 +329,28 @@ procedure TfrmFindUnit.CheckLoadingStatus(
     Func: TFuncBoolean;
     FuncStatus: TFuncString;
     LabelDesc: TLabel;
-    RefreshButton: TSpeedButton
+    RefreshButton: TSpeedButton;
+    var BecameReady: Boolean
 );
 var
   NewCaption: string;
 begin
   NewCaption := '';
   if Func then begin
+    if LabelDesc.Visible then
+      BecameReady := True;
     RefreshButton.Visible := True;
     LabelDesc.Visible := False;
   end
   else begin
-    LabelDesc.Visible := True;
     RefreshButton.Visible := False;
+    LabelDesc.Visible := True;
     NewCaption := FuncStatus;
     LabelDesc.Font.Color := $000069D2;
     LabelDesc.Font.Style := [fsItalic];
   end;
 
-  if NewCaption <> LabelDesc.Caption then begin
-    FilterItemFromSearchString;
-    LabelDesc.Caption := NewCaption;
-  end;
-
+  LabelDesc.Caption := NewCaption;
 end;
 
 procedure TfrmFindUnit.chkSearchLibraryPathClick(Sender: TObject);
@@ -616,23 +616,33 @@ begin
 end;
 
 procedure TfrmFindUnit.CheckLibraryStatus;
+var
+  BecameReady: Boolean;
 begin
+  BecameReady := False;
   btnProcessDCUs.Enabled := not FEnvControl.ProcessingDCU;
   CheckLoadingStatus(
       FEnvControl.IsProjectsUnitReady,
       FEnvControl.GetProjectPathStatus,
       lblProjectUnitsStatus,
-      btnRefreshProject
+      btnRefreshProject,
+      BecameReady
   );
   CheckLoadingStatus(
       FEnvControl.IsLibraryPathsUnitReady,
       FEnvControl.GetLibraryPathStatus,
       lblLibraryUnitsStatus,
-      btnRefreshLibraryPath
+      btnRefreshLibraryPath,
+      BecameReady
   );
 
   if FEnvControl.IsProjectsUnitReady and FEnvControl.IsLibraryPathsUnitReady then
-    tmrLoadedItens.Enabled := False;
+    tmrLoadedItens.Enabled := False
+  else
+    tmrLoadedItens.Enabled := True;
+
+  if BecameReady then
+    FilterItemFromSearchString;
 end;
 
 procedure TfrmFindUnit.tmrLoadedItensTimer(Sender: TObject);

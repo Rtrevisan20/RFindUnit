@@ -281,6 +281,7 @@ begin
         if FCacheFiles.TryGetValue(CurFileInfo.Path, OldParsedFile) then begin
           MilliBtw := MilliSecondsBetween(CurFileInfo.LastAccess, OldParsedFile.LastModification);
           if MilliBtw <= 1000 then begin
+            InterlockedIncrement(FParsedItems);
             Item := FCacheFiles.ExtractPair(CurFileInfo.Path).Value;
             FFindUnits.Add(Item.FilePath, Item);
             Continue;

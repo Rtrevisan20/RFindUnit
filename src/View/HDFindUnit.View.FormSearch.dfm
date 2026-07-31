@@ -245,7 +245,7 @@ object frmFindUnit: TfrmFindUnit
     Top = 124
   end
   object tmrLoadedItens: TTimer
-    Interval = 700
+    Interval = 100
     OnTimer = tmrLoadedItensTimer
     Left = 498
     Top = 189
