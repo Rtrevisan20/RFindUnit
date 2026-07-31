@@ -41,6 +41,16 @@ Ordena e organiza a cláusula uses com várias opções:
 
 Detecta e destaca units que estão no bloco uses mas não são utilizadas no código.
 
+A detecção usa um índice de element names em memória (lookup O(1)) e o resultado é pintado no editor com código de cores:
+
+| Cor | Significado |
+|---|---|
+| Laranja | Unit indexada e não utilizada no código |
+| Cinza | Unit não indexada mas com `.dcu`/`.pas` no disco (ex: `ToolsAPI`, RTL/VCL fora do índice) |
+| Azul claro | Unit distribuída apenas via `.dcp` da IDE (ex: `DockForm`, `DeskUtil`) |
+
+O check no gutter (unit sem uses não utilizadas) é renderizado com **SVG** (componente [SVG-Ekot](https://github.com/EKot/SVG)), com cor que acompanha o tema da IDE (claro/escuro) automaticamente.
+
 ![Unused Uses](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/CheckedAndNotOk.png)
 
 ### Auto Import (Ctrl+Space)
@@ -88,6 +98,8 @@ O **Unused Uses (Ctrl+Shift+L)** foi otimizado com um índice de elementos em me
 - **Fallback pattern-based** — tipos, variáveis e valores de enum que o parser não extrai são detectados por varredura do código real (comentários/strings ignorados)
 - **Detecção de dependências implícitas** — drivers FireDAC (ex: `FireDAC.Phys.PG` via `*Def`), infraestrutura de forms (FMX/FireDAC/Data.Bind por namespace), helpers
 - **Guard de escopo de projeto** — arquivos fora do projeto/biblioteca indexados não geram falsos "unused"
+- **Pintura em 3 cores** — units não indexadas são distinguidas (cinza/azul) das realmente não utilizadas (laranja)
+- **Ícones SVG no gutter** — check e ampulheta renderizados via SVG-Ekot, com cor adaptada ao tema da IDE
 
 ### Métricas atuais (97 units analisadas)
 
@@ -131,6 +143,7 @@ src/
 - [DelphiAST](https://github.com/RomanYankovsky/DelphiAST) — Parser de código Delphi
 - [Log4Pascal](https://github.com/martinusso/log4pascal) — Sistema de logging
 - [DCU32INT](https://github.com/rfrezino/DCU32INT) — Descompilador DCU
+- [SVG-Ekot](https://github.com/EKot/SVG) — Renderização de ícones SVG (units renomeadas com prefixo `RFU` para evitar conflito de packages)
 
 ---
 
