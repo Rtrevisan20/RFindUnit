@@ -16,6 +16,8 @@ const
 
   cSVGColorDark = '#FFE999';
   cSVGColorLight = '#C77700';
+  cSVGCheckOkColorDark = '#81C784';
+  cSVGCheckOkColorLight = '#2E7D32';
 
 type
   TRfImageType = (girHourGlass,
@@ -27,12 +29,14 @@ type
     class var FRepository: TObjectDictionary<string, TPngImage>;
     class var FSVGWarning: TSVG;
     class var FSVGHourGlass: TSVG;
+    class var FSVGCheckOk: TSVG;
     class var FSVGDarkTheme: Boolean;
     class var FGDIPlusToken: NativeUInt;
     class var FGDIPlusReady: Boolean;
     class procedure EnsureGDIPlus;
     class function IsDarkTheme: Boolean;
     class function GetSVGColorHex: string;
+    class function GetCheckOkSVGColorHex: string;
     class function CreateSVG(const TextBase: string): TSVG;
     class procedure GetGraphicFromText(var Graphic: TPngImage; ImageBaseText: string);
 
@@ -44,6 +48,7 @@ type
     class function GetImage(ImageType: TRfImageType): TPngImage;
     class function GetCheckWarningsSVG: TSVG;
     class function GetHourGlassSVG: TSVG;
+    class function GetCheckOkSVG: TSVG;
   end;
 
 implementation
@@ -148,6 +153,30 @@ begin
   Result := FSVGHourGlass;
 end;
 
+class function TFindUnitImageRepository.GetCheckOkSVGColorHex: string;
+begin
+  if IsDarkTheme then
+    Result := cSVGCheckOkColorDark
+  else
+    Result := cSVGCheckOkColorLight;
+end;
+
+class function TFindUnitImageRepository.GetCheckOkSVG: TSVG;
+var
+  Dark: Boolean;
+begin
+  Dark := IsDarkTheme;
+  if (FSVGCheckOk = nil) or (FSVGDarkTheme <> Dark) then
+  begin
+    FSVGCheckOk.Free;
+    EnsureGDIPlus;
+    FSVGCheckOk := TSVG.Create;
+    FSVGCheckOk.LoadFromText(StringReplace(cSVGCheck, '#FFE999', GetCheckOkSVGColorHex, [rfReplaceAll]));
+    FSVGDarkTheme := Dark;
+  end;
+  Result := FSVGCheckOk;
+end;
+
 class function TFindUnitImageRepository.GetSVGColorHex: string;
 begin
   if IsDarkTheme then
@@ -230,6 +259,7 @@ initialization
 finalization
   TFindUnitImageRepository.FSVGWarning.Free;
   TFindUnitImageRepository.FSVGHourGlass.Free;
+  TFindUnitImageRepository.FSVGCheckOk.Free;
   TFindUnitImageRepository.FRepository.Free;
   if TFindUnitImageRepository.FGDIPlusReady then
     GdiplusShutdown(TFindUnitImageRepository.FGDIPlusToken);

@@ -30,8 +30,6 @@ type
     FUsesStartLine: Integer;
   protected
     var HourGlass: TPngImage;
-    var CheckedWarn: TPngImage;
-    var CheckedOk: TPngImage;
 
     FNeedRepaint: Boolean;
     FProcessed: TRfUnusedProcessStatus;
@@ -159,12 +157,6 @@ begin
 
   if HourGlass = nil then
     HourGlass := TFindUnitImageRepository.GetImage(girHourGlass);
-
-  if CheckedWarn = nil then
-    CheckedWarn := TFindUnitImageRepository.GetImage(girCheckWithWarnings);
-
-  if CheckedOk = nil then
-    CheckedOk := TFindUnitImageRepository.GetImage(girCheckedAllOk);
 end;
 
 destructor TRfPaintUnsuedUses.Destroy;
@@ -245,7 +237,8 @@ begin
     end
     else if (FProcessed = uspComplete) and (FUnusedUses.Count = 0) then
     begin
-      Canvas.Draw(LineRect.Left, LineRect.Top, CheckedOk);
+      TFindUnitImageRepository.GetCheckOkSVG.PaintTo(Canvas.Handle,
+        MakeRect(Single(LineRect.Left), Single(LineRect.Top), 24, 24), nil, 0);
       Exit;
     end;
   end;
