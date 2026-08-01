@@ -53,42 +53,42 @@ object frmSettings: TfrmSettings
           OnClick = lblLinkClick
         end
         object shpUnused: TShape
-          Left = 368
+          Left = 357
           Top = 190
           Width = 23
           Height = 17
           Brush.Color = 33023
         end
         object Shape2: TShape
-          Left = 368
+          Left = 357
           Top = 213
           Width = 23
           Height = 17
           Brush.Color = clSilver
         end
         object Label2: TLabel
-          Left = 397
+          Left = 386
           Top = 192
           Width = 118
           Height = 13
           Caption = 'Importa'#231#227'o n'#227'o utilizada'
         end
         object Label3: TLabel
-          Left = 357
+          Left = 346
           Top = 172
           Width = 173
           Height = 13
           Caption = 'Significado das cores do sublinhado:'
         end
         object lblLanguage: TLabel
-          Left = 335
-          Top = 306
+          Left = 324
+          Top = 333
           Width = 36
           Height = 13
           Caption = 'Idioma:'
         end
         object Label4: TLabel
-          Left = 397
+          Left = 386
           Top = 215
           Width = 276
           Height = 65
@@ -99,23 +99,23 @@ object frmSettings: TfrmSettings
             'squisa'
         end
         object Shape3: TShape
-          Left = 368
+          Left = 357
           Top = 283
           Width = 23
           Height = 17
           Brush.Color = 10086911
         end
         object Label5: TLabel
-          Left = 397
-          Top = 285
-          Width = 276
-          Height = 13
-          Caption = 
-            'Unit distribu'#237'da apenas via .dcp da IDE (ex: DockForm, DeskUtil)'
+          Left = 386
+          Top = 282
+          Width = 265
+          Height = 26
+          Caption = 'Unit distribu'#237'da apenas via .dcp da IDE (ex: DockForm, DeskUtil)'
+          WordWrap = True
         end
         object cbbLanguage: TComboBox
-          Left = 335
-          Top = 319
+          Left = 324
+          Top = 347
           Width = 145
           Height = 21
           Style = csDropDownList
@@ -123,7 +123,7 @@ object frmSettings: TfrmSettings
           OnChange = cbbLanguageChange
         end
         object grpSearchAlgorithm: TRadioGroup
-          Left = 335
+          Left = 324
           Top = 20
           Width = 297
           Height = 81
@@ -272,8 +272,8 @@ object frmSettings: TfrmSettings
           end
         end
         object btnCreateProjectConfiguration: TButton
-          Left = 481
-          Top = 353
+          Left = 483
+          Top = 345
           Width = 192
           Height = 25
           Caption = 'Criar configura'#231#227'o para este projeto'
@@ -282,7 +282,7 @@ object frmSettings: TfrmSettings
           OnClick = btnCreateProjectConfigurationClick
         end
         object chbFeatureUnusedUses: TCheckBox
-          Left = 335
+          Left = 324
           Top = 129
           Width = 297
           Height = 17
@@ -290,7 +290,7 @@ object frmSettings: TfrmSettings
           TabOrder = 3
         end
         object chbEnableHighlight: TCheckBox
-          Left = 335
+          Left = 324
           Top = 150
           Width = 350
           Height = 17

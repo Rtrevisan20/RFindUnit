@@ -18,7 +18,6 @@ uses
   System.SysUtils,
   System.Threading,
   System.Types,
-  RFUSVG,
   Vcl.Graphics,
   Vcl.Imaging.pngimage,
   Winapi.GDIPAPI;
