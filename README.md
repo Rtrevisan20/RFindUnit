@@ -49,7 +49,7 @@ A detecção usa um índice de element names em memória (lookup O(1)) e o resul
 | Cinza | Unit não indexada mas com `.dcu`/`.pas` no disco (ex: `ToolsAPI`, RTL/VCL fora do índice) |
 | Amarelo | Unit distribuída apenas via `.dcp` da IDE (ex: `DockForm`, `DeskUtil`) |
 
-O check no gutter (unit sem uses não utilizadas) é renderizado com **SVG** (componente [SVG-Ekot](https://github.com/EKot/SVG)), com cor que acompanha o tema da IDE (claro/escuro) automaticamente.
+O check no gutter (unit sem uses não utilizadas) é renderizado com **SVG** (componente [SVG-Ekot](https://github.com/ekot1/DelphiSVG)), com cor que acompanha o tema da IDE (claro/escuro) automaticamente.
 
 ![Unused Uses](https://github.com/Rtrevisan20/RFindUnit/blob/master/Resources/CheckedAndNotOk.png)
 
@@ -143,7 +143,7 @@ src/
 - [DelphiAST](https://github.com/RomanYankovsky/DelphiAST) — Parser de código Delphi
 - [Log4Pascal](https://github.com/martinusso/log4pascal) — Sistema de logging
 - [DCU32INT](https://github.com/rfrezino/DCU32INT) — Descompilador DCU
-- [SVG-Ekot](https://github.com/EKot/SVG) — Renderização de ícones SVG (units renomeadas com prefixo `RFU` para evitar conflito de packages)
+- [SVG-Ekot](https://github.com/ekot1/DelphiSVG) — Renderização de ícones SVG (units renomeadas com prefixo `RFU` para evitar conflito de packages)
 
 ---
 
