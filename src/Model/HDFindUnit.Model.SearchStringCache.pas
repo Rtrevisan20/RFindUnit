@@ -4,9 +4,9 @@ interface
 
 uses
   HDFindUnit.Model.Interf.SearchStringCache,
-  System.Classes,
-  System.Generics.Collections,
-  System.SyncObjs;
+  Classes,
+  Generics.Collections,
+  SyncObjs;
 
 type
   TSearchStringCache = class(TInterfacedObject, ISearchStringCache)

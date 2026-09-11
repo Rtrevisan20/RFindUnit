@@ -13,7 +13,7 @@ unit Log4Pascal;
 interface
 
 uses
-  System.SyncObjs;
+  SyncObjs;
 
 type
   TLogTypes = (ltTrace, ltDebug, ltInfo, ltWarning, ltError, ltFatal);
@@ -70,9 +70,7 @@ var
 implementation
 
 uses
-  System.SysUtils,
-  Vcl.Forms,
-  Winapi.Windows;
+  SysUtils;
 
 const
   FORMAT_LOG = '%s %s';
@@ -91,7 +89,7 @@ begin
   if FIsInit then
     CloseFile(FOutFile);
 
-  System.SysUtils.DeleteFile(FFileName);
+  DeleteFile(FFileName);
 
   FIsInit := False;
 end;
@@ -115,7 +113,7 @@ begin
   if Pos(':', FilePath) > 0 then
     ForceDirectories(FilePath)
   else begin
-    FullApplicationPath := ExtractFilePath(Application.ExeName);
+    FullApplicationPath := ExtractFilePath(ParamStr(0));
     ForceDirectories(IncludeTrailingPathDelimiter(FullApplicationPath) + FilePath);
   end;
 end;
@@ -286,7 +284,8 @@ begin
       if FIsInit then
         Writeln(
             FOutFile,
-            Format('[%s] [TID %d] %s ', [FormatDateTime(FORMAT_DATETIME_DEFAULT, Now), GetCurrentThreadId, Msg])
+            Format('[%s] [TID %d] %s ', [FormatDateTime(FORMAT_DATETIME_DEFAULT, Now),
+              {$IFDEF FPC} GetThreadID {$ELSE} GetCurrentThreadId {$ENDIF}, Msg])
         );
     finally
       Self.Finalize;

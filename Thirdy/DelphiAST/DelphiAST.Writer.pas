@@ -6,7 +6,7 @@ uses
   {$IFDEF FPC}
      StringBuilderUnit,
   {$ENDIF}
-  DelphiAST.Classes, System.SysUtils;
+  DelphiAST.Classes, SysUtils;
 
 type
   TSyntaxTreeWriter = class
@@ -21,7 +21,7 @@ type
 implementation
 
 uses
-  System.Generics.Collections, DelphiAST.Consts;
+  Generics.Collections, DelphiAST.Consts;
 
 {$I SimpleParser.inc}
 {$IFDEF D18_NEWER}

@@ -8,9 +8,9 @@ uses
   HDFindUnit.Model.Header,
   HDFindUnit.Model.PasParser,
   HDFindUnit.Model.Interf.SearchStringCache,
-  System.Classes,
-  System.Generics.Collections,
-  System.SyncObjs;
+  Classes,
+  Generics.Collections,
+  SyncObjs;
 
 type
   TSearchString = class(TObject)
@@ -38,7 +38,7 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  SysUtils;
 
 { TSearchString }
 

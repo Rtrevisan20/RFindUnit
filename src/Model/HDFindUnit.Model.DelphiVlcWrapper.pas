@@ -3,21 +3,35 @@
 interface
 
 uses
+{$IFDEF FPC}
+  Classes,
+  Types;
+{$ELSE}
   Winapi.Windows;
+{$ENDIF}
 
 type
   TDelphiVLCWrapper = class(TObject)
   private
+{$IFNDEF FPC}
     class procedure FindEditorHandle;
+{$ENDIF}
   public
     class function GetEditorRect: TRect;
+    class function GetEditorControlHandle: THandle;
   end;
 
 implementation
 
 uses
+{$IFDEF FPC}
+  Controls,
+  SrcEditorIntf;
+{$ELSE}
   Winapi.Messages;
+{$ENDIF}
 
+{$IFNDEF FPC}
 var
   FFound: Boolean;
   FEditHandler: Cardinal;
@@ -70,6 +84,49 @@ begin
     Result.Right := 20;
   end;
 end;
+
+class function TDelphiVLCWrapper.GetEditorControlHandle: THandle;
+begin
+  if not FFound then
+    FindEditorHandle;
+  Result := FEditHandler;
+end;
+{$ENDIF}
+
+{$IFDEF FPC}
+class function TDelphiVLCWrapper.GetEditorRect: TRect;
+var
+  Editor: TSourceEditorInterface;
+  EditorCtl: TWinControl;
+begin
+  Result := Rect(20, 20, 20, 20);
+  if SourceEditorManagerIntf = nil then
+    Exit;
+  Editor := SourceEditorManagerIntf.ActiveEditor;
+  if Editor = nil then
+    Exit;
+  EditorCtl := Editor.EditorControl;
+  if EditorCtl = nil then
+    Exit;
+  Result.TopLeft := EditorCtl.ClientToScreen(Point(0, 0));
+  Result.BottomRight := EditorCtl.ClientToScreen(Point(EditorCtl.ClientWidth, EditorCtl.ClientHeight));
+end;
+
+class function TDelphiVLCWrapper.GetEditorControlHandle: THandle;
+var
+  Editor: TSourceEditorInterface;
+begin
+  Result := 0;
+  if SourceEditorManagerIntf = nil then
+    Exit;
+  Editor := SourceEditorManagerIntf.ActiveEditor;
+  if Editor = nil then
+    Exit;
+  if Editor.EditorControl = nil then
+    Exit;
+  Result := Editor.EditorControl.Handle;
+end;
+{$ENDIF}
 
 end.
 

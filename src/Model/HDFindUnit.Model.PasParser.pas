@@ -3,11 +3,11 @@
 interface
 
 uses
-  System.Classes,
-  System.SysUtils,
+  Classes,
+  SysUtils,
   DelphiAST.Classes,
   HDFindUnit.Model.Header,
-  System.Generics.Collections,
+  Generics.Collections,
   SimpleParser.Lexer.Types;
 
 type
@@ -96,8 +96,7 @@ implementation
 uses
   DelphiAST,
   Log4PAscal,
-  DelphiAST.Consts,
-  System.IOUtils;
+  DelphiAST.Consts;
 
 { TFindUnitItem }
 
@@ -376,9 +375,14 @@ begin
 end;
 
 procedure TPasFileParser.GetFileLastModification;
+var
+  LastWriteTime: TDateTime;
 begin
   try
-    FResultItem.FLastModification := System.IOUtils.TFile.GetLastWriteTime(FFilePath);
+    if FileAge(FFilePath, LastWriteTime) then
+      FResultItem.FLastModification := LastWriteTime
+    else
+      FResultItem.FLastModification := 0;
   except
   end;
 end;

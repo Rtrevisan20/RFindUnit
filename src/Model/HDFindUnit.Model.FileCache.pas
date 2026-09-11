@@ -8,9 +8,9 @@ uses
 
   HDFindUnit.Model.Interf.SearchStringCache,
 
-  System.Classes,
-  System.Generics.Collections,
-  System.SyncObjs;
+  Classes,
+  Generics.Collections,
+  SyncObjs;
 
 type
   TUnits = class(TObject)
@@ -71,16 +71,43 @@ uses
   HDFindUnit.Model.SearchString,
   HDFindUnit.Model.Header,
   Log4Pascal,
-  System.SysUtils,
-  System.StrUtils,
-  System.Diagnostics;
+  SysUtils,
+  StrUtils
+  {$IFDEF FPC}, Windows{$ELSE}, System.Diagnostics{$ENDIF};
+
+{$IFDEF FPC}
+type
+  TStopwatch = record
+  strict private
+    FElapsed: Int64;
+  public
+    class function StartNew: TStopwatch; static;
+    class function GetTickCount64Safe: Int64; static;
+    function ElapsedMilliseconds: Int64;
+  end;
+
+class function TStopwatch.GetTickCount64Safe: Int64;
+begin
+  Result := GetTickCount64;
+end;
+
+class function TStopwatch.StartNew: TStopwatch;
+begin
+  Result.FElapsed := GetTickCount64Safe;
+end;
+
+function TStopwatch.ElapsedMilliseconds: Int64;
+begin
+  Result := GetTickCount64Safe - FElapsed;
+end;
+{$ENDIF}
 
 { TUnitUpdateController }
 constructor TUnitsController.Create;
 begin
   FFullMatchSearchCache := TSearchStringCache.Create;
   FElementIndex := TDictionary<string, TStringList>.Create;
-  FRc := TCriticalSection.Create;
+  FRc := SyncObjs.TCriticalSection.Create;
   inherited;
 end;
 

@@ -3,9 +3,9 @@
 interface
 
 uses
-  System.Classes,
+  Classes,
 
-  System.IniFiles;
+  IniFiles;
 
 type
   TCacheSettings = record

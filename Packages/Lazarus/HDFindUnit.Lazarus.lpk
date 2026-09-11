@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="4">
+    <PathDelim Value="\"/>
+    <Name Value="HDFindUnit.Lazarus"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Thirdy\DelphiAST\SimpleParser;..\..\Thirdy\DelphiAST"/>
+        <OtherUnitFiles Value="..\..\src\Model;..\..\src\Utils;..\..\src\View;..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src;..\..\Thirdy\Log4pascal;..\..\Thirdy\Andrey"/>
+        <UnitOutputDirectory Value="Compiled\$(TargetCPU)-$(TargetOS)\"/>
+      </SearchPaths>
+      <Other>
+        <CustomOptions Value="-Mdelphi"/>
+        <CompilerMessages>
+          <MsgFileName Value=""/>
+        </CompilerMessages>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Files Count="11">
+      <Item1>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Header.pas"/>
+        <UnitName Value="HDFindUnit.Model.Header"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.DelphiReservedWords.pas"/>
+        <UnitName Value="HDFindUnit.Model.DelphiReservedWords"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.StringPositionList.pas"/>
+        <UnitName Value="HDFindUnit.Model.StringPositionList"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Settings.pas"/>
+        <UnitName Value="HDFindUnit.Model.Settings"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.PasParser.pas"/>
+        <UnitName Value="HDFindUnit.Model.PasParser"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.FileCache.pas"/>
+        <UnitName Value="HDFindUnit.Model.FileCache"/>
+      </Item6>
+      <Item7>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Interf.SearchStringCache.pas"/>
+        <UnitName Value="HDFindUnit.Model.Interf.SearchStringCache"/>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.SearchStringCache.pas"/>
+        <UnitName Value="HDFindUnit.Model.SearchStringCache"/>
+      </Item8>
+      <Item9>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.SearchString.pas"/>
+        <UnitName Value="HDFindUnit.Model.SearchString"/>
+      </Item9>
+      <Item10>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.DelphiVlcWrapper.pas"/>
+        <UnitName Value="HDFindUnit.Model.DelphiVlcWrapper"/>
+      </Item10>
+      <Item11>
+        <Filename Value="..\..\src\View\HDFindUnit.View.FormMessage.pas"/>
+        <UnitName Value="HDFindUnit.View.FormMessage"/>
+      </Item11>
+    </Files>
+    <Type Value="DesignTime"/>
+    <RequiredPkgs Count="4">
+      <Item1>
+        <PackageName Value="HDFindUnit.Lazarus.Deps"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="LCL"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="IDEIntf"/>
+      </Item4>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

@@ -24,3 +24,10 @@ Installer-deprecated/Installer.exe
 *.map
 *.drc
 Bpl/
+
+# Lazarus/FPC build artifacts
+packagefiles.xml
+Packages/Lazarus/Compiled/
+*.ppu
+*.o
+*.lrt

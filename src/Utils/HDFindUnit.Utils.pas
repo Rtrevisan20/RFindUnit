@@ -4,8 +4,8 @@ interface
 
 uses
   SimpleParser.Lexer.Types,
-  System.Generics.Collections,
-  System.StrUtils;
+  Generics.Collections,
+  StrUtils;
 
 type
   TFileInfo = record
@@ -67,12 +67,10 @@ implementation
 
 uses
   Log4Pascal,
-  System.Classes,
-  System.IOUtils,
-  System.SysUtils,
-  System.Types,
-  Winapi.TlHelp32,
-  Winapi.Windows;
+  Classes,
+  SysUtils,
+  Types
+  {$IFDEF FPC}, Windows{$ELSE}, System.Masks, System.IOUtils, Winapi.TlHelp32, Winapi.Windows{$ENDIF};
 
 function DictionaryToString(Dir: TDictionary<string, string>): string;
 var
@@ -156,6 +154,11 @@ begin
 end;
 
 function IsProcessRunning(const AExeFileName: string): Boolean;
+{$IFDEF FPC}
+begin
+  Result := False;
+end;
+{$ELSE}
 var
   Continuar: BOOL;
   SnapshotHandle: THandle;
@@ -179,6 +182,7 @@ begin
     Result := False;
   end;
 end;
+{$ENDIF}
 
 function FetchCaseInsensitive(var AInput: string; const ADelim: string; const ADelete: Boolean): string; inline;
 var
@@ -233,43 +237,117 @@ begin
   end;
 end;
 
+{$IFDEF FPC}
+function MatchesSimpleMask(const Filename, Mask: string): Boolean;
+var
+  FStart, MStart: Integer;
+begin
+  Result := False;
+  FStart := 1;
+  MStart := 1;
+  while MStart <= Length(Mask) do
+  begin
+    if Mask[MStart] = '*' then
+    begin
+      Inc(MStart);
+      if MStart > Length(Mask) then
+      begin
+        Result := True;
+        Exit;
+      end;
+      while (FStart <= Length(Filename)) and
+            (not MatchesSimpleMask(Copy(Filename, FStart, Length(Filename) - FStart + 1), Copy(Mask, MStart, Length(Mask) - MStart + 1))) do
+        Inc(FStart);
+      Result := FStart <= Length(Filename);
+      Exit;
+    end
+    else if (FStart > Length(Filename)) then
+      Exit
+    else if (Mask[MStart] = '?') or (AnsiCompareText(Filename[FStart], Mask[MStart]) = 0) then
+    begin
+      Inc(FStart);
+      Inc(MStart);
+    end
+    else
+      Exit;
+  end;
+  Result := FStart > Length(Filename);
+end;
+{$ENDIF}
+
 function GetAllFilesFromPath(const Path, Filter: string): TDictionary<string, TFileInfo>;
 var
-  Files: TStringDynArray;
   FilePath: string;
   FileInfo: TFileInfo;
+  SR: TSearchRec;
 begin
-  Files := System.IOUtils.TDirectory.GetFiles(Path, Filter, TSearchOption.soTopDirectoryOnly);
-
   Result := TDictionary<string, TFileInfo>.Create;
-  for FilePath in Files do begin
-    FileInfo.Path := Trim(FilePath);
-    if FileExists(FilePath) then
-      FileInfo.LastAccess := System.IOUtils.TFile.GetLastWriteTime(FilePath)
-    else
-      FileInfo.LastAccess := 0;
-
-    Result.Add(FileInfo.Path, FileInfo);
+  try
+    if SysUtils.FindFirst(IncludeTrailingPathDelimiter(Path) + Filter, faAnyFile, SR) = 0 then
+    try
+      repeat
+        if (SR.Attr and faDirectory) = 0 then
+        begin
+          FilePath := Trim(IncludeTrailingPathDelimiter(Path) + SR.Name);
+          FileInfo.Path := FilePath;
+          if FileExists(FilePath) then
+            FileInfo.LastAccess := FileAge(FilePath)
+          else
+            FileInfo.LastAccess := 0;
+          Result.Add(FileInfo.Path, FileInfo);
+        end;
+      until SysUtils.FindNext(SR) <> 0;
+    finally
+      SysUtils.FindClose(SR);
+    end;
+  except
+    Result.Free;
+    raise;
   end;
 end;
 
 function GetAllFilesFromPathRecursive(const Path, Filter: string): TDictionary<string, TFileInfo>;
 var
-  Files: TStringDynArray;
   FilePath: string;
   FileInfo: TFileInfo;
+  SR: TSearchRec;
+
+  procedure ScanDir(const Dir: string);
+  var
+    SubPath: string;
+  begin
+    if SysUtils.FindFirst(IncludeTrailingPathDelimiter(Dir) + '*', faAnyFile, SR) = 0 then
+    try
+      repeat
+        if (SR.Name <> '.') and (SR.Name <> '..') then
+        begin
+          SubPath := IncludeTrailingPathDelimiter(Dir) + SR.Name;
+          if (SR.Attr and faDirectory) <> 0 then
+            ScanDir(SubPath)
+          else if {$IFDEF FPC}MatchesSimpleMask{$ELSE}MatchesMask{$ENDIF}(SR.Name, Filter) then
+          begin
+            FilePath := Trim(SubPath);
+            FileInfo.Path := FilePath;
+            if FileExists(FilePath) then
+              FileInfo.LastAccess := FileAge(FilePath)
+            else
+              FileInfo.LastAccess := 0;
+            Result.Add(FileInfo.Path, FileInfo);
+          end;
+        end;
+      until SysUtils.FindNext(SR) <> 0;
+    finally
+      SysUtils.FindClose(SR);
+    end;
+  end;
+
 begin
-  Files := System.IOUtils.TDirectory.GetFiles(Path, Filter, TSearchOption.soAllDirectories);
-
   Result := TDictionary<string, TFileInfo>.Create;
-  for FilePath in Files do begin
-    FileInfo.Path := Trim(FilePath);
-    if FileExists(FilePath) then
-      FileInfo.LastAccess := System.IOUtils.TFile.GetLastWriteTime(FilePath)
-    else
-      FileInfo.LastAccess := 0;
-
-    Result.Add(FileInfo.Path, FileInfo);
+  try
+    ScanDir(Path);
+  except
+    Result.Free;
+    raise;
   end;
 end;
 
@@ -302,7 +380,8 @@ var
 begin
   FileContent := TStringList.Create;
   try
-    FileContent.LoadFromFile(TPath.Combine(FPath, FileName));
+    FileContent.LoadFromFile(
+      IncludeTrailingPathDelimiter(FPath) + FileName);
     Result := FileContent.Text;
   finally
     FileContent.Free;
@@ -311,7 +390,8 @@ end;
 
 procedure CarregarPaths;
 begin
-  FindUnitDir := GetEnvironmentVariable('APPDATA') + '\DelphiFindUnit\';
+  {$IFDEF FPC}FindUnitDir := SysUtils.GetEnvironmentVariable('APPDATA') + '\DelphiFindUnit\';{$ELSE}
+  FindUnitDir := GetEnvironmentVariable('APPDATA') + '\DelphiFindUnit\';{$ENDIF}
   FindUnitDirLogger := FindUnitDir + 'Logger\';
   FindUnitDcuDir := FindUnitDir + IntToStr(GetHashCodeFromStr(PChar(ParamStr(0)))) + '\';
   FindUnitDcuDir := FindUnitDcuDir + 'DecompiledDcus\';
@@ -339,7 +419,8 @@ begin
 
     Logger.Debug('TPathConverter.ConvertPathsToFullPath: %s', [CurVariable]);
 
-    FullPath := GetEnvironmentVariable(CurVariable);
+    {$IFDEF FPC}FullPath := SysUtils.GetEnvironmentVariable(CurVariable);{$ELSE}
+    FullPath := GetEnvironmentVariable(CurVariable);{$ENDIF}
 
     Paths := StringReplace(Paths, VAR_INIT + CurVariable + VAR_END, FullPath, [rfReplaceAll]);
   end;

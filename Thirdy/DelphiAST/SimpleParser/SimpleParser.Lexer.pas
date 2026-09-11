@@ -54,7 +54,7 @@ unit SimpleParser.Lexer;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.Character, SimpleParser.Lexer.Types;
+  SysUtils, Classes, Character, SimpleParser.Lexer.Types;
 
 var
   Identifiers: array[#0..#127] of ByteBool;
@@ -397,7 +397,7 @@ type
 implementation
 
 uses
-  System.StrUtils;
+  StrUtils;
 
 type
   TmwPasLexExpressionEvaluation = (leeNone, leeAnd, leeOr);
@@ -1415,11 +1415,15 @@ begin
     while CharInSet(FBuffer.Buf[FBuffer.Run], ['0'..'9', 'A'..'F', 'a'..'f']) do Inc(FBuffer.Run);
   end else
   begin
+{$IFDEF FPC}
+    while CharInSet(FBuffer.Buf[FBuffer.Run], ['0'..'9']) do
+{$ELSE}
 {$IFDEF SUPPORTS_INTRINSIC_HELPERS}
     while FBuffer.Buf[FBuffer.Run].IsDigit do
 {$ELSE}
-    while FBuffer.Buf[FBuffer.Run].IsDigit do
 //     while IsDigit(FBuffer.Buf[FBuffer.Run]) do
+    while CharInSet(FBuffer.Buf[FBuffer.Run], ['0'..'9']) do
+{$ENDIF}
 {$ENDIF}
       Inc(FBuffer.Run);
   end;
@@ -1799,10 +1803,14 @@ end;
 
 function TmwBasePasLex.IsIdentifiers(AChar: Char): Boolean;
 begin
+{$IFDEF FPC}
+  Result := (CharInSet(AChar, ['a'..'z', 'A'..'Z', '0'..'9'])) or (AChar = '_');
+{$ELSE}
 {$IFDEF SUPPORTS_INTRINSIC_HELPERS}
   Result := (AChar.IsLetterOrDigit) or (AChar = '_');
 {$ELSE}
-  Result := (AChar.IsLetterOrDigit) or (AChar = '_');
+  Result := (CharInSet(AChar, ['a'..'z', 'A'..'Z', '0'..'9'])) or (AChar = '_');
+{$ENDIF}
 {$ENDIF}
 end;
 

@@ -20,8 +20,8 @@ unit SimpleParser.Types;
 interface
 
 uses
-  System.SysUtils,
-  System.TypInfo;
+  SysUtils,
+  TypInfo;
 
 type
   TmwParseError = (

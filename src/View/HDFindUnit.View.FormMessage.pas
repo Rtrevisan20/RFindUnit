@@ -3,12 +3,18 @@
 interface
 
 uses
-  System.Classes,
-  System.Types,
-  Vcl.Controls,
-  Vcl.ExtCtrls,
-  Vcl.Forms,
-  Vcl.StdCtrls;
+  Classes,
+  Types,
+  Controls,
+  ExtCtrls,
+  Forms,
+{$IFDEF FPC}
+  LCLType,
+{$ENDIF}
+  StdCtrls;
+
+const
+  RFU_WS_EX_NOACTIVATE = $08000000;
 
 type
   TfrmMessage = class(TForm)
@@ -19,15 +25,18 @@ type
     procedure Button1Click(Sender: TObject);
     procedure tmrCloseTimer(Sender: TObject);
   private
-    procedure PrintOnCanvas;
+    procedure PrintOnCanvas(Sender: TObject);
     procedure ConfigMsg;
+{$IFDEF FPC}
+    procedure CreateFormControls;
+{$ENDIF}
   protected
     class var CurTop: integer;
     FTexto: string;
     procedure CreateParams(var Params: TCreateParams); override;
 
     function GetPosition: TRect;
-    function GetTextWidth: tagSIZE;
+    function GetTextWidth: TSize;
 
     procedure SetPosition;
   public
@@ -39,12 +48,16 @@ type
 implementation
 
 uses
-  Log4Pascal,
+{$IFDEF FPC}
+  Graphics,
+{$ELSE}
   TransparentCanvas,
-  HDFindUnit.Model.DelphiVlcWrapper,
-  System.SysUtils,
   Vcl.Graphics,
-  Winapi.Windows;
+  Winapi.Windows,
+{$ENDIF}
+  SysUtils,
+  HDFindUnit.Model.DelphiVlcWrapper,
+  Log4Pascal;
 
 const
   MARGIN_PADING   = 5;
@@ -54,36 +67,42 @@ const
   FONT_COLOR      = $000146A5;
   BRUSH_COLOR     = $00CCE6FF;
 
+{$IFNDEF FPC}
 {$R *.dfm}
+{$ENDIF}
 
 procedure TfrmMessage.Button1Click(Sender: TObject);
 begin
-  PrintOnCanvas;
+  PrintOnCanvas(Sender);
 end;
 
 procedure TfrmMessage.ConfigMsg;
 var
-  TextSize: tagSIZE;
+  TextSize: TSize;
 begin
   TextSize          := GetTextWidth;
   pnMsg.Width       := TextSize.cx + COORNER_MARGIN * 2 + MARGIN_PADING;
   pnMsg.Color       := BRUSH_COLOR;
-  pnMsg.Caption     := FTexto;
   pnMsg.Font.Name   := FONT_NAME;
   pnMsg.Font.Size   := FONT_SIZE;
   pnMsg.Font.Color  := FONT_COLOR;
+{$IFDEF FPC}
+  pnMsg.Caption     := '';
+{$ELSE}
+  pnMsg.Caption     := FTexto;
+{$ENDIF}
 end;
 
 procedure TfrmMessage.CreateParams(var Params: TCreateParams);
 begin
   inherited CreateParams(Params);
-  Params.ExStyle := WS_EX_TRANSPARENT or WS_EX_TOPMOST or WS_EX_NOACTIVATE;
+  Params.ExStyle := WS_EX_TRANSPARENT or WS_EX_TOPMOST or RFU_WS_EX_NOACTIVATE;
 end;
 
 procedure TfrmMessage.SetPosition;
 var
   OpenRect: TRect;
-  TextSize: tagSIZE;
+  TextSize: TSize;
 begin
   OpenRect  := GetPosition;
   TextSize  := GetTextWidth;
@@ -115,8 +134,13 @@ begin
   FTexto    := Text;
   SetPosition;
   ConfigMsg;
+{$IFDEF FPC}
+  Visible   := True;
+  BringToFront;
+{$ELSE}
   ShowWindow(Handle, SW_SHOWNOACTIVATE);
-  Visible          := True;
+  Visible   := True;
+{$ENDIF}
   Repaint;
   tmrClose.Enabled := True;
 end;
@@ -134,16 +158,52 @@ end;
 
 procedure TfrmMessage.FormCreate(Sender: TObject);
 begin
+{$IFDEF FPC}
+  CreateFormControls;
+  pnMsg.OnPaint := PrintOnCanvas;
+{$ENDIF}
   Brush.Style := bsClear;
   BorderStyle := bsNone;
 end;
+
+{$IFDEF FPC}
+procedure TfrmMessage.CreateFormControls;
+begin
+  Self.ClientHeight := 30;
+
+  pnMsg := TPanel.Create(Self);
+  with pnMsg do begin
+    Parent      := Self;
+    Left        := 0;
+    Top         := 0;
+    Width       := 629;
+    Height      := 30;
+    Align       := alClient;
+    BevelOuter  := bvNone;
+    Color       := BRUSH_COLOR;
+  end;
+
+  tmrClose := TTimer.Create(Self);
+  tmrClose.Enabled := False;
+  tmrClose.Interval := 2500;
+  tmrClose.OnTimer := tmrCloseTimer;
+end;
+{$ENDIF}
 
 function TfrmMessage.GetPosition: TRect;
 begin
   Result := TDelphiVLCWrapper.GetEditorRect;
 end;
 
-function TfrmMessage.GetTextWidth: tagSIZE;
+{$IFDEF FPC}
+function TfrmMessage.GetTextWidth: TSize;
+begin
+  pnMsg.Canvas.Font.Name := FONT_NAME;
+  pnMsg.Canvas.Font.Size := FONT_SIZE;
+  Result := pnMsg.Canvas.TextExtent(FTexto);
+end;
+{$ELSE}
+function TfrmMessage.GetTextWidth: TSize;
 var
   GlassCanvas: TTransparentCanvas;
 begin
@@ -158,10 +218,40 @@ begin
     GlassCanvas.Free;
   end;
 end;
+{$ENDIF}
 
-procedure TfrmMessage.PrintOnCanvas;
+{$IFDEF FPC}
+procedure TfrmMessage.PrintOnCanvas(Sender: TObject);
 var
-  TextSize: tagSIZE;
+  C: TCanvas;
+begin
+  try
+    C := pnMsg.Canvas;
+    C.Font.Name := FONT_NAME;
+    C.Font.Size := FONT_SIZE;
+    C.Brush.Style := bsClear;
+
+    C.Pen.Width := 1;
+    C.Pen.Color := $004080FF;
+    C.Rectangle(0, 0, pnMsg.ClientWidth - 1, pnMsg.ClientHeight - 1);
+
+    C.Font.Color := clBlack;
+    C.TextOut(COORNER_MARGIN + MARGIN_PADING + 1, MARGIN_PADING + 1, FTexto);
+
+    C.Font.Color := FONT_COLOR;
+    C.TextOut(COORNER_MARGIN + MARGIN_PADING, MARGIN_PADING, FTexto);
+  except
+    on E: Exception do
+    begin
+      Logger.Error('TfrmMessage.PrintOnCanvas: %s', [E.Message]);
+      {$IFDEF RAISEMAD} raise; {$ENDIF}
+    end;
+  end;
+end;
+{$ELSE}
+procedure TfrmMessage.PrintOnCanvas(Sender: TObject);
+var
+  TextSize: TSize;
   GlassCanvas: TTransparentCanvas;
 begin
   try
@@ -194,5 +284,6 @@ begin
     end;
   end;
 end;
+{$ENDIF}
 
 end.

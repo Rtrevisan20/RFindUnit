@@ -20,7 +20,7 @@ unit SimpleParser.Lexer.Types;
 interface
 
 uses
-  System.SysUtils;
+  SysUtils;
 
 {$INCLUDE SimpleParser.inc}
 
@@ -283,7 +283,7 @@ function IsTokenIDJunk(const aTokenID: TptTokenKind): Boolean;
 implementation
 
 uses
-  System.TypInfo;
+  TypInfo;
 
 function TokenName(Value: TptTokenKind): string;
 begin

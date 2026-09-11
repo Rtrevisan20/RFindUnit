@@ -3,12 +3,12 @@
 interface
 
 uses
-  System.Classes,
+  Classes,
 
   HDFindUnit.Model.Header,
 
-  System.Generics.Collections,
-  System.SysUtils;
+  Generics.Collections,
+  SysUtils;
 
 type
   TStringPositionList = class(TList<TStringPosition>)
