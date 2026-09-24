@@ -62,6 +62,7 @@
         <SanitizedProjectName>RFindUnit</SanitizedProjectName>
         <DCC_ImageBase>00400000</DCC_ImageBase>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_IncludePath>..\..\Thirdy\DelphiAST\SimpleParser;$(DCC_IncludePath)</DCC_IncludePath>
         <VerInfo_Locale>1043</VerInfo_Locale>
         <DCC_S>false</DCC_S>
         <DCC_F>false</DCC_F>
@@ -142,15 +143,6 @@
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.FileCache.pas"/>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.IncluderHandlerInc.pas"/>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Header.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Classes.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Consts.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Writer.pas"/>
-        <DCCReference Include="..\..\Thirdy\Log4pascal\Log4Pascal.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.Types.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.pas"/>
-        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Types.pas"/>
         <DCCReference Include="..\..\Thirdy\TransparentCanvas\TransparentCanvas.pas"/>
         <DCCReference Include="..\..\src\View\HDFindUnit.View.FormMessage.pas">
             <Form>frmMessage</Form>
@@ -179,19 +171,34 @@
         </DCCReference>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Interf.Translation.pas"/>
         <DCCReference Include="..\..\src\Model\HDFindUnit.Model.Translation.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVG.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGColor.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGCommon.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGPaint.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGParse.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGPath.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGProperties.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGStyle.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\RFUSVGTypes.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPKerning.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPOBJ2.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPPathText.pas"/>
-        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\gdip\RFUGDIPUtils.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVG.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGColor.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGCommon.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPaint.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGParse.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPath.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGProperties.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGStyle.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGTypes.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGXML.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\painter\Painter.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\painter\PainterGdiPlus.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPKerning.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPOBJ2.pas"/>
+        <DCCReference Include="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPPathText.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Classes.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Consts.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.ProjectIndexer.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Serialize.Binary.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.SimpleParserEx.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\DelphiAST.Writer.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\StringPool.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.Types.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.pas"/>
+        <DCCReference Include="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Types.pas"/>
+        <DCCReference Include="..\..\Thirdy\Log4pascal\Log4Pascal.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
