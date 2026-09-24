@@ -4,9 +4,12 @@ interface
 
 uses
   {$IFDEF FPC}
-     StringBuilderUnit,
+    StringBuilderUnit,
+    Classes, SysUtils,
+  {$ELSE}
+    System.Classes, System.SysUtils,
   {$ENDIF}
-  DelphiAST.Classes, SysUtils;
+  DelphiAST.Classes;
 
 type
   TSyntaxTreeWriter = class
@@ -16,12 +19,24 @@ type
   public
     class function ToXML(const Root: TSyntaxNode;
       Formatted: Boolean = False): string; static;
+
+    {$IFNDEF FPC}
+      class function ToBinary(const Root: TSyntaxNode; Stream: TStream): Boolean; static;
+    {$ENDIF}
   end;
 
 implementation
 
 uses
-  Generics.Collections, DelphiAST.Consts;
+  {$IFDEF FPC}
+  Generics.Collections,
+  {$ELSE}
+  System.Generics.Collections,
+  {$ENDIF}
+  {$IFNDEF FPC}
+    DelphiAST.Serialize.Binary,
+  {$ENDIF}
+  DelphiAST.Consts;
 
 {$I SimpleParser.inc}
 {$IFDEF D18_NEWER}
@@ -30,7 +45,7 @@ uses
 
 { TSyntaxTreeWriter }
 
-class procedure TSyntaxTreeWriter.NodeToXML(const Builder: TStringBuilder; 
+class procedure TSyntaxTreeWriter.NodeToXML(const Builder: TStringBuilder;
   const Node: TSyntaxNode; Formatted: Boolean);
 
   function XMLEncode(const Data: string): string;
@@ -75,6 +90,8 @@ class procedure TSyntaxTreeWriter.NodeToXML(const Builder: TStringBuilder;
     end;
     Builder.Append('<' + UpperCase(SyntaxNodeNames[Node.Typ]));
 
+    Builder.Append('  line_seq="' + IntToStr(Node.LineSeq) + '"');
+
     if Node is TCompoundSyntaxNode then
     begin
       Builder.Append(' begin_line="' + IntToStr(TCompoundSyntaxNode(Node).Line) + '"');
@@ -94,7 +111,7 @@ class procedure TSyntaxTreeWriter.NodeToXML(const Builder: TStringBuilder;
       Builder.Append(' value="' + XMLEncode(TValuedSyntaxNode(Node).Value) + '"');
 
     for Attr in Node.Attributes do
-      Builder.Append(' ' + AttributeNameToStr(Attr.Key) + '="' + XMLEncode(Attr.Value) + '"');
+      Builder.Append(' ' + AttributeNameStrings[Attr.Key] + '="' + XMLEncode(Attr.Value) + '"');
     if HasChildren then
       Builder.Append('>')
     else
@@ -106,18 +123,31 @@ class procedure TSyntaxTreeWriter.NodeToXML(const Builder: TStringBuilder;
     if HasChildren then
     begin
       if Formatted then
-        Builder.Append(Indent); 
+        Builder.Append(Indent);
       Builder.Append('</' + UpperCase(SyntaxNodeNames[Node.Typ]) + '>');
       if Formatted then
         Builder.AppendLine;
     end;
   end;
-  
+
 begin
   NodeToXMLInternal(Node, '');
 end;
 
-class function TSyntaxTreeWriter.ToXML(const Root: TSyntaxNode; 
+{$IFNDEF FPC}
+class function TSyntaxTreeWriter.ToBinary(const Root: TSyntaxNode; Stream: TStream):
+  Boolean;
+var
+  Writer: TBinarySerializer;
+begin
+  Writer := TBinarySerializer.Create;
+  try
+    Result := Writer.Write(Stream, Root);
+  finally FreeAndNil(Writer); end;
+end;
+{$ENDIF}
+
+class function TSyntaxTreeWriter.ToXML(const Root: TSyntaxNode;
   Formatted: Boolean): string;
 var
   Builder: TStringBuilder;

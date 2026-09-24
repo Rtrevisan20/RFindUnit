@@ -5,6 +5,7 @@ interface
 type
   TSyntaxNodeType = (
     ntUnknown,
+    ntAbsolute,
     ntAdd,
     ntAddr,
     ntAlignmentParam,
@@ -70,6 +71,7 @@ type
     ntInitialization,
     ntInterface,
     ntIs,
+    ntIsNot,
     ntLabel,
     ntLHS,
     ntLiteral,
@@ -83,6 +85,7 @@ type
     ntNamedArgument,
     ntNotEqual,
     ntNot,
+    ntNotIn,
     ntOr,
     ntPackage,
     ntParameter,
@@ -99,6 +102,7 @@ type
     ntRecordConstraint,
     ntRepeat,
     ntRequires,
+    ntResolutionClause,
     ntResourceString,
     ntReturnType,
     ntRHS,
@@ -113,6 +117,7 @@ type
     ntStrictProtected,
     ntSub,
     ntSubrange,
+    ntTernaryOp,
     ntThen,
     ntTo,
     ntTry,
@@ -150,12 +155,15 @@ type
     anMethodBinding,
     anReintroduce,
     anOverload,
-    anAbstract
+    anAbstract,
+    anInline,
+    anAlign
   );
 
 const
   SyntaxNodeNames: array [TSyntaxNodeType] of string = (
     'unknown',
+    'absolute',
     'add',
     'addr',
     'alignmentparam',
@@ -221,6 +229,7 @@ const
     'initialization',
     'interface',
     'is',
+    'isnot',
     'label',
     'lhs',
     'literal',
@@ -234,6 +243,7 @@ const
     'namedargument',
     'notequal',
     'not',
+    'notin',
     'or',
     'package',
     'parameter',
@@ -250,6 +260,7 @@ const
     'recordconstraint',
     'repeat',
     'requires',
+    'resolutionclause',
     'resourcestring',
     'returntype',
     'rhs',
@@ -264,6 +275,7 @@ const
     'strictprotected',
     'sub',
     'subrange',
+    'ternaryop',
     'then',
     'to',
     'try',
@@ -289,17 +301,7 @@ const
     'slashescomment'
   );
 
-const
-  sENUM              = 'enum';
-  sSUBRANGE          = 'subrange';
-
-  function AttributeNameToStr(const AttributeName : TAttributeName) : string;
-
-implementation
-
-function AttributeNameToStr(const AttributeName : TAttributeName) : string;
-const
-  AttributeNameStrings : array[TAttributeName] of string = (
+  AttributeNameStrings: array[TAttributeName] of string = (
     'type',
     'class',
     'forwarded',
@@ -311,10 +313,11 @@ const
     'methodbinding',
     'reintroduce',
     'overload',
-    'abstract'
+    'abstract',
+    'inline',
+    'align'
   );
-begin
-  Exit(AttributeNameStrings[AttributeName]);
-end;
+
+implementation
 
 end.

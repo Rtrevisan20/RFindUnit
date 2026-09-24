@@ -18,7 +18,8 @@ type
     FPath: string;
   public
     constructor Create(const Path: string);
-    function GetIncludeFileContent(const FileName: string): string;
+    function GetIncludeFileContent(const ParentFileName, IncludeName: string;
+      out Content: string; out FileName: string): Boolean;
   end;
 
   TPathConverter = class(TObject)
@@ -91,7 +92,7 @@ var
   CleanSelection: string;
   DotPos: Integer;
 begin
-  IsSetEnumItem := SearchSelection.EndsWith(' item');
+  IsSetEnumItem := AnsiEndsStr(' item', SearchSelection);
   ClassName := '';
 
   CleanSelection := SearchSelection;
@@ -290,9 +291,7 @@ begin
         begin
           FilePath := Trim(IncludeTrailingPathDelimiter(Path) + SR.Name);
           FileInfo.Path := FilePath;
-          if FileExists(FilePath) then
-            FileInfo.LastAccess := FileAge(FilePath)
-          else
+          if not FileAge(FilePath, FileInfo.LastAccess) then
             FileInfo.LastAccess := 0;
           Result.Add(FileInfo.Path, FileInfo);
         end;
@@ -328,9 +327,7 @@ var
           begin
             FilePath := Trim(SubPath);
             FileInfo.Path := FilePath;
-            if FileExists(FilePath) then
-              FileInfo.LastAccess := FileAge(FilePath)
-            else
+            if not FileAge(FilePath, FileInfo.LastAccess) then
               FileInfo.LastAccess := 0;
             Result.Add(FileInfo.Path, FileInfo);
           end;
@@ -374,15 +371,29 @@ begin
   FPath := Path;
 end;
 
-function TIncludeHandler.GetIncludeFileContent(const FileName: string): string;
+function TIncludeHandler.GetIncludeFileContent(const ParentFileName, IncludeName: string;
+  out Content: string; out FileName: string): Boolean;
 var
   FileContent: TStringList;
+  FullPath: string;
 begin
+  Content := '';
+  FileName := '';
+  Result := False;
+
+  FullPath := IncludeName;
+  if not FileExists(FullPath) then
+    FullPath := IncludeTrailingPathDelimiter(FPath) + IncludeName;
+
+  if not FileExists(FullPath) then
+    Exit;
+
   FileContent := TStringList.Create;
   try
-    FileContent.LoadFromFile(
-      IncludeTrailingPathDelimiter(FPath) + FileName);
-    Result := FileContent.Text;
+    FileContent.LoadFromFile(FullPath);
+    Content := FileContent.Text;
+    FileName := FullPath;
+    Result := True;
   finally
     FileContent.Free;
   end;

@@ -8,7 +8,7 @@
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Thirdy\DelphiAST\SimpleParser;..\..\Thirdy\DelphiAST"/>
-        <OtherUnitFiles Value="..\..\src\Model;..\..\src\Utils;..\..\src\View;..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src;..\..\Thirdy\Log4pascal;..\..\Thirdy\Andrey"/>
+        <OtherUnitFiles Value="..\..\src\Model;..\..\src\Utils;..\..\src\View;..\..\src\Controller;..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src;..\..\Thirdy\Log4pascal;..\..\Thirdy\Andrey"/>
         <UnitOutputDirectory Value="Compiled\$(TargetCPU)-$(TargetOS)\"/>
       </SearchPaths>
       <Other>
@@ -19,7 +19,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="11">
+    <Files Count="24">
       <Item1>
         <Filename Value="..\..\src\Model\HDFindUnit.Model.Header.pas"/>
         <UnitName Value="HDFindUnit.Model.Header"/>
@@ -64,6 +64,58 @@
         <Filename Value="..\..\src\View\HDFindUnit.View.FormMessage.pas"/>
         <UnitName Value="HDFindUnit.View.FormMessage"/>
       </Item11>
+      <Item12>
+        <Filename Value="..\..\src\Utils\HDFindUnit.Utils.pas"/>
+        <UnitName Value="HDFindUnit.Utils"/>
+      </Item12>
+      <Item13>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Interf.Translation.pas"/>
+        <UnitName Value="HDFindUnit.Model.Interf.Translation"/>
+      </Item13>
+      <Item14>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Translation.pas"/>
+        <UnitName Value="HDFindUnit.Model.Translation"/>
+      </Item14>
+      <Item15>
+        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.Interf.EnvironmentController.pas"/>
+        <UnitName Value="HDFindUnit.Controller.Interf.EnvironmentController"/>
+      </Item15>
+      <Item16>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.IncluderHandlerInc.pas"/>
+        <UnitName Value="HDFindUnit.Model.IncluderHandlerInc"/>
+      </Item16>
+      <Item17>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.ResultsImportanceCalculator.pas"/>
+        <UnitName Value="HDFindUnit.Model.ResultsImportanceCalculator"/>
+      </Item17>
+      <Item18>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.AutoImport.pas"/>
+        <UnitName Value="HDFindUnit.Model.AutoImport"/>
+      </Item18>
+      <Item19>
+        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.OTAUtils.pas"/>
+        <UnitName Value="HDFindUnit.Controller.OTAUtils"/>
+      </Item19>
+      <Item20>
+        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.EnvironmentController.pas"/>
+        <UnitName Value="HDFindUnit.Controller.EnvironmentController"/>
+      </Item20>
+      <Item21>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.FileEditor.pas"/>
+        <UnitName Value="HDFindUnit.Model.FileEditor"/>
+      </Item21>
+      <Item22>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Worker.pas"/>
+        <UnitName Value="HDFindUnit.Model.Worker"/>
+      </Item22>
+      <Item23>
+        <Filename Value="..\..\src\View\HDFindUnit.View.FormSearch.pas"/>
+        <UnitName Value="HDFindUnit.View.FormSearch"/>
+      </Item23>
+      <Item24>
+        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.Lazarus.pas"/>
+        <UnitName Value="HDFindUnit.Controller.Lazarus"/>
+      </Item24>
     </Files>
     <Type Value="DesignTime"/>
     <RequiredPkgs Count="4">

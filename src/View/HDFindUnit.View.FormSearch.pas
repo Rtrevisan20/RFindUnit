@@ -8,17 +8,22 @@ uses
   HDFindUnit.Model.Header,
   HDFindUnit.Model.Interf.Translation,
   HDFindUnit.Model.Translation,
+{$IFNDEF FPC}
   HDFindUnit.View.FormSettings,
-  System.Classes,
-  System.ImageList,
-  Vcl.AppEvnts,
-  Vcl.Buttons,
-  Vcl.Controls,
-  Vcl.ExtCtrls,
-  Vcl.Forms,
-  Vcl.ImgList,
-  Vcl.StdCtrls,
-  Winapi.Windows;
+{$ENDIF}
+  Classes,
+  Buttons,
+  Controls,
+  ExtCtrls,
+  Forms,
+  StdCtrls
+{$IFDEF FPC}
+  ,LCLType
+{$ELSE}
+  ,Vcl.AppEvnts
+  ,Vcl.ImgList
+  ,Winapi.Windows, System.ImageList
+{$ENDIF};
 
 type
   TFuncBoolean = function: Boolean of object;
@@ -35,20 +40,25 @@ type
     lblWhere: TLabel;
     rbInterface: TRadioButton;
     rbImplementation: TRadioButton;
+{$IFNDEF FPC}
     aevKeys: TApplicationEvents;
+{$ENDIF}
     tmrLoadedItens: TTimer;
     lblProjectUnitsStatus: TLabel;
     lblLibraryUnitsStatus: TLabel;
     btnRefreshProject: TSpeedButton;
     btnRefreshLibraryPath: TSpeedButton;
     btnAdd: TButton;
+{$IFNDEF FPC}
     btnProcessDCUs: TSpeedButton;
+{$ENDIF}
     pnlMsg: TPanel;
     lblMessage: TLabel;
-    btn1: TSpeedButton;
+{$IFNDEF FPC}
     btnConfig: TButton;
     ilImages: TImageList;
     lblWarnDcuDecompi: TLabel;
+{$ENDIF}
     procedure FormShow(Sender: TObject);
     procedure edtSearchKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnAddClick(Sender: TObject);
@@ -56,24 +66,39 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure lstResultDblClick(Sender: TObject);
     procedure edtSearchClick(Sender: TObject);
+{$IFDEF FPC}
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+{$ELSE}
     procedure aevKeysMessage(var Msg: tagMSG; var Handled: Boolean);
+{$ENDIF}
     procedure tmrLoadedItensTimer(Sender: TObject);
     procedure chkSearchProjectFilesClick(Sender: TObject);
     procedure chkSearchLibraryPathClick(Sender: TObject);
     procedure btnRefreshProjectClick(Sender: TObject);
     procedure btnRefreshLibraryPathClick(Sender: TObject);
+{$IFNDEF FPC}
     procedure btnProcessDCUsClick(Sender: TObject);
+{$ENDIF}
     procedure FormCreate(Sender: TObject);
+{$IFNDEF FPC}
     procedure btnConfigClick(Sender: TObject);
+{$ENDIF}
     procedure lstResultClick(Sender: TObject);
   private
     FEnvControl: TEnvironmentController;
     FFileEditor: TSourceFileEditor;
+{$IFNDEF FPC}
     FfrmConfig: TfrmSettings;
+{$ENDIF}
 
     procedure AddUnit;
 
+{$IFDEF FPC}
+    procedure ProcessKeyCommand(Key: Word; Shift: TShiftState; var Handled: Boolean);
+    procedure CreateFormControls;
+{$ELSE}
     procedure ProcessKeyCommand(var Msg: tagMSG; var Handled: Boolean);
+{$ENDIF}
 
     procedure CheckLoadingStatus(
         Func: TFuncBoolean;
@@ -89,8 +114,10 @@ type
     procedure LoadConfigs;
 
     procedure SelectTheMostSelectableItem;
+{$IFNDEF FPC}
     procedure ProcessDCUFiles;
     function CanProcessDCUFiles: Boolean;
+{$ENDIF}
     procedure DisplayMessageToMuchResults(Show: Boolean);
 
     procedure LoadCurrentFile;
@@ -115,20 +142,24 @@ var
 implementation
 
 uses
-  ToolsAPI,
   HDFindUnit.Controller.OTAUtils,
-  HDFindUnit.Model.DcuDecompiler,
   HDFindUnit.Model.ResultsImportanceCalculator,
   HDFindUnit.Model.Settings,
   HDFindUnit.Utils,
   HDFindUnit.View.FormMessage,
-  System.SysUtils,
-  Vcl.Dialogs,
-  Vcl.Graphics,
-  Winapi.Messages,
-  Winapi.ShellAPI;
+  Dialogs,
+  Graphics,
+  SysUtils
+{$IFNDEF FPC}
+  ,HDFindUnit.Model.DcuDecompiler
+  ,ToolsAPI
+  ,Winapi.Messages
+  ,Winapi.ShellAPI
+{$ENDIF};
 
+{$IFNDEF FPC}
 {$R *.dfm}
+{$ENDIF}
 
 const
   IDCONT = '1';
@@ -170,7 +201,9 @@ begin
     if Settings.SettingFormStartPosY > 0 then
       Self.Top := Settings.SettingFormStartPosY;
 
+{$IFNDEF FPC}
     lblWarnDcuDecompi.Visible := not Settings.RanOnceDcuDecompiler;
+{$ENDIF}
   finally
     Settings.Free;
   end;
@@ -179,16 +212,12 @@ end;
 procedure TfrmFindUnit.ShowTextOnScreen(Text: string);
 var
   aText: string;
-//  MsgForm: TfrmMessage;
 begin
-  //  MsgForm := TfrmMessage.Create(nil);
-
   if rbInterface.Checked then
     aText := Translation.GetUnitAddedToInterface(Text)
   else
     aText := Translation.GetUnitAddedToImplementation(Text);
   TfrmMessage.ShowInfoToUser(aText);
-  //  MsgForm.DisplayMessage(aText);
   SetFocus;
 end;
 
@@ -214,17 +243,82 @@ begin
   Close;
 end;
 
+{$IFDEF FPC}
+procedure TfrmFindUnit.ProcessKeyCommand(Key: Word; Shift: TShiftState; var Handled: Boolean);
+begin
+  Handled := False;
+
+  if Key = VK_RETURN then
+  begin
+    AddUnit;
+    Handled := True;
+  end
+  else if Key = VK_ESCAPE then
+  begin
+    Close;
+    Handled := True;
+  end
+  else if (Key in [VK_UP, VK_DOWN]) then
+  begin
+    lstResult.SetFocus;
+    Handled := True;
+  end
+  else if (ssCtrl in Shift) and (Key = Ord('A')) then
+  begin
+    edtSearch.SelectAll;
+    Handled := True;
+  end;
+end;
+
+procedure TfrmFindUnit.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+  Handled: Boolean;
+begin
+  ProcessKeyCommand(Key, Shift, Handled);
+  if Handled then
+    Key := 0;
+end;
+{$ELSE}
 procedure TfrmFindUnit.aevKeysMessage(var Msg: tagMSG; var Handled: Boolean);
 begin
   if Msg.message = WM_KEYDOWN then
     ProcessKeyCommand(Msg, Handled);
 end;
 
+procedure TfrmFindUnit.ProcessKeyCommand(var Msg: tagMSG; var Handled: Boolean);
+const
+  MOVE_COMMANDS = [VK_UP, VK_DOWN];
+
+  function IsCtrlA: Boolean;
+  begin
+    Result := (GetKeyState(VK_CONTROL) < 0) and (Char(Msg.wParam) = 'A');
+  end;
+begin
+  if FfrmConfig <> nil then begin
+    Handled := False;
+    Exit;
+  end;
+
+  if (Msg.wParam in MOVE_COMMANDS) then begin
+    Msg.hwnd := lstResult.Handle;
+    lstResult.SetFocus;
+  end
+  else begin
+    Msg.hwnd := edtSearch.Handle;
+    edtSearch.SetFocus;
+
+    if IsCtrlA then
+      edtSearch.SelectAll;
+  end;
+end;
+{$ENDIF}
+
 procedure TfrmFindUnit.btnAddClick(Sender: TObject);
 begin
   AddUnit;
 end;
 
+{$IFNDEF FPC}
 procedure TfrmFindUnit.btnConfigClick(Sender: TObject);
 begin
   FfrmConfig := TfrmSettings.Create(Self);
@@ -241,10 +335,10 @@ end;
 function TfrmFindUnit.CanProcessDCUFiles: Boolean;
 const
   MESGEM =
-      'O dcu32int.exe n�o foi encontrado. Deve estar em %s . Se voc� baixar o fonte do projeto voc� vai '
-          + 'encontre-o em {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copie o execut�vel e cole no %s, e '
-          + 'tente executar este comando novamente. Se voc� n�o sabe onde encontrar este execut�vel posso te enviar '
-          + 'para a p�gina do projeto, voc� quer que eu abra para voc� ?';
+      'O dcu32int.exe n'#227'o foi encontrado. Deve estar em %s . Se voc'#234' baixar o fonte do projeto voc'#234' vai '
+          + 'encontre-o em {PATH}\RFindUnit\Thirdy\Dcu32Int\dcu32int.exe . Copie o execut'#225'vel e cole no %s, e '
+          + 'tente executar este comando novamente. Se voc'#234' n'#227'o sabe onde encontrar este execut'#225'vel posso te enviar '
+          + 'para a p'#225'gina do projeto, voc'#234' quer que eu abra para voc'#234' ?';
 var
   ForMessage: string;
   MesDlg: TForm;
@@ -292,6 +386,7 @@ begin
   end;
   ConfigureForm;
 end;
+{$ENDIF}
 
 procedure TfrmFindUnit.btnRefreshLibraryPathClick(Sender: TObject);
 begin
@@ -366,8 +461,145 @@ end;
 constructor TfrmFindUnit.Create(AOwner: TComponent);
 begin
   inherited;
+{$IFDEF FPC}
+  CreateFormControls;
+  FormCreate(Self);
+{$ENDIF}
   LoadCurrentFile;
 end;
+
+{$IFDEF FPC}
+procedure TfrmFindUnit.CreateFormControls;
+begin
+  Left := 0;
+  Top := 0;
+  Width := 580;
+  Height := 501;
+  BorderStyle := bsSizeToolWin;
+  Position := poMainFormCenter;
+  KeyPreview := True;
+  OnKeyDown := FormKeyDown;
+
+  grpSearch := TGroupBox.Create(Self);
+  grpSearch.Parent := Self;
+  grpSearch.Align := alTop;
+  grpSearch.Height := 73;
+
+  edtSearch := TEdit.Create(Self);
+  edtSearch.Parent := grpSearch;
+  edtSearch.Left := 16;
+  edtSearch.Top := 18;
+  edtSearch.Width := 330;
+  edtSearch.OnChange := edtSearchChange;
+  edtSearch.OnClick := edtSearchClick;
+  edtSearch.OnKeyDown := edtSearchKeyDown;
+
+  rbInterface := TRadioButton.Create(Self);
+  rbInterface.Parent := grpSearch;
+  rbInterface.Left := 84;
+  rbInterface.Top := 45;
+  rbInterface.Checked := True;
+
+  rbImplementation := TRadioButton.Create(Self);
+  rbImplementation.Parent := grpSearch;
+  rbImplementation.Left := 203;
+  rbImplementation.Top := 45;
+
+  lblWhere := TLabel.Create(Self);
+  lblWhere.Parent := grpSearch;
+  lblWhere.Left := 16;
+  lblWhere.Top := 46;
+
+  btnAdd := TButton.Create(Self);
+  btnAdd.Parent := grpSearch;
+  btnAdd.Left := 482;
+  btnAdd.Top := 16;
+  btnAdd.Width := 85;
+  btnAdd.Height := 25;
+  btnAdd.Anchors := [akTop, akRight];
+  btnAdd.OnClick := btnAddClick;
+
+  grpResult := TGroupBox.Create(Self);
+  grpResult.Parent := Self;
+  grpResult.Align := alClient;
+
+  lstResult := TListBox.Create(Self);
+  lstResult.Parent := grpResult;
+  lstResult.Align := alClient;
+  lstResult.OnClick := lstResultClick;
+  lstResult.OnDblClick := lstResultDblClick;
+
+  pnlMsg := TPanel.Create(Self);
+  pnlMsg.Parent := grpResult;
+  pnlMsg.Align := alBottom;
+  pnlMsg.Height := 47;
+  pnlMsg.Visible := False;
+
+  lblMessage := TLabel.Create(Self);
+  lblMessage.Parent := pnlMsg;
+  lblMessage.Align := alClient;
+  lblMessage.WordWrap := True;
+  lblMessage.Layout := tlCenter;
+  lblMessage.Font.Color := 19174;
+  lblMessage.Font.Style := [fsItalic];
+
+  grpOptions := TGroupBox.Create(Self);
+  grpOptions.Parent := Self;
+  grpOptions.Align := alBottom;
+  grpOptions.Height := 109;
+
+  chkSearchProjectFiles := TCheckBox.Create(Self);
+  chkSearchProjectFiles.Parent := grpOptions;
+  chkSearchProjectFiles.Left := 19;
+  chkSearchProjectFiles.Top := 22;
+  chkSearchProjectFiles.Checked := True;
+  chkSearchProjectFiles.OnClick := chkSearchProjectFilesClick;
+
+  chkSearchLibraryPath := TCheckBox.Create(Self);
+  chkSearchLibraryPath.Parent := grpOptions;
+  chkSearchLibraryPath.Left := 19;
+  chkSearchLibraryPath.Top := 45;
+  chkSearchLibraryPath.Width := 163;
+  chkSearchLibraryPath.Checked := True;
+  chkSearchLibraryPath.OnClick := chkSearchLibraryPathClick;
+
+  lblProjectUnitsStatus := TLabel.Create(Self);
+  lblProjectUnitsStatus.Parent := grpOptions;
+  lblProjectUnitsStatus.Left := 194;
+  lblProjectUnitsStatus.Top := 23;
+
+  lblLibraryUnitsStatus := TLabel.Create(Self);
+  lblLibraryUnitsStatus.Parent := grpOptions;
+  lblLibraryUnitsStatus.Left := 194;
+  lblLibraryUnitsStatus.Top := 46;
+
+  btnRefreshProject := TSpeedButton.Create(Self);
+  btnRefreshProject.Parent := grpOptions;
+  btnRefreshProject.Left := 188;
+  btnRefreshProject.Top := 18;
+  btnRefreshProject.Width := 54;
+  btnRefreshProject.Height := 22;
+  btnRefreshProject.Flat := True;
+  btnRefreshProject.Visible := False;
+  btnRefreshProject.OnClick := btnRefreshProjectClick;
+
+  btnRefreshLibraryPath := TSpeedButton.Create(Self);
+  btnRefreshLibraryPath.Parent := grpOptions;
+  btnRefreshLibraryPath.Left := 188;
+  btnRefreshLibraryPath.Top := 42;
+  btnRefreshLibraryPath.Width := 54;
+  btnRefreshLibraryPath.Height := 22;
+  btnRefreshLibraryPath.Flat := True;
+  btnRefreshLibraryPath.OnClick := btnRefreshLibraryPathClick;
+
+  tmrLoadedItens := TTimer.Create(Self);
+  tmrLoadedItens.Interval := 100;
+  tmrLoadedItens.OnTimer := tmrLoadedItensTimer;
+
+  OnClose := FormClose;
+  OnShow := FormShow;
+end;
+{$ENDIF}
 
 destructor TfrmFindUnit.Destroy;
 begin
@@ -435,14 +667,12 @@ begin
       IsThereToMuchResults;
       Return.Free;
     end;
-// Implementar busca no search path do projeto
 
     ResultSearch.Sorted := True;
     lstResult.Items.Text := ResultSearch.Text;
 
     SelectTheMostSelectableItem;
     DisplayMessageToMuchResults(ToMuchResults);
-    lstResult.Count
   finally
     ResultSearch.Free;
     lstResult.Items.EndUpdate;
@@ -454,7 +684,6 @@ begin
   try
     FilterItem(edtSearch.Text);
   except
-    //    Logger
     raise
   end;
 end;
@@ -478,8 +707,10 @@ begin
   btnAdd.Caption := Translation.GetFormSearchAdd;
   btnRefreshProject.Caption := Translation.GetFormSearchRefresh;
   btnRefreshLibraryPath.Caption := Translation.GetFormSearchRefresh;
+{$IFNDEF FPC}
   btnProcessDCUs.Caption := Translation.GetFormSearchProcessDCU;
   lblWarnDcuDecompi.Caption := Translation.GetFormSearchDCUWarning;
+{$ENDIF}
   chkSearchLibraryPath.Caption := Translation.GetFormSearchSearchLibraryPath;
   chkSearchProjectFiles.Caption := Translation.GetFormSearchSearchProject;
   ConfigureForm;
@@ -506,8 +737,8 @@ begin
     Exit;
 
   for I := 0 to lstResult.Items.Count - 1 do begin
-    if lstResult.Selected[i] then begin
-      GetUnitFromSearchSelection(lstResult.Items[i], UnitName, ClassName);
+    if lstResult.Selected[I] then begin
+      GetUnitFromSearchSelection(lstResult.Items[I], UnitName, ClassName);
       Exit;
     end;
   end;
@@ -533,7 +764,6 @@ end;
 procedure TfrmFindUnit.lstResultClick(Sender: TObject);
 begin
 {$IFDEF DEBUG}
-  //  Clipboard.AsText := lstResult.Items.Text;
 {$ENDIF}
 end;
 
@@ -541,33 +771,6 @@ procedure TfrmFindUnit.lstResultDblClick(Sender: TObject);
 begin
   AddUnit;
   Close;
-end;
-
-procedure TfrmFindUnit.ProcessKeyCommand(var Msg: tagMSG; var Handled: Boolean);
-const
-  MOVE_COMMANDS = [VK_UP, VK_DOWN];
-
-  function IsCtrlA: Boolean;
-  begin
-    Result := (GetKeyState(VK_CONTROL) < 0) and (Char(Msg.wParam) = 'A');
-  end;
-begin
-  if FfrmConfig <> nil then begin
-    Handled := False;
-    Exit;
-  end;
-
-  if (Msg.wParam in MOVE_COMMANDS) then begin
-    Msg.hwnd := lstResult.Handle;
-    lstResult.SetFocus;
-  end
-  else begin
-    Msg.hwnd := edtSearch.Handle;
-    edtSearch.SetFocus;
-
-    if IsCtrlA then
-      edtSearch.SelectAll;
-  end;
 end;
 
 procedure TfrmFindUnit.SaveConfigs;
@@ -620,7 +823,9 @@ var
   BecameReady: Boolean;
 begin
   BecameReady := False;
+{$IFNDEF FPC}
   btnProcessDCUs.Enabled := not FEnvControl.ProcessingDCU;
+{$ENDIF}
   CheckLoadingStatus(
       FEnvControl.IsProjectsUnitReady,
       FEnvControl.GetProjectPathStatus,

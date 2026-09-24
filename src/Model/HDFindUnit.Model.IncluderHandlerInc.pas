@@ -3,9 +3,9 @@
 interface
 
 uses
-  System.Classes,
+  Classes,
 
-  System.Generics.Collections,
+  Generics.Collections,
 
   SimpleParser.Lexer.Types;
 
@@ -28,7 +28,8 @@ type
 
     procedure Process;
 
-    function GetIncludeFileContent(const FileName: string): string;
+    function GetIncludeFileContent(const ParentFileName, IncludeName: string;
+      out Content: string; out FileName: string): Boolean;
   end;
 
 
@@ -36,7 +37,7 @@ implementation
 
 uses
   Log4Pascal,
-  System.SysUtils,
+  SysUtils,
 
   HDFindUnit.Utils;
 
@@ -96,18 +97,24 @@ begin
   end;
 end;
 
-function TIncludeHandlerInc.GetIncludeFileContent(const FileName: string): string;
+function TIncludeHandlerInc.GetIncludeFileContent(const ParentFileName, IncludeName: string;
+  out Content: string; out FileName: string): Boolean;
 var
   ItemInc: TIncItem;
   FileInc: TStringList;
 begin
-  Result := '';
-  if not FIncList.TryGetValue(UpperCase(FileName), ItemInc) then
+  Content := '';
+  FileName := '';
+  Result := False;
+
+  if not FIncList.TryGetValue(UpperCase(IncludeName), ItemInc) then
     Exit;
 
   if ItemInc.Loaded then
   begin
-    Result := ItemInc.Content;
+    Content := ItemInc.Content;
+    FileName := ItemInc.FilePath;
+    Result := True;
     Exit;
   end;
 
@@ -117,10 +124,13 @@ begin
       FileInc.LoadFromFile(ItemInc.FilePath);
       ItemInc.Content := FileInc.Text;
       ItemInc.Loaded := True;
+      FIncList.AddOrSetValue(UpperCase(IncludeName), ItemInc);
     except
-      Result := '';
+      Exit;
     end;
-    Result := ItemInc.Content;
+    Content := ItemInc.Content;
+    FileName := ItemInc.FilePath;
+    Result := True;
   finally
     FileInc.Free;
   end;

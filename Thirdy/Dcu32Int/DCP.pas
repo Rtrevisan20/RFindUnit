@@ -1,4 +1,11 @@
 unit DCP;
+{$IFNDEF FPC}
+{$WARNINGS OFF}
+{$HINTS OFF}
+{$ELSE}
+{$WARNINGS OFF}
+{$NOTES OFF}
+{$ENDIF}
 
 interface
 (*
@@ -9,7 +16,7 @@ E-Mail: alex@icc.ru
 http://hmelnov.icc.ru/DCU/
 ----------------------------------------------------------------------------
 
-See the file "readme.txt" for more details.
+See the file "readme.md" for more details.
 
 ------------------------------------------------------------------------
                              IMPORTANT NOTE:
@@ -28,7 +35,8 @@ freely, subject to the following restrictions:
 *)
 
 uses
-  SysUtils,Classes;
+  SysUtils,Classes
+  {$IFDEF UNICODE}, AnsiStrings{$ENDIF};
 
 type
 
@@ -113,7 +121,7 @@ end ;
 
 function TDCPackage.CheckDCPOfs(Ofs: Cardinal; const Msg: String): Pointer;
 begin
-  if (Ofs<0)or(Ofs>=FMemSize) then
+  if Ofs>=FMemSize then
     DCPErr(Msg);
   Result := TIncPtr(FMemPtr)+Ofs;
 end ;
@@ -221,7 +229,7 @@ begin
           Inc(NP,(5+NChk)*SizeOf(LongInt));
         if (TIncPtr(NP)-TIncPtr(UI0)>=Hdr^.SzContains) then
           break;
-        EP := StrEnd(NP);
+        EP := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}StrEnd(NP);
         l := EP-NP;
         if l>255 then
           DCPErr('Too long unit name.');
@@ -233,7 +241,7 @@ begin
             Inc(EP); //make it >Hdr^.SzContains
             break;
           end;
-          EP := StrEnd(EP);
+          EP := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}StrEnd(EP);
           Inc(EP);
         end ;
         UI := Pointer(EP);

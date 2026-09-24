@@ -3,15 +3,18 @@
 interface
 
 uses
+{$IFNDEF FPC}
   ToolsAPI,
+{$ENDIF}
   HDFindUnit.Model.Header,
   HDFindUnit.Controller.OTAUtils,
   HDFindUnit.Model.Settings,
   HDFindUnit.Model.Translation,
   HDFindUnit.Utils,
   HDFindUnit.Model.Interf.Translation,
-  System.Classes,
-  System.SysUtils;
+  Classes,
+  StrUtils,
+  SysUtils;
 
 type
   TCharPosition = record
@@ -89,8 +92,12 @@ implementation
 
 uses
   RegExpr,
-  HDFindUnit.View.FormMessage,
-  System.RegularExpressions;
+  HDFindUnit.View.FormMessage
+{$IFNDEF FPC}
+  ,
+  System.RegularExpressions
+{$ENDIF}
+  ;
 
 { TSourceFileEditor }
 
@@ -290,7 +297,20 @@ var
   StartPos: Integer;
   EndPos: Integer;
   Writer: IOTAEditWriter;
+{$IFDEF FPC}
+  I: Integer;
+{$ENDIF}
 begin
+{$IFDEF FPC}
+  // FPC port: remove lines [FromLine..ToLine] (0-based) directly from the
+  // editor lines. This is equivalent to the Delphi EditView delete below.
+  if FromLine < 0 then
+    FromLine := 0;
+  if ToLine >= FSource.Lines.Count then
+    ToLine := FSource.Lines.Count - 1;
+  for I := ToLine downto FromLine do
+    FSource.Lines.Delete(I);
+{$ELSE}
   Inc(FromLine);
   StartPosition.Line := FromLine;
   StartPosition.CharIndex := 0;
@@ -307,6 +327,7 @@ begin
 
   Writer.CopyTo(StartPos);
   Writer.DeleteTo(EndPos);
+{$ENDIF}
 end;
 
 function TFileRegion.AddUses(UseUnit: string{; var Writer: IOTAEditWriter}): Boolean;
@@ -352,9 +373,14 @@ begin
     Uncommented := UncommentLine(FFullFileText[CommentLineIdx]);
     if Uncommented <> '' then
     begin
-      if (not Uncommented.EndsWith(',')) and (not Uncommented.EndsWith(';')) then
+      if (not AnsiEndsStr(',', Uncommented)) and (not AnsiEndsStr(';', Uncommented)) then
         Uncommented := Uncommented + ',';
 
+{$IFDEF FPC}
+      // FPC port: replace the commented line with the uncommented text.
+      if (CommentLineIdx >= 0) and (CommentLineIdx < FSource.Lines.Count) then
+        FSource.Lines[CommentLineIdx] := Indent + Uncommented;
+{$ELSE}
       StartCharPos.Line := CommentLineIdx + 1;
       StartCharPos.CharIndex := 0;
       EndCharPos.Line := CommentLineIdx + 2;
@@ -367,6 +393,7 @@ begin
       Writer.CopyTo(AbsStart);
       Writer.DeleteTo(AbsEnd);
       Writer.Insert(PAnsiChar(AnsiToUtf8(Indent + Uncommented + #13#10)));
+{$ENDIF}
     end;
 
     Exit(True);
@@ -394,14 +421,18 @@ var
   PosChar: Integer;
   NewUsesPosition: TCharPosition;
   UnitContent: string;
-  RegReturn: TMatchCollection;
+  Regex: TRegExpr;
 begin
   Result := True;
 
-  RegReturn := TRegEx.Matches(UseUnit.ToUpper, '\b' + 'USES' + '[^<.>]');
-
-  if (RegReturn.Count > 0) or UseUnit.IsEmpty then
-    Exit;
+  Regex := TRegExpr.Create;
+  try
+    Regex.Expression := '\b' + 'USES' + '[^<.>]';
+    if (Regex.Exec(UpperCase(UseUnit))) or (UseUnit = '') then
+      Exit;
+  finally
+    Regex.Free;
+  end;
 
   Line := UsesPosition.EndLine;
   PosChar := UsesPosition.EndPos -1;
@@ -419,7 +450,7 @@ begin
     NewUsesPosition.StartLine := Line;
     NewUsesPosition.StartPos := PosChar;
     NewUsesPosition.EndLine := NewUsesPosition.StartLine + 2;
-    NewUsesPosition.EndPos := UnitContent.Length;
+    NewUsesPosition.EndPos := Length(UnitContent);
 
     SetUsesPosition(NewUsesPosition);
   end
@@ -544,11 +575,11 @@ begin
   for UseCur in UseUnit do
   begin
     HasNamespace := Pos('.', UseCur) > 0;
-    if (UseCur.Trim.ToUpper = 'USES')
-      or (UseCur.Trim.IsEmpty) then
+    if (UpperCase(Trim(UseCur)) = 'USES')
+      or (Trim(UseCur) = '') then
       Continue;
 
-    if NewUses.IsEmpty then
+    if NewUses = '' then
     begin
       NewUses := '  ' + UseCur;
 
@@ -568,8 +599,8 @@ begin
 
         if GlobalSettings.GroupNonNamespaceUnits and (not HasNamespace) then
           MustAddBlankLine := False
-        else if not LastDomain.IsEmpty  then
-          MustAddBlankLine := not CurDomain.Equals(LastDomain);
+        else if not (LastDomain = '') then
+          MustAddBlankLine := not (AnsiCompareText(CurDomain, LastDomain) = 0);
         LastDomain := CurDomain;
       end;
 
@@ -610,7 +641,7 @@ begin
     NewUsesPosition.StartLine := Line;
     NewUsesPosition.StartPos := PosChar;
     NewUsesPosition.EndLine := NewUsesPosition.StartLine + 2;
-    NewUsesPosition.EndPos := NewUses.Length;
+    NewUsesPosition.EndPos := Length(NewUses);
 
     SetUsesPosition(NewUsesPosition);
   end
@@ -817,28 +848,37 @@ var
   InfoPosition: TOTACharPos;
   SetPosition: Integer;
   Writer: IOTAEditWriter;
+{$IFDEF FPC}
+  L: string;
+  LineText: string;
+{$ENDIF}
 begin
   if Information = '' then
     Exit;
 
   Line := Line + 1;
+{$IFDEF FPC}
+  // FPC port: insert Information inside the line at column Position using
+  // ReplaceLines (1-based line index, accepts multi-line NewText).
+  if (Line < 1) or (Line > FSource.Lines.Count) then
+    Exit;
+  if Position < 0 then
+    Position := 0;
+  LineText := FSource.Lines[Line - 1];
+  L := Copy(LineText, 1, Position) + Information + Copy(LineText, Position + 1, MaxInt);
+  FSource.ReplaceLines(Line, Line, L);
+{$ELSE}
   InfoPosition.Line := Line;
   InfoPosition.CharIndex := Position;
 
   SetPosition := FSource.EditViews[0].CharPosToPos(InfoPosition);
-
-////  NewUsesPosition.StartLine := FUsesPosition.StartLine;
-////  NewUsesPosition.StartPos := FUsesPosition.StartPos;
-////  NewUsesPosition.EndLine := InfoPosition.Line;
-////  NewUsesPosition.EndPos := InfoPosition.CharIndex + Length(Information);
-//
-//  SetUsesPosition(NewUsesPosition);
 
 //  if Writer = nil then
     Writer := FSource.CreateUndoableWriter;
 
   Writer.CopyTo(SetPosition);
   Writer.Insert(PAnsiChar(AnsiToUtf8(Information)));
+{$ENDIF}
 end;
 
 function TFileRegion.FindCommentedUses(const UnitName: string; out LineIndex: Integer): Boolean;

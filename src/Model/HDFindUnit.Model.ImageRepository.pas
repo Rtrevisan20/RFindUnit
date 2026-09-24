@@ -8,7 +8,7 @@ uses
   System.UITypes,
 
   HDFindUnit.Model.SVGConsts,
-  RFUSVG,
+  SVG,
   Vcl.Imaging.pngimage;
 
 const

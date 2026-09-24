@@ -194,22 +194,22 @@ begin
             GetReference(TypeNode)
           else begin
             TypeType := TypeDesc.GetAttribute(anType);
-            if TypeType.IsEmpty then
+            if TypeType = '' then
               TypeType := TypeDesc.GetAttribute(anName);
 
-            if TypeType.Equals('interface') then
+            if TypeType = 'interface' then
               GetInterfaceDescription(TypeNode)
-            else if TypeType.Equals('class') then
+            else if TypeType = 'class' then
               GetClassDescription(TypeNode, TypeDesc.FindNode(ntHelper) <> nil)
-            else if TypeType.Equals('enum') or TypeType.Equals('set') then
+            else if (TypeType = 'enum') or (TypeType = 'set') then
               GetEnumerationDescription(TypeNode)
-            else if TypeType.Equals('record') then
+            else if TypeType = 'record' then
               GetRecords(TypeNode)
-            else if TypeType.Equals('procedure') then
+            else if TypeType = 'procedure' then
               GetProcedureReferenceDescription(TypeNode)
-            else if TypeType.Equals('function') then
+            else if TypeType = 'function' then
               GetFunctionReferenceDescription(TypeNode)
-            else if TypeType.Equals('subrange') then
+            else if TypeType = 'subrange' then
               GetSubRangeDesc(TypeNode)
             else begin
               try
@@ -283,7 +283,7 @@ begin
 
   MethodNode := SectionNode.FindNode(ntMethod);
   while MethodNode <> nil do begin
-    IsClassMethod := MethodNode.HasAttribute(anClass) and MethodNode.GetAttribute(anClass).Equals('true');
+    IsClassMethod := MethodNode.HasAttribute(anClass) and (MethodNode.GetAttribute(anClass) = 'true');
     if IsClassMethod or IsHelper then begin
       MethodNameDesc := AClassName + '.' + MethodNode.GetAttribute(anName);
       MethodType := MethodNode.GetAttribute(anKind);
@@ -344,10 +344,10 @@ begin
   ItemClassName := Types.GetAttribute(anName);
   TypeDesc := Types.FindNode(ntType);
   Description := TypeDesc.GetAttribute(anName);
-  if Description.IsEmpty then
+  if Description = '' then
     Description := TypeDesc.GetAttribute(anType);
 
-  IsEnum := Description.Equals('enum');
+  IsEnum := Description = 'enum';
 
   Description[1] := UpCase(Description[1]);
   Description := ' - ' + Description;
@@ -417,7 +417,7 @@ begin
   MethodNode := FInterfaceNode.FindNode(ntMethod);
   while MethodNode <> nil do begin
     MethodNameDesc := MethodNode.GetAttribute(anName);
-    IsClassMethod := MethodNode.HasAttribute(anClass) and MethodNode.GetAttribute(anClass).Equals('true');
+    IsClassMethod := MethodNode.HasAttribute(anClass) and (MethodNode.GetAttribute(anClass) = 'true');
     MethodType := MethodNode.GetAttribute(anKind);
     if MethodType = 'procedure' then begin
       if IsClassMethod then

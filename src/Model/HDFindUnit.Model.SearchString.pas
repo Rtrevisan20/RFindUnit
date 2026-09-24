@@ -76,7 +76,7 @@ var
   UpSS: string;
   Local: TStringList;
 begin
-  if SearchString.IsEmpty then
+  if SearchString = '' then
   begin
     Result := TStringList.Create;
     Exit;
@@ -85,19 +85,19 @@ begin
   if Assigned(FSearchStringCache) and FSearchStringCache.GetMatch(SearchString, Result) then
     Exit;
 
-  UpSS := SearchString.ToUpper;
+  UpSS := AnsiUpperCase(SearchString);
   Result := GetMatch('.' + SearchString + '.');
   if Result.Count = 0 then
     Result := GetMatch(SearchString);
 
   for I := Result.Count - 1 downto 0 do
   begin
-    Line := Result[I].ToUpper;
+    Line := AnsiUpperCase(Result[I]);
 
-    if Line.StartsWith(UpSS + '.')
-      or Line.Contains('.' + UpSS + '.')
-      or Line.Contains('.' + UpSS + ' -')
-      or Line.EndsWith('.' + UpSS) then
+    if (Pos(UpSS + '.', Line) = 1)
+      or (Pos('.' + UpSS + '.', Line) > 0)
+      or (Pos('.' + UpSS + ' -', Line) > 0)
+      or ((Length(Line) >= Length(UpSS) + 1) and (Copy(Line, Length(Line) - Length(UpSS) + 1, Length(UpSS)) = UpSS) and (Line[Length(Line) - Length(UpSS)] = '.')) then
       Continue;
 
     Result.Delete(I);
@@ -119,7 +119,7 @@ var
   SearchKey: string;
 begin
   Result := TStringList.Create;
-  if SearchString.IsEmpty then
+  if SearchString = '' then
     Exit;
 
   SearchKey := UpperCase(SearchString);

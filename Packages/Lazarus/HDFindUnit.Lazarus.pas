@@ -14,7 +14,14 @@ uses
   HDFindUnit.Model.Interf.SearchStringCache, 
   HDFindUnit.Model.SearchStringCache, HDFindUnit.Model.SearchString, 
   HDFindUnit.Model.DelphiVlcWrapper, HDFindUnit.View.FormMessage, 
-  LazarusPackageIntf;
+  HDFindUnit.Utils, HDFindUnit.Model.Interf.Translation, 
+  HDFindUnit.Model.Translation, 
+  HDFindUnit.Controller.Interf.EnvironmentController, 
+  HDFindUnit.Model.IncluderHandlerInc, 
+  HDFindUnit.Model.ResultsImportanceCalculator, HDFindUnit.Model.AutoImport, 
+  HDFindUnit.Controller.OTAUtils, HDFindUnit.Controller.EnvironmentController, 
+  HDFindUnit.Model.FileEditor, HDFindUnit.Model.Worker, 
+  HDFindUnit.View.FormSearch, HDFindUnit.Controller.Lazarus, LazarusPackageIntf;
 
 implementation
 

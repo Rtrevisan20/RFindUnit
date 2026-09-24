@@ -5,28 +5,55 @@ interface
 uses
   HDFindUnit.Model.Header,
   HDFindUnit.Utils,
-  System.Generics.Collections,
+  Generics.Collections,
+  Classes,
+{$IFDEF FPC}
+  SysUtils,
+  SrcEditorIntf,
+  LazIDEIntf,
+  ProjectIntf;
+{$ELSE}
   ToolsAPI,
-  System.Classes,
   Winapi.ActiveX,
   Winapi.ShellAPI,
   Winapi.ShlObj;
+{$ENDIF}
+
+{$IFDEF FPC}
+type
+  // On Lazarus there is no IOTASourceEditor (ToolsAPI). TSourceEditorInterface
+  // (SrcEditorIntf) is the closest match and is used as a drop-in alias.
+  IOTASourceEditor = TSourceEditorInterface;
+  // IOTAEditWriter / TOTACharPos are only declared (not used) in the FPC port:
+  // all write operations go through TSourceEditorInterface.Lines/ReplaceLines.
+  IOTAEditWriter = TObject;
+  TOTACharPos = record
+    CharIndex: Integer;
+    Line: Integer;
+  end;
+{$ENDIF}
 
 function GetVolumeLabel(const DriveChar: string): string;
 function BrowseURL(const URL: string): boolean;
+{$IFNDEF FPC}
 function GetEditView(var ASourceEditor: IOTASourceEditor; var AEditView: IOTAEditView): boolean;
+{$ENDIF}
 function EditorAsString(SourceEditor: IOTASourceEditor): string;
 function ActiveSourceEditor: IOTASourceEditor;
+{$IFNDEF FPC}
 function SourceEditor(Module: IOTAMOdule): IOTASourceEditor;
+{$ENDIF}
 
 // GeExperts
+{$IFNDEF FPC}
 function GxOtaGetCurrentModule: IOTAMOdule;
 function GxOtaGetFileEditorForModule(Module: IOTAMOdule; Index: Integer): IOTAEditor;
 function GxOtaGetSourceEditorFromModule(Module: IOTAMOdule; const FileName: string = ''): IOTASourceEditor;
 function GetCurrentProject: IOTAProject;
-function OtaGetCurrentSourceEditor: IOTASourceEditor;
 function GetSelectedTextFromContext(Context: IOTAKeyContext): TStringPosition;
 function GetErrorListFromActiveModule: TOTAErrors;
+{$ENDIF}
+function OtaGetCurrentSourceEditor: IOTASourceEditor;
 procedure GetLibraryPath(Paths: TStrings; PlatformName: string);
 
 function GetAllFilesFromProjectGroup: TDictionary<string, TFileInfo>;
@@ -34,12 +61,22 @@ function GetProjectSearchPathsFromDproj: TStringList;
 
 function GetWordAtCursor(DeltaCharPosition: Integer = 0): TStringPosition;
 
+{$IFDEF FPC}
+function IsProjectOpened: Boolean;
+{$ENDIF}
+
 var
   PathUserDir: string;
 
 implementation
 
 uses
+{$IFDEF FPC}
+  Windows,
+  Types,
+  LCLIntf,
+  Log4Pascal;
+{$ELSE}
   System.SysUtils,
   System.IOUtils,
   System.Variants,
@@ -48,7 +85,9 @@ uses
   Xml.XMLDoc,
   Xml.XMLIntf,
   Log4Pascal;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function SourceEditor(Module: IOTAMOdule): IOTASourceEditor;
 var
   iFileCount: Integer;
@@ -64,7 +103,9 @@ begin
         Break;
   end;
 end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function ActiveSourceEditor: IOTASourceEditor;
 var
   CM: IOTAMOdule;
@@ -75,7 +116,16 @@ begin
   CM := (BorlandIDEServices as IOTAModuleServices).CurrentModule;
   Result := SourceEditor(CM);
 end;
+{$ELSE}
+function ActiveSourceEditor: IOTASourceEditor;
+begin
+  Result := nil;
+  if SourceEditorManagerIntf <> nil then
+    Result := SourceEditorManagerIntf.ActiveEditor;
+end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function GetErrorListFromActiveModule: TOTAErrors;
 var
   ModuleErrors: IOTAModuleErrors;
@@ -101,7 +151,9 @@ begin
       Result := nil;
   end;
 end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function GetAllFilesFromProjectGroup: TDictionary<string, TFileInfo>;
 var
   ModServices: IOTAModuleServices;
@@ -144,7 +196,38 @@ begin
     end;
   end;
 end;
+{$ELSE}
+function GetAllFilesFromProjectGroup: TDictionary<string, TFileInfo>;
+var
+  CurProject: TLazProject;
+  iFile: Integer;
+  FileName: string;
+  FileInfo: TFileInfo;
+begin
+  Result := TDictionary<string, TFileInfo>.Create;
+  if LazarusIDE = nil then
+    Exit;
+  CurProject := LazarusIDE.ActiveProject;
+  if CurProject = nil then
+    Exit;
+  for iFile := 0 to CurProject.FileCount - 1 do begin
+    if CurProject.Files[iFile] = nil then
+      Continue;
+    FileName := CurProject.Files[iFile].Filename;
+    if FileName = '' then
+      Continue;
 
+    FileInfo.Path := FileName;
+    if FileExists(FileName) then
+      FileInfo.LastAccess := FileAge(FileName)
+    else
+      FileInfo.LastAccess := 0;
+    Result.AddOrSetValue(FileInfo.Path, FileInfo);
+  end;
+end;
+{$ENDIF}
+
+{$IFNDEF FPC}
 function GetProjectSearchPathsFromDproj: TStringList;
 var
   Project: IOTAProject;
@@ -221,7 +304,19 @@ begin
       Logger.Error('GetProjectSearchPathsFromDproj: ' + E.Message);
   end;
 end;
+{$ELSE}
+function GetProjectSearchPathsFromDproj: TStringList;
+begin
+  // Lazarus uses .lpk/.lpi, not .dproj. Parsing project search paths is a
+  // later stage; for now return an empty list.
+  Result := TStringList.Create;
+  Result.Delimiter := ';';
+  Result.StrictDelimiter := True;
+  Result.Duplicates := dupIgnore;
+end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 procedure GetLibraryPath(Paths: TStrings; PlatformName: string);
 var
   Svcs: IOTAServices;
@@ -269,7 +364,24 @@ begin
     List.Free;
   end;
 end;
+{$ELSE}
+procedure GetLibraryPath(Paths: TStrings; PlatformName: string);
+const
+  Candidates: array[0..2] of string = (
+    'C:\lazarus\lcl',
+    'C:\lazarus\fpc\3.2.2\source\rtl',
+    'C:\lazarus\fpc\3.2.2\source\packages'
+  );
+var
+  I: Integer;
+begin
+  for I := Low(Candidates) to High(Candidates) do
+    if DirectoryExists(Candidates[I]) then
+      Paths.Add(Candidates[I]);
+end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function GetWordAtCursor(DeltaCharPosition: Integer): TStringPosition;
 const
   strIdentChars = ['a'..'z', 'A'..'Z', '_', '0'..'9'];
@@ -319,7 +431,57 @@ begin
   if (DeltaCharPosition = 0) and (Result.Value = '') then
     Result := GetWordAtCursor(-1);
 end;
+{$ELSE}
+function GetWordAtCursor(DeltaCharPosition: Integer): TStringPosition;
+const
+  strIdentChars = ['a'..'z', 'A'..'Z', '_', '0'..'9'];
+var
+  SourceEditor: IOTASourceEditor;
+  CurPos: TPoint;
+  iPosition: Integer;
+  ContentTxt: string;
+begin
+  Result.Value := '';
+  Result.Line := -1;
+  try
+    SourceEditor := ActiveSourceEditor;
+    if SourceEditor = nil then
+      Exit;
+    CurPos := SourceEditor.CursorTextXY;
+    if (CurPos.Y < 1) or (CurPos.Y > SourceEditor.Lines.Count) then
+      Exit;
+    ContentTxt := SourceEditor.Lines[CurPos.Y - 1];
+    Result.Line := CurPos.Y;
+    iPosition := CurPos.X + DeltaCharPosition;
+    if (iPosition > 0) and (Length(ContentTxt) >= iPosition) and CharInSet(ContentTxt[iPosition], strIdentChars) then
+    begin
+      while (iPosition > 1) and (CharInSet(ContentTxt[Pred(iPosition)], strIdentChars)) do
+        Dec(iPosition);
+      Delete(ContentTxt, 1, Pred(iPosition));
+      iPosition := 1;
+      while (iPosition <= Length(ContentTxt)) and (CharInSet(ContentTxt[iPosition], strIdentChars)) do
+        Inc(iPosition);
+      Delete(ContentTxt, iPosition, Length(ContentTxt) - iPosition + 1);
+      if CharInSet(ContentTxt[1], ['0'..'9']) then
+        ContentTxt := '';
+    end
+    else
+      ContentTxt := '';
 
+    Result.Value := ContentTxt;
+  except
+    on E: exception do begin
+      Result.Value := '';
+      Result.Line := -1;
+    end;
+  end;
+
+  if (DeltaCharPosition = 0) and (Result.Value = '') then
+    Result := GetWordAtCursor(-1);
+end;
+{$ENDIF}
+
+{$IFNDEF FPC}
 function GetSelectedTextFromContext(Context: IOTAKeyContext): TStringPosition;
 var
   Editor: IOTAEditBuffer;
@@ -337,7 +499,9 @@ begin
 
   Result.Value := Trim(Editor.EditBlock.Text);
 end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function GetCurrentProject: IOTAProject;
 var
   ModServices: IOTAModuleServices;
@@ -402,7 +566,9 @@ begin
     end;
   end;
 end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function OtaGetCurrentSourceEditor: IOTASourceEditor;
 var
   LEditorServices: IOTAEditorServices;
@@ -420,7 +586,16 @@ begin
     Result := GxOtaGetSourceEditorFromModule(GxOtaGetCurrentModule);
 
 end;
+{$ELSE}
+function OtaGetCurrentSourceEditor: IOTASourceEditor;
+begin
+  Result := nil;
+  if SourceEditorManagerIntf <> nil then
+    Result := SourceEditorManagerIntf.ActiveEditor;
+end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function GetEditView(var ASourceEditor: IOTASourceEditor; var AEditView: IOTAEditView): boolean;
 begin
   Result := False;
@@ -430,7 +605,16 @@ begin
   AEditView := ASourceEditor.GetEditView(0);
   Result := Assigned(AEditView);
 end;
+{$ENDIF}
 
+{$IFDEF FPC}
+function IsProjectOpened: Boolean;
+begin
+  Result := (LazarusIDE <> nil) and (LazarusIDE.ActiveProject <> nil);
+end;
+{$ENDIF}
+
+{$IFNDEF FPC}
 type
   TBrowserInformation = record
     Name: String;
@@ -458,7 +642,9 @@ begin
     StrDispose(res);
   end;
 end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function EditorAsString(SourceEditor: IOTASourceEditor): string;
 const
   iBufferSize: Integer = 1024;
@@ -484,7 +670,17 @@ begin
     Reader := Nil;
   end;
 end;
+{$ELSE}
+function EditorAsString(SourceEditor: IOTASourceEditor): string;
+begin
+  if SourceEditor = nil then
+    Result := ''
+  else
+    Result := SourceEditor.Lines.Text;
+end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 function LongPathName(const ShortPathName: string): string;
 var
   PIDL: PItemIDList;
@@ -507,6 +703,7 @@ begin
       end;
   end;
 end;
+{$ENDIF}
 
 function GetEnvVarValue(const AVarName: string): string;
 var
@@ -534,6 +731,13 @@ begin
   Result := AnsiUpperCase(Result);
 end;
 
+{$IFDEF FPC}
+function BrowseURL(const URL: string): boolean;
+begin
+  OpenURL(URL);
+  Result := True;
+end;
+{$ELSE}
 function BrowseURL(const URL: string): boolean;
 var
   LBrowserInformation: TBrowserInformation;
@@ -543,6 +747,7 @@ begin
       ShellExecute(0, 'open', PChar(LBrowserInformation.Path + LBrowserInformation.Name), PChar(URL), nil, SW_SHOW)
           > 32;
 end;
+{$ENDIF}
 
 initialization
 

@@ -5,8 +5,8 @@ interface
 uses
   HDFindUnit.Model.Settings,
 
-  System.Classes,
-  System.Math;
+  Classes,
+  Math;
 
 type
   TResultImportanceCalculator = class(TObject)
@@ -34,8 +34,8 @@ implementation
 uses
   HDFindUnit.Utils,
 
-  System.StrUtils,
-  System.SysUtils;
+  StrUtils,
+  SysUtils;
 
 { TResultImportanceCalculator }
 
@@ -146,12 +146,12 @@ var
 
   function MatchesFullName: Boolean;
   begin
-    Result := FCurClass.ToUpper = GetCurClass(Item2).ToUpper;
+    Result := AnsiUpperCase(FCurClass) = AnsiUpperCase(GetCurClass(Item2));
   end;
 
   function MatchesPlusSpace: Boolean;
   begin
-    Result := String(Item1.ToUpper + ' ').Contains(GetCurClass(Item2).ToUpper + ' ');
+    Result := Pos(AnsiUpperCase(GetCurClass(Item2)) + ' ', AnsiUpperCase(Item1) + ' ') > 0;
   end;
 
 begin
@@ -178,7 +178,7 @@ begin
   end
   else
   begin
-    Result := 0 - Item1.Length;
+    Result := 0 - Length(Item1);
 
     if MatchesFullName then
        Inc(Result, 5);

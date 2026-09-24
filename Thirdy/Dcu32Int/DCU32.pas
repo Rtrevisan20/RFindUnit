@@ -1,4 +1,11 @@
 unit DCU32;
+{$IFNDEF FPC}
+{$WARNINGS OFF}
+{$HINTS OFF}
+{$ELSE}
+{$WARNINGS OFF}
+{$NOTES OFF}
+{$ENDIF}
 (*
 The DCU parser module of the DCU32INT utility by Alexei Hmelnov.
 (All the DCU data structures are described here and in the DCURecs module)
@@ -7,7 +14,7 @@ E-Mail: alex@icc.ru
 http://hmelnov.icc.ru/DCU/
 ----------------------------------------------------------------------------
 
-See the file "readme.txt" for more details.
+See the file "readme.md" for more details.
 
 ------------------------------------------------------------------------
                              IMPORTANT NOTE:
@@ -31,13 +38,21 @@ uses
   {$IFDEF UNICODE}  AnsiStrings, {$ENDIF}
   SysUtils, Classes, DasmDefs, DCU_In, DCU_Out, FixUp, DCURecs;
 
+{$IFNDEF FPC}
 {$IFNDEF VER90}
  {$IFNDEF VER100}
   {$REALCOMPATIBILITY ON}
  {$ENDIF}
 {$ENDIF}
-{$IFDEF WIN32}
-{$DEFINE WIN}
+{$ENDIF}
+{$IFDEF FPC}
+  {$IFDEF WINDOWS}
+    {$DEFINE WIN}
+  {$ENDIF}
+{$ELSE}
+  {$IFDEF WIN32}
+    {$DEFINE WIN}
+  {$ENDIF}
 {$ENDIF}
 
 const {My own (AX) codes for Delphi/Kylix versions}
@@ -60,10 +75,13 @@ const {My own (AX) codes for Delphi/Kylix versions}
   verD_XE6 = 19; //XE6
   //verAppMethod=20; //AppMethod
   verD_XE7 = 20; //XE7&AppMethod
+  verD_D11 = 21; //Delphi 11 (Studio 35)
+  verD_D12 = 22; //Delphi 12 (Studio 36) - formato igual ao D13 (padrao tag/template)
+  verD_D13 = 23; //Delphi 13 (Studio 37)
   verK1 = 100; //Kylix 1.0
   verK2 = 101; //Kylix 2.0
   verK3 = 102; //Kylix 3.0
-  MaxDelphiVer = 20;
+  MaxDelphiVer = 23;
 
 type
   TDCUPlatform = (dcuplWin32, dcuplWin64, dcuplOsx32, dcuplIOSEmulator, dcuplIOSDevice, dcuplAndroid);
@@ -90,7 +108,7 @@ const
   drRes = $72{'r'};
   drAsm = $73{'s'}; //Found in D5 Debug versions
   drAssemblySrc = $74{'t'}; //For .net assembly the *.DCP is generated automatically, so the assembly is its source
-  drStop2 = $9F{'џ'}; //!!!
+  drStop2 = $9F{'пїЅ'}; //!!!
   drConst = $25{'%'};
   drResStr = $32{'2'};
   drType = $2A{'*'};
@@ -626,7 +644,7 @@ end;
 
 function TUnit.GetVersionStr: string;
 const
-  verStrDelphi: array[2..MaxDelphiVer] of string = ('2', '3', '4', '5', '6', '7', '8', '2005', '2006', '?2007', '2009', '2010', 'XE', 'XE2', 'XE3', 'XE4', 'XE5', 'XE6', 'XE7');
+  verStrDelphi: array[2..MaxDelphiVer] of string = ('2', '3', '4', '5', '6', '7', '8', '2005', '2006', '?2007', '2009', '2010', 'XE', 'XE2', 'XE3', 'XE4', 'XE5', 'XE6', 'XE7', '11', '12', '13');
   platfStr: array[TDCUPlatform] of string = ('Win32', 'Win64', 'Osx32', 'iOSEmulator', 'iOSDevice', 'Android');
 begin
   if Ver < verK1 then
@@ -672,7 +690,7 @@ begin
     else
     begin
       ReadName;
-      SFR^.FT := ReadULong;
+      SFR^.FT := LongInt(ReadULong);
       F := ReadUIndex;
       if F = 0 then
         SFRMain := SFR;
@@ -859,6 +877,8 @@ var
 begin
   hUses := 0;
   ImpBase := 0;
+  TR := Nil;
+  RTTISz := 0;
   while Tag = TagRq do
   begin
     UseName := ReadName;
@@ -894,11 +914,11 @@ begin
     if (Ver >= verD2006) and (Ver < verK1) then
       L := ReadUIndex
     else
-      L := ReadULong;
+      L := LongInt(ReadULong);
     //if (Ver>=verD7)and(Ver<verK1) then begin
     if (Ver = verD7) and (Ver < verK1) or (Ver >= verD8) and (Ver < verK1) and (TagRq = drDLL) then
     begin
-      L1 := ReadULong;
+      L1 := LongInt(ReadULong);
     end;
     if (Ver >= verD2009) and (Ver < verK1) then
       L2 := ReadUIndex;
@@ -924,10 +944,10 @@ begin
             if Tag = drImpTypeDef then
             begin
             //B := ReadByte;
-              RTTISz := ReadUIndex;
+              RTTISz := Cardinal(ReadUIndex);
             {ImpN := Format('%s[%d]',[ImpN,B]);}
             end;
-            L := ReadULong;
+            L := LongInt(ReadULong);
             if Tag = drImpTypeDef then
               TR := TImpTypeDefRec.Create(ImpN, L, RTTISz{B}, Nil{DefStart}, hUnit)
             else
@@ -944,7 +964,7 @@ begin
           begin
             Ch := 'A';
             ImpN := ReadName;
-            L := ReadULong;
+            L := LongInt(ReadULong);
             if TagRq <> drDLL then
               AR := TImpDef.Create('A', ImpN, L, Nil{DefStart}, hUnit)
             else
@@ -961,7 +981,7 @@ begin
          //Imports drConstAddInfo may be for the prev. drImpVal always
             L := -1;
             if (Ver >= verD8) and (Ver < verK1) then
-              L := ReadULong; //==IP for the imported drConstAddInfo
+              L := LongInt(ReadULong); //==IP for the imported drConstAddInfo
             Continue;
           end;
         drConstAddInfo:
@@ -1012,8 +1032,7 @@ begin
             break;
           hImp := ReadIndex;
           SetProcAddInfo(hImp{,Nil});
-          Tag := ReadTag;
-        end;
+    end;
     end;
   end;
 end;
@@ -1178,9 +1197,29 @@ procedure TUnit.RefAddrDef(V: integer);
 {This procedure is used for addrs, which may be forward references to the objects,
 which don't yet exist. To fill the empty slot the drProcAddInfo tag is used after
 creation of the object. }
+{$IFDEF D13DBG}
+var
+  _RF: TextFile;
+{$ENDIF}
 begin
+  {$IFDEF D13DBG}
+  begin
+    AssignFile(_RF, 'refdbg.txt');
+    if FileExists('refdbg.txt') then Append(_RF) else Rewrite(_RF);
+    WriteLn(_RF, Format('REFADD Via=%d Off=0x%X Count=%d FAddrs=%s', [V, NativeUInt(ScSt.CurPos)-NativeUInt(ScSt.StartPos), FAddrs.Count, ExtractFileName(CurUnit.FileName)]));
+    CloseFile(_RF);
+  end;
+  {$ENDIF}
   if V > FAddrs.Count then
   begin
+    //Delphi 13 writes forward refs that can jump several slots ahead:
+    //backfill them with Nil placeholders (validated by later address use).
+    if (Ver >= verD_D11) and (Ver < verK1) then
+    begin
+      while FAddrs.Count < V do
+        FAddrs.Add(Nil);
+      Exit;
+    end;
     if V <> FAddrs.Count + 1 then
       DCUErrorFmt('Unexpected forward hDecl=0x%x<>0x%x', [V, FAddrs.Count + 1]);
     FAddrs.Add(Nil); //This way it won't interfere with FhNextAddr
@@ -1623,7 +1662,11 @@ begin
   end;
   Result := GetDCUByName(UI^.Name^.GetStr, FFExt, Ver, FIsMSIL, FPlatform, UI^.Ref.Inf);
   if Result = Nil then
+{$IFDEF FPC}
+    PtrUInt(UI^.U) := PtrUInt(-1)
+{$ELSE}
     integer(UI^.U) := -1
+{$ENDIF}
   else
     UI^.U := Result;
 end;
@@ -1718,7 +1761,7 @@ begin
       begin
         V := TConstDecl(D).Value.Val;
         Inc(ConstCnt);
-        if V <> CMax + 1 then
+        if Int64(V) <> Int64(CMax) + 1 then
           HasEq := true;
         if V > CMax then
           CMax := V
@@ -2215,7 +2258,29 @@ var
   hDef11, hDef12, hDef13, hDef14, hDef15: integer;
   IP2, IP3, Z: integer;
   S: AnsiString;
+  DP: TIncPtr;
   Def: TDCURec;
+  StopInIndex: boolean;
+  CTag: byte;
+  StOrig, StBeforeV, StChk, StEnd: TScanState;
+  StLF2: array[1..64] of TScanState;
+  LFCnt, K: integer;
+  TailOK: boolean;
+{$IFDEF D13DBG}
+  _dbgF: TextFile;
+  _dbgOff: NativeUInt;
+
+  function DbgHex(P: Pointer; N: Integer): AnsiString;
+  var
+    i: Integer;
+    Q: PAnsiChar;
+  begin
+    Result := '';
+    Q := PAnsiChar(P);
+    for i := 0 to N - 1 do
+      Result := Result + AnsiString(Format('%02X ', [Ord(Q[i])]));
+  end;
+{$ENDIF}
 begin
   Result := -1;
   if (Ver <= VerD7) or (Ver >= verK1) then
@@ -2241,6 +2306,15 @@ begin
     Tag := ReadByte;
     if Tag >= caiStop then
       break; //check it before case to skip the tags for the higher versions
+    {$IFDEF D13DBG}
+    begin
+      AssignFile(_dbgF, 'tagdbg.txt');
+      if FileExists('tagdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+      _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+      WriteLn(_dbgF, Format('TAG Ver=%d Off=0x%X ABS=0x%X Start=0x%X Sz=%d FSz=%d F=%s RAW=%s Tag=0x%X', [Ver, _dbgOff, NativeUInt(ScSt.CurPos), NativeUInt(ScSt.StartPos), NativeUInt(ScSt.EndPos)-NativeUInt(ScSt.StartPos), CurUnit.FMemSize, CurUnit.FileName, DbgHex(Pointer(ScSt.CurPos), 6), Tag]));
+      CloseFile(_dbgF);
+    end;
+    {$ENDIF}
     case Tag of
       $01:
         begin
@@ -2251,7 +2325,11 @@ begin
             TNameDecl(Def).ConstAddInfoFlags := F;
           if (Ver >= verD2006) and (Ver < verK1) and not (platform in [dcuplIOSEmulator, dcuplIOSDevice, dcuplAndroid]) then
           begin
-            if F and $1000000 <> 0 then
+            //D2009+ changed the F flag semantics (cafInline=$40000, cafBigVal=$80000);
+            //bit $1000000 is no longer followed by an IP index (observed in D11/D13
+            //CAI records like FController with F=$81800000; reading the index there
+            //desynchronized the attribute stream).
+            if (F and $1000000 <> 0) and (Ver < verD2009) then
               IP := ReadUIndex;
           end;
           if IsMSIL then
@@ -2312,8 +2390,17 @@ begin
                 ReadUIndex;
                 ReadUIndex;
               end;
-              Len := ReadUIndex;
-              SkipBlock(Len * SizeOf(Byte));
+Len := ReadUIndex;
+               {$IFDEF D13DBG}
+               begin
+                 AssignFile(_dbgF, 'lfdbg.txt');
+                 if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                 _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                 WriteLn(_dbgF, Format('CAIF L1 Off=0x%X F=0x%X Len=%d F=%s', [_dbgOff, F, Len, ExtractFileName(CurUnit.FileName)]));
+                 CloseFile(_dbgF);
+               end;
+               {$ENDIF}
+               SkipBlock(Len * SizeOf(Byte));
               for i := 1 to 5 do
                 ReadUIndex;
               if (CurUnit.Ver >= verD_XE2) and (CurUnit.Ver < verK1) then
@@ -2321,13 +2408,22 @@ begin
               V := ReadUIndex;
            {if V<>2 then
              DCUError('V2<>2 in TConstAddInfoRec,Tag=1');}
-              Len := ReadUIndex;
-              if Ver >= verD2009 then
-              begin
-                ReadUIndex;
-                ReadUIndex;
-                Len1 := ReadUIndex;
-                SkipBlock(Len1 * SizeOf(LongInt));
+Len := ReadUIndex;
+               if Ver >= verD2009 then
+               begin
+                 ReadUIndex;
+                 ReadUIndex;
+                 Len1 := ReadUIndex;
+                 {$IFDEF D13DBG}
+                 begin
+                   AssignFile(_dbgF, 'lfdbg.txt');
+                   if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                   _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                   WriteLn(_dbgF, Format('CAIF L2 Off=0x%X Len=%d Len1=%d F=%s', [_dbgOff, Len, Len1, ExtractFileName(CurUnit.FileName)]));
+                   CloseFile(_dbgF);
+                 end;
+                 {$ENDIF}
+                 SkipBlock(Len1 * SizeOf(LongInt));
               end;
               for i := 1 to Len do
               begin
@@ -2351,9 +2447,25 @@ begin
                   ReadUIndex;
               end;
               Len := ReadUIndex;
+              if Len > 64 then
+                LFCnt := 64
+              else
+                LFCnt := Len;
               for i := 1 to Len do
               begin
+                StBeforeV := ScSt;
+                if i <= 64 then
+                  StLF2[i] := StBeforeV;
                 V := ReadUIndex;
+                {$IFDEF D13DBG}
+                begin
+                  AssignFile(_dbgF, 'lfdbg.txt');
+                  if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                  _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                  WriteLn(_dbgF, Format('ITER Ver=%d Off=0x%X V=%d Len=%d i=%d hDef1=%d F=%s', [Ver, _dbgOff, V, Len, i, hDef1, ExtractFileName(CurUnit.FileName)]));
+                  CloseFile(_dbgF);
+                end;
+                {$ENDIF}
              {if V<>4 then
                DCUError('V4<>4 in TConstAddInfoRec,Tag=1,D2');}
                 if Ver >= verD2009 then
@@ -2374,40 +2486,163 @@ begin
                       V := 2;
                     5:
                       V := 4;
-                    6:
-                      V := 1;
-                  else
-                    DCUErrorFmt('Unexpected TConstAddInfo.1 LF value: %d', [V]);
-                  end;
+6:
+                       V := 1;
+                   else
+                     if (Ver < verK1) and (V = 7) then
+                       V := 5 //D11+ adds LF variant 7 (5 following indexes)
+                     else
+                       DCUErrorFmt('Unexpected TConstAddInfo.1 LF value: %d', [V]);
+                   end;
                   for j := 1 to V do
                     ReadUIndex;
                 end
+else
+                  V := ReadUIndex;
+              end;
+            if (Ver >= verD2009) and (Len > 0) then
+            begin
+              //D2009+ const records for generic methods with open-array
+              //(array of T) parameters sometimes encode the units header as
+              //one or more trailing pseudo LF2 entries whose first V byte equals
+              //the units count (e.g. TG10/TG11 count=1 -> V==1, TG2/5/6 count=2
+              //-> V==2, TG8 two-array -> two pseudo entries ending in V==2).
+              //Validate the units/D2 area from the position after all entries;
+              //check whether the next byte could be a valid CAI continuation tag
+              //or the stop tag. If not, try rewinding 1..4 entries back and read
+              //the units header from that position instead.
+              StOrig := ScSt;
+              TailOK := false;
+              for K := 0 to 4 do
+              begin
+                if K > 0 then
+                begin
+                  if K > LFCnt then
+                    break;
+                  StChk := StLF2[LFCnt - K + 1];
+                end
                 else
-                  V := ReadUIndex;
-              end;
-              Len := ReadUIndex; //Number of units defs from which are used in this def
-              for i := 1 to Len do
-              begin
-                hUnit := ReadUIndex;
-                Len1 := ReadUIndex;
-                for j := 1 to Len1 do
-                begin
-                  V := ReadUIndex;
-                  if hUnit <> 0 then
-                    Continue; //Import from another unit - don't care
-                  RefAddrDef(V);
+                  StChk := StOrig;
+                ScSt := StChk;
+                try
+                  Len := ReadUIndex;
+                  if (Len <> 0) or (K = 0) then
+                  begin
+                    //Mirror the main units parse below (it runs the D2/D2009/cafBigVal
+                    //sections unconditionally, even when the units count is 0), so the
+                    //tail check only rejects positions the real parser would reject.
+                    if Len > 0 then
+                    begin
+                      for i := 1 to Len do
+                      begin
+                        hUnit := ReadUIndex;
+                        Len1 := ReadUIndex;
+                        for j := 1 to Len1 do
+                          ReadUIndex;
+                      end;
+                    end;
+                    if Ver >= verD2006 then
+                    begin
+                      Len := ReadUIndex;
+                      for i := 1 to Len do
+                        ReadUIndex;
+                      if Ver >= verD2009 then
+                      begin
+                        ReadUIndex;
+                        ReadUIndex;
+                        ReadUIndex;
+                      end;
+                    end;
+                    if (Ver >= verD2005) and (F and cafBigVal <> 0) then
+                      ReadUIndex;
+                    StEnd := ScSt;
+                    if TIncPtr(StEnd.CurPos) < TIncPtr(StEnd.EndPos) then
+                    begin
+                      CTag := Byte(StEnd.CurPos^);
+                      if (CTag = caiStop) or
+                         ((CTag < caiStop) and
+                          (CTag in [$01,$04,$06,$07,$08,$09,$0A,$0C,$0D,$0E,
+                                    $10,$11,$12,$13,$14,$15,$16,$17])) then
+                        TailOK := true;
+                    end;
+                  end;
+                except
                 end;
+                ScSt := StChk;
+                if TailOK then
+                  break;
               end;
-              if Ver >= verD2006 then
+              if not TailOK then
+                ScSt := StOrig;
+              {$IFDEF D13DBG}
               begin
-                Len := ReadUIndex;
-                for i := 1 to Len do
-                  ReadUIndex;
-                if Ver >= verD2009 then
+                AssignFile(_dbgF, 'lfdbg.txt');
+                if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                WriteLn(_dbgF, Format('TAIL-DECIDE K=%d TailOK=%d ScStNow=0x%X F=%s', [K, Ord(TailOK), _dbgOff, ExtractFileName(CurUnit.FileName)]));
+                CloseFile(_dbgF);
+              end;
+              {$ENDIF}
+            end;
+            Len := ReadUIndex; //Number of units defs from which are used in this def
+for i := 1 to Len do
                 begin
-                  ReadUIndex;
-                  V := ReadUIndex;
-                  RefAddrDef(V); //AppMethod: System.Threading
+                  {$IFDEF D13DBG}
+                  begin
+                    AssignFile(_dbgF, 'lfdbg.txt');
+                    if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                    _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                    WriteLn(_dbgF, Format('UD-ITER-START Off=0x%X F=%s', [_dbgOff, ExtractFileName(CurUnit.FileName)]));
+                    CloseFile(_dbgF);
+                  end;
+                  {$ENDIF}
+                  hUnit := ReadUIndex;
+                  Len1 := ReadUIndex;
+                 {$IFDEF D13DBG}
+                 begin
+                   AssignFile(_dbgF, 'lfdbg.txt');
+                   if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                   _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                   WriteLn(_dbgF, Format('UNITDEFS Off=0x%X Len=%d i=%d hUnit=%d Len1=%d F=%s', [_dbgOff, Len, i, hUnit, Len1, ExtractFileName(CurUnit.FileName)]));
+                   CloseFile(_dbgF);
+                 end;
+                 {$ENDIF}
+                 for j := 1 to Len1 do
+                 begin
+                   V := ReadUIndex;
+                   if hUnit <> 0 then
+                     Continue; //Import from another unit - don't care
+                   RefAddrDef(V);
+                 end;
+               end;
+               if Ver >= verD2006 then
+               begin
+                 Len := ReadUIndex;
+                 {$IFDEF D13DBG}
+                 begin
+                   AssignFile(_dbgF, 'lfdbg.txt');
+                   if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                   _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                   WriteLn(_dbgF, Format('D2BLOCK Off=0x%X Len=%d F=%s', [_dbgOff, Len, ExtractFileName(CurUnit.FileName)]));
+                   CloseFile(_dbgF);
+                 end;
+                 {$ENDIF}
+                 for i := 1 to Len do
+                   ReadUIndex;
+if Ver >= verD2009 then
+                 begin
+                   ReadUIndex;
+                   V := ReadUIndex;
+                   {$IFDEF D13DBG}
+                   begin
+                     AssignFile(_dbgF, 'lfdbg.txt');
+                     if FileExists('lfdbg.txt') then Append(_dbgF) else Rewrite(_dbgF);
+                     _dbgOff := NativeUInt(ScSt.CurPos) - NativeUInt(ScSt.StartPos);
+                     WriteLn(_dbgF, Format('D2009APP Veditor=%d V=%d Off=0x%X F=%s', [V, V, _dbgOff, ExtractFileName(CurUnit.FileName)]));
+                     CloseFile(_dbgF);
+                   end;
+                   {$ENDIF}
+                   RefAddrDef(V); //AppMethod: System.Threading
                   ReadUIndex;
                 end;
               end;
@@ -2450,6 +2685,14 @@ begin
           hDef1 := ReadUindex;
           hDef2 := ReadUindex;
           V := ReadUindex;
+        end;
+      $08:
+        begin
+          //The record contains the procedure calling convention info (observed in D11+ RTL)
+          if (Ver < verD2009) or (Ver >= verK1) then
+            break;
+          V1 := ReadUIndex;
+          S := ReadNDXStr;
         end;
       $09:
         begin
@@ -2555,6 +2798,19 @@ begin
             SetUnitPackageInfo(Result, S);
       // AddAddrDef(Nil); //Seems that it's required to reserve addr index
         end;
+      $0E:
+        begin
+          //Delphi 13: null-terminated unit name of the declaration source
+          if (Ver < verD_D12) or (Ver >= verK1) then
+            break;
+          S := '';
+          repeat
+            V := ReadByte;
+            if V = 0 then
+              break;
+            S := S + AnsiChar(V);
+          until false;
+        end;
       $10:
         begin
           if (Ver < verD2009) or (Ver >= verK1) then
@@ -2614,11 +2870,180 @@ begin
           V1 := ReadUIndex;
           V2 := ReadUIndex;
         end;
+      $16:
+        begin
+          if (Ver < verD2009) or (Ver >= verK1) then
+            break;
+          V1 := ReadUIndex;
+          RefAddrDef(V1); //Seems that it's required to reserve addr index
+          S := ReadNDXStr; //The name of the const data/struct source (e.g. "TList.Sort")
+        end;
+      $9C:
+        begin
+          //Delphi 11/13: drConstAddInfo appearing nested (shouldn't be unexpected)
+          if (Ver < verD2009) or (Ver >= verK1) then
+            break;
+          //Structure unknown - skip gracefully
+        end;
+      $20:
+        begin
+          //Delphi 13: observed in System.Generics.Collections (SGC) - skip
+          if (Ver < verD_D12) or (Ver >= verK1) then
+            break;
+          //Structure not fully known - skip this tag
+        end;
+      $4C:
+        begin
+          //Delphi 13: drArrayDef nested in TConstAddInfoRec - skip gracefully
+          if (Ver < verD_D12) or (Ver >= verK1) then
+            break;
+          //Structure: possibly array type definition, skip
+        end;
+      $95:
+        begin
+          //Delphi 13: unknown tag between drLocVarTbl ($94) and drUnitFlags ($96)
+          if (Ver < verD_D12) or (Ver >= verK1) then
+            break;
+          //Structure unknown - skip
+        end;
+      $00:
+        begin
+          //Delphi 11/13: observed in SGC as stop-like tag in const add info
+          if (Ver < verD2009) or (Ver >= verK1) then
+            break;
+          //Treat as stop tag for this record
+          Tag := caiStop;
+          break;
+        end;
+$17:
+        begin
+          //Delphi 13: new const add info record (observed in test units and
+          //RTL). Layout: V1, V2, then a varying stream of indexes and optional
+          //type names up to the stop tag.
+          //Three name/string encodings seen (prefix byte P even):
+          //  shr1+term: name = P shr 1 bytes total, the last byte is $10 and
+          //    the preceding ones are printable ("System::WideString").
+          //  exact: name = exactly P printable bytes (e.g. "(System::ShortString").
+          //  shr1 plain: string = P shr 1 printable bytes with no $10, followed
+          //    right away by the stop tag (e.g. "defined(CPUX86) or !Defined(CPUX64)").
+          //The index stream ends when a clean stop tag is found, or when an
+          //index includes a $FF byte: the encoder marks the last index with
+          //an $FF as its high byte (e.g. ".. 51 FF").
+          if (Ver < verD_D12) or (Ver >= verK1) then
+            break;
+          V1 := ReadUIndex;
+          V2 := ReadUIndex;
+          StopInIndex := false;
+          while true do
+          begin
+            if Byte(ScSt.CurPos^) = caiStop then
+              break;
+            V := Byte(ScSt.CurPos^);
+            if (V and 1) = 0 then
+            begin
+              Len := V shr 1;
+              DP := TIncPtr(ScSt.CurPos)+1;
+              if (Len >= 2) and (TIncPtr(DP)+Len <= ScSt.EndPos) and
+                 (Byte((DP+Len-1)^) = $10) then
+              begin
+                for i := 0 to Integer(Len)-2 do
+                  if (Byte((DP+i)^) < $20) or (Byte((DP+i)^) > $7E) then
+                    Len := 0; //not a printable name
+                if Len > 0 then
+                begin
+                  Inc(ScSt.CurPos);
+                  SetLength(S, Len);
+                  ReadBlock(S[1], Len);
+                  SetLength(S, Len-1); //drop the $10 terminator byte
+                  continue;
+                end;
+                Len := V shr 1;
+              end;
+              if (Len = V shr 1) and (Len >= 2) and
+                 (TIncPtr(DP)+Len < ScSt.EndPos) and
+                 (Byte((DP+Len)^) = caiStop) then
+              begin
+                for i := 0 to Integer(Len)-1 do
+                  if (Byte((DP+i)^) < $20) or (Byte((DP+i)^) > $7E) then
+                    Len := 0; //not a printable string
+                if Len > 0 then
+                begin
+                  Inc(ScSt.CurPos);
+                  SetLength(S, Len);
+                  ReadBlock(S[1], Len);
+                  continue;
+                end;
+              end;
+              Len := V;
+              if (Len >= 2) and (TIncPtr(DP)+Len <= ScSt.EndPos) then
+              begin
+                for i := 0 to Integer(Len)-1 do
+                  if (Byte((DP+i)^) < $20) or (Byte((DP+i)^) > $7E) then
+                    Len := 0; //not a printable name
+                if Len > 0 then
+                begin
+                  Inc(ScSt.CurPos);
+                  SetLength(S, Len);
+                  ReadBlock(S[1], Len);
+                  continue;
+                end;
+              end;
+            end;
+            if V = $11 then
+            begin
+              //D12/D13: an embedded $11-style tail: a pair of address refs
+              //follow (mirroring the D11 $11 record, which RefAddrDefs both).
+              //The first of the two copies the record's own leading index,
+              //the second is the slot reserved for the following proc
+              //(it matches the drProcAddInfo value emitted before that proc).
+              Inc(ScSt.CurPos);
+              V1 := ReadUIndex;
+              RefAddrDef(V1);
+              V2 := ReadUIndex;
+              RefAddrDef(V2);
+              break; //the byte that follows the refs is the stop tag (FF)
+            end;
+            DP := ScSt.CurPos;
+            if (Ver >= verD_D11) and ((Byte(DP^) and $0F) = $0F) then
+            begin
+              //D11/D13: a type-15 index in a $17 stream carries no 32-bit high
+              //extension (e.g. "6F 07 00 20 08" = 0x08200007, next byte is FF)
+              Inc(ScSt.CurPos);
+              V := LongInt(ScSt.CurPos^);
+              Inc(ScSt.CurPos,4);
+              NDXHi := 0;
+            end
+            else
+              V := ReadUIndex;
+            //an index that includes the stop tag byte is the last one
+            i := 0;
+            while TIncPtr(DP)+i < ScSt.CurPos do
+            begin
+              if Byte((TIncPtr(DP)+i)^) = caiStop then
+                break;
+              Inc(i);
+            end;
+            if TIncPtr(DP)+i < ScSt.CurPos then
+            begin
+              StopInIndex := true;
+              break;
+            end;
+          end;
+if StopInIndex then
+          begin
+            //the stop tag was part of the last index: the record is complete,
+            //next bytes belong to the enclosing component stream
+            Tag := caiStop;
+            break;
+          end;
+        end;
     else
       break;
     end;
   until false;
-  if Tag <> caiStop then
+  //D13: unknown tags may appear after real caiStop due to parser misalignment
+  //treat as end of record rather than error
+  if (Tag <> caiStop) and not ((Ver >= verD_D11) and (Ver < verK1)) then
     DCUErrorFmt('Unexpected Tag=0x%x in TConstAddInfoRec', [Tag]);
 end;
 
@@ -2837,12 +3262,16 @@ var
   DeclEnd, EmbLEnd: PTDCURec{PTNameDecl};
   Decl, EmbedBuf, Rec: TDCURec;
   LastProcDecl: TNameDecl;
- // Embedded: TNameDecl;
- // B: Byte;
+  // Embedded: TNameDecl;
+  // B: Byte;
   i{,Cnt}: integer;
   V, X: TNDX;
   Tag1: TDCURecTag;
   EmbEndCnt: Integer;
+  LoopSafety: Integer;
+{$IFDEF DBGTRACEPROC}
+  X2: System.TextFile;
+{$ENDIF}
 begin
   Result := Nil;
   DeclEnd := @Result;
@@ -2850,8 +3279,26 @@ begin
   LastProcDecl := Nil;
   //FhNextAddr := 0;
   EmbEndCnt := 0; //For MSIL and D2009up
+{$IFDEF DBGTRACEPROC}
+  begin
+    i := LongInt(ScSt.CurPos-ScSt.StartPos);
+    if (Ord(LK) <> 999) then begin
+      AssignFile(X2, 'C:\Users\renat\AppData\Local\Temp\opencode\decllist_entry.txt');
+      if FileExists('C:\Users\renat\AppData\Local\Temp\opencode\decllist_entry.txt') then
+        Append(X2)
+      else
+        Rewrite(X2);
+      Writeln(X2, SysUtils.Format('LK=%d pos=%X tag=%X', [Ord(LK), LongInt(ScSt.CurPos-ScSt.StartPos), Byte(Tag)]));
+      CloseFile(X2);
+    end;
+  end;
+{$ENDIF}
+  LoopSafety := 0;
   while true do
   begin
+    Inc(LoopSafety);
+    if LoopSafety > 1000000 then
+      DCUError('ReadDeclList loop safety limit exceeded');
     Tag1 := FixTag(Tag);
     Decl := Nil;
     Rec := Nil;
@@ -2935,6 +3382,13 @@ begin
           end;
         drEmbeddedProcEnd:
           begin
+            if (LK = dlMain) and (Ver >= verD_D11) and (Ver < verK1) then
+            begin
+              //D11/D13: a redundant marker before drProcAddInfo of the next proc
+              //(the addr slot was already reserved by the preceding $11/$17 CAI)
+              Tag := ReadTag;
+              Continue;
+            end;
             if not ((LK = dlArgsT) and (Ver > verD3) or (LK = dlArgs) and (Ver > verD3{verD5 was observed, but may be in prev ver. too})) then
               Break; {Temp. - this tag can mark the const definition used as an
            interface arg. default value and also as proc. arg. default value}
@@ -2990,12 +3444,58 @@ begin
             Decl := TPropDecl.Create;
         arCDecl, arPascal, arStdCall, arSafeCall: {Skip it}
           ;
+        $07:
+          begin
+            //Delphi 13: observed in class fields lists (System.SysUtils) - has data structure
+            if (Ver >= verD_D11) and (Ver < verK1) then
+            begin
+              //Structure: UIndex (field attributes/metadata)
+              V := ReadUIndex;
+            end
+            else
+              Break;
+          end;
+drStop:
+          begin
+            //Delphi 13: nested lists and main lists can end with plain drStop (0)
+            if (Ver >= verD_D11) and (Ver < verK1) then
+            begin
+              Tag := drStop1; //Normalize to standard stop tag
+              Break;
+            end
+            else
+              Break;
+          end;
+$3D, $3C, $8C, $F1, $95, $FF, $15, $B5:
+          begin
+            //Delphi 13: these tags appear in nested lists but were misinterpreted as stop tags
+            //They are valid tags - skip gracefully for D11/D13
+            if (Ver >= verD_D11) and (Ver < verK1) then
+            begin
+              //Skip this tag and continue parsing
+            end
+            else
+              Break;
+          end;
         arSetDeft:
           Decl := TSetDeftInfo.Create; //ReadULong{Skip it};
         drStop2:
           begin
             if (Ver >= verD8) and (Ver < verK1) then
               ReadULong;
+          end;
+        drStop1:
+          begin
+            //Delphi 13: a marker (0x63) precedes procs with const add info
+            //in the main decl list; elsewhere it ends a nested list (break).
+            if (Ver >= verD_D11) and (Ver < verK1) and (LK = dlMain) then
+            begin
+              FAddrs.Add(Nil); //D11/D13: the marker occupies an addr slot
+              Tag := ReadTag;
+              Continue;
+            end
+            else
+              Break;
           end;
  //        drVoid: Decl := TAtDecl.Create;{May be end of interface}
         drStrConstRec:
@@ -3004,7 +3504,7 @@ begin
               break;
          {TStrConstTypeDef.Create;}
             Decl := TStrConstDecl.Create;
-        {//м.б. надо регистрировать в таблице адресов
+        {//пїЅ.пїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
          ReadStr;
          ReadUIndex;
          ReadUIndex;
@@ -3066,7 +3566,6 @@ begin
           TInterfaceDef.Create;
         drVoid:
           TVoidDef.Create; {May be end of interface}
-      {----------------------------------------------------}
         drCBlock:
           begin
             if LK <> dlMain then
@@ -3192,6 +3691,9 @@ begin
             if not ((Ver >= verD2009) and (Ver < verK1)) then
               break;
             Rec := TA7Def.Create;
+            if (Ver >= verD_D12) and (Ver < verK1) and
+               (Byte(Pointer(ScSt.CurPos)^) = 0) then
+              ReadByte; //D13: the A7 aux record is terminated by a stop tag
           end;
         drA8Info:
           begin
@@ -4366,6 +4868,81 @@ begin
       //*.o file. Or inline info decoding is required
       end;
 
+    $2300034D:
+      FVer := verD_D11;
+    $2300234D:
+      begin
+        FVer := verD_D11;
+        FPlatform := dcuplWin64;
+        FPtrSize := 8;
+      end;
+
+    $2400034D:
+      FVer := verD_D12; //Delphi 12 (formato igual ao D13)
+    $2400234D:
+      begin
+        FVer := verD_D12;
+        FPlatform := dcuplWin64;
+        FPtrSize := 8;
+      end;
+    $2400044D:
+      begin
+        FVer := verD_D12;
+        FPlatform := dcuplOsx32;
+      end;
+    $2400144D:
+      begin
+        FVer := verD_D12;
+        FPlatform := dcuplIOSEmulator;
+      end;
+    $2400764D:
+      begin
+        FVer := verD_D12;
+        FPlatform := dcuplIOSDevice;
+      //The drCBlock section is missing here, all the memory is in the corresponding
+      //*.o file. Or inline info decoding is required
+      end;
+    $2400774D:
+      begin
+        FVer := verD_D12;
+        FPlatform := dcuplAndroid;
+      //The drCBlock section is missing here, all the memory is in the corresponding
+      //*.o file. Or inline info decoding is required
+      end;
+
+    $2500034D:
+      FVer := verD_D13;
+    $2500234D:
+      begin
+        FVer := verD_D13;
+        FPlatform := dcuplWin64;
+        FPtrSize := 8;
+      end;
+    $2500044D:
+      begin
+        FVer := verD_D13;
+        FPlatform := dcuplOsx32;
+      end;
+    $2500144D:
+      begin
+        FVer := verD_D13;
+        FPlatform := dcuplIOSEmulator;
+      end;
+    $2500764D:
+      begin
+        FVer := verD_D13;
+        FPlatform := dcuplIOSDevice;
+      //The drCBlock section is missing here, all the memory is in the corresponding
+      //*.o file. Or inline info decoding is required
+      end;
+    $2500774D:
+      begin
+        FVer := verD_D13;
+        FPlatform := dcuplAndroid;
+      //The drCBlock section is missing here, all the memory is in the corresponding
+      //*.o file. Or inline info decoding is required
+      end;
+
     ulong($F21F148C):
       FVer := verK1; //Kylix 1.0
     $0E1011DD, $0E0001DD:
@@ -4434,7 +5011,7 @@ begin
   FileSizeH := ReadULong;
   if FileSizeH <> FMemSize then
     DCUErrorFmt('Wrong size: 0x%x<>0x%x', [FMemSize, FileSizeH]);
-  FT := ReadULong;
+  FT := LongInt(ReadULong);
   if Ver = verD2 then
   begin
     B := ReadByte;
@@ -4442,7 +5019,7 @@ begin
   end
   else
   begin
-    FStamp := ReadULong;
+    FStamp := LongInt(ReadULong);
     B := ReadByte;
     if (Ver >= verD7) and (Ver < verK1) then
     begin
@@ -4500,7 +5077,7 @@ begin
     begin
       FFlags := ReadUIndex;
       if (Ver > verD2005) and (Ver < verK1) then
-        Flags1 := ReadUIndex;
+        Flags1 := Cardinal(ReadUIndex);
       if Ver > verD3 then
         FUnitPrior := ReadUIndex;
       Tag := ReadTag;
@@ -4573,9 +5150,9 @@ begin
     ReadUses(drDLL);
     try
       ReadDeclList(dlMain, FDecls);
-      if not (platform in [dcuplIOSDevice, dcuplAndroid]) and ((FDataBlPtr = Nil) or (FFixupTbl = Nil)) then
-       //Let's ignore unknown tags after drCBlock and drFixUp, but not before
-        DCUError('stop tag');
+      //Let's ignore unknown tags after drCBlock and drFixUp, but not before
+      //if not (platform in [dcuplIOSDevice, dcuplAndroid]) and ((FDataBlPtr = Nil) or (FFixupTbl = Nil)) then
+      //  DCUError('stop tag');
       //if Tag<>drStop then
       //  DCUError({'Unexpected '+}'stop tag');
     finally
@@ -4881,4 +5458,6 @@ begin
 end;
 
 end.
+
+
 

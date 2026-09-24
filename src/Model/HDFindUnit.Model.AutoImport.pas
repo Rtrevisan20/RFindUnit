@@ -7,7 +7,7 @@ uses
   HDFindUnit.Controller.OTAUtils,
   HDFindUnit.Model.StringPositionList,
   HDFindUnit.Utils,
-  System.IniFiles;
+  IniFiles;
 
 type
   TAutoImport = class(TObject)
@@ -34,7 +34,12 @@ type
 implementation
 
 uses
-  System.SysUtils, System.Classes, Log4Pascal, ToolsAPI;
+{$IFNDEF FPC}
+  ToolsAPI,
+{$ENDIF}
+  SysUtils,
+  Classes,
+  Log4Pascal;
 
 const
   SECTION = 'MEMORIZEDUNIT';
@@ -101,6 +106,12 @@ begin
 end;
 
 function TAutoImport.LoadClassesToImport: TStringPositionList;
+{$IFDEF FPC}
+begin
+  // Auto-import from IDE errors is not available on Lazarus yet.
+  Result := TStringPositionList.Create;
+end;
+{$ELSE}
 var
   Errors: TOTAErrors;
   ErrorItem: TOTAError;
@@ -138,6 +149,7 @@ begin
       Logger.Error('TAutoImport.LoadClassesToImport: %s', [E.Message]);
   end;
 end;
+{$ENDIF}
 
 procedure TAutoImport.SaveIniFile;
 begin

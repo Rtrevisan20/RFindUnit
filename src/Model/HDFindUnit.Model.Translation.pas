@@ -11,7 +11,7 @@ function Translation: IRFUTranslation;
 implementation
 
 uses
-  System.SysUtils;
+  SysUtils;
 
 type
   TTranslationBase = class(TInterfacedObject, IRFUTranslation)

@@ -1,5 +1,9 @@
 {$A+,B-,C+,D+,E-,F-,G+,H+,I+,J+,K-,L+,M-,N+,O+,P+,Q-,R-,S-,T-,U-,V+,W-,X+,Y+,Z1}
 unit DCU_In;
+{$IFDEF FPC}
+{$WARNINGS OFF}
+{$NOTES OFF}
+{$ENDIF}
 (*
 The DCU input module of the DCU32INT utility by Alexei Hmelnov.
 ----------------------------------------------------------------------------
@@ -7,7 +11,7 @@ E-Mail: alex@icc.ru
 http://hmelnov.icc.ru/DCU/
 ----------------------------------------------------------------------------
 
-See the file "readme.txt" for more details.
+See the file "readme.md" for more details.
 
 ------------------------------------------------------------------------
                              IMPORTANT NOTE:
@@ -240,10 +244,7 @@ begin
       [ScSt.CurPos-ScSt.StartPos,US,TIncPtr(DefStart)-ScSt.StartPos,AnsiChar(Tag),Byte(Tag),Msg])
   else
     US := Format('Warning%s: %s',[US,Msg]);
-  {$IFDEF CONSOLE}
   Writeln(US);
-  {$ENDIF}
-
 end ;
 
 procedure DCUWarningFmt(const Msg: String; Args: array of const);
@@ -379,6 +380,17 @@ begin
   SkipBlock(L);
 end ;
 
+{$IFDEF FPC}
+function StrLEnd(Str: PAnsiChar; L: Cardinal): PAnsiChar;
+var
+  I: Cardinal;
+begin
+  I := 0;
+  while (I<L) and (Str[I]<>#0) do
+    Inc(I);
+  Result := Str+I;
+end;
+{$ELSE}
 function StrLEnd(Str: PAnsiChar; L: Cardinal): PAnsiChar; assembler;
 asm
         MOV     ECX,EDX
@@ -392,6 +404,7 @@ asm
         MOV     EAX,EDI
         MOV     EDI,EDX
 end;
+{$ENDIF}
 
 function ReadNDXStr: AnsiString;
 //Was observed only in drConstAddInfo records of MSIL
@@ -448,6 +461,8 @@ var
   L: LongInt;
 begin
   L := GetUIndex(DP);
+  if L < 0 then
+    L := 0;
   SetLength(Result,L);
   if L>0 then
     System.Move(DP^,Result[1],L*SizeOf(AnsiChar));
@@ -486,14 +501,23 @@ begin
           Result := L shr 4
         else begin
           B[4] := ReadByte;
-          Result := R4.L;
+          Result := LongInt(Cardinal(R4.L));
           if (CurUnit.Ver>3)and(B[0] and $F0<>0) then
-            NDXHi := ReadULong;
+            NDXHi := LongInt(ReadULong);
         end ;
       end ;
     end ;
   end ;
-end ;
+end;
+
+{$IFDEF FPC}
+function SAR(L: LongInt; BitCnt: Byte): LongInt; inline;
+begin
+  Result := L shr BitCnt;
+  if L<0 then
+    Result := Result or (LongInt(-1) shl (32-BitCnt));
+end;
+{$ENDIF}
 
 function ReadIndex: LongInt;
 type
@@ -518,17 +542,25 @@ begin
   B[0] := ReadByte;
   if B[0] and $1=0 then begin
     Result := SB;
+    {$IFDEF FPC}
+    Result := SAR(Result,1);
+    {$ELSE}
     asm
       sar DWORD PTR[Result],1
     end;
+    {$ENDIF}
    end
   else begin
     B[1] := ReadByte;
     if B[0] and $2=0 then begin
       Result := W;
+      {$IFDEF FPC}
+      Result := SAR(Result,2);
+      {$ELSE}
       asm
         sar DWORD PTR[Result],2
       end;
+      {$ENDIF}
      end
     else begin
       B[2] := ReadByte;
@@ -536,23 +568,31 @@ begin
       if B[0] and $4=0 then begin
         RL.i := ShortInt(B[2]);
         Result := L;
+        {$IFDEF FPC}
+        Result := SAR(Result,3);
+        {$ELSE}
         asm
           sar DWORD PTR[Result],3
         end;
+        {$ENDIF}
        end
       else begin
         B[3] := ReadByte;
         if B[0] and $8=0 then begin
           Result := L;
+          {$IFDEF FPC}
+          Result := SAR(Result,4);
+          {$ELSE}
           asm
             sar DWORD PTR[Result],4
           end;
+          {$ENDIF}
          end
         else begin
           B[4] := ReadByte;
-          Result := R4.L;
+          Result := LongInt(Cardinal(R4.L));
           if (CurUnit.Ver>3)and(B[0] and $F0<>0) then begin
-            NDXHi := ReadULong;
+            NDXHi := LongInt(ReadULong);
             Exit;
           end ;
         end ;
@@ -588,9 +628,11 @@ begin
   if NDXHi=0 then
     Result := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}Format('$%x',[NDXLo])
   else if NDXHi=-1 then
-    Result := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}Format('-$%x',[-NDXLo])
+    //Negate in 64-bit to avoid overflow with {$Q+}
+    //(NDXLo=Low(Integer) would make -NDXLo overflow)
+    Result := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}Format('-$%x',[LongWord(-Int64(NDXLo))])
   else if NDXHi<0 then
-    Result := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}Format('-$%x%8.8x',[-NDXHi-1,-NDXLo])
+    Result := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}Format('-$%x%8.8x',[LongWord(-Int64(NDXHi)-1),LongWord(-Int64(NDXLo))])
   else
     Result := {$IFDEF UNICODE}AnsiStrings.{$ENDIF}Format('$%x%8.8x',[NDXHi,NDXLo])
 end ;

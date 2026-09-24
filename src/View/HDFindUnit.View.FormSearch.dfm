@@ -162,8 +162,8 @@ object frmFindUnit: TfrmFindUnit
       object lblMessage: TLabel
         Left = 1
         Top = 1
-        Width = 574
-        Height = 45
+        Width = 509
+        Height = 26
         Align = alClient
         Caption = 
           'Lembre-se que voc'#234' pode criar pesquisas incrementais como: "stri' +
@@ -176,8 +176,6 @@ object frmFindUnit: TfrmFindUnit
         ParentFont = False
         Layout = tlCenter
         WordWrap = True
-        ExplicitWidth = 509
-        ExplicitHeight = 26
       end
     end
   end

@@ -1,9 +1,14 @@
 unit op;
+{$IFNDEF FPC}
+{$WARNINGS OFF}
+{$HINTS OFF}
+{$ELSE}
+{$WARNINGS OFF}
+{$NOTES OFF}
+{$ENDIF}
 { Generated automatically from c:\prg\codes\src\opdata4.cmd, 31.05.2012 18:10:47 }
 
 interface
-
-{$DEFINE I64}
 
 uses DAsmDefs, DAsmUtil;
 

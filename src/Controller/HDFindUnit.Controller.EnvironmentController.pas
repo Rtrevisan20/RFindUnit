@@ -4,7 +4,10 @@ interface
 
 uses
   Log4Pascal,
+{$IFNDEF FPC}
   ToolsAPI,
+  Xml.XMLIntf,
+{$ENDIF}
   HDFindUnit.Model.AutoImport,
   HDFindUnit.Model.FileCache,
   HDFindUnit.Model.FileEditor,
@@ -18,15 +21,22 @@ uses
   HDFindUnit.Model.Worker,
   HDFindUnit.Controller.Interf.EnvironmentController,
   HDFindUnit.Model.Interf.Translation,
-  System.Classes,
-  System.Generics.Collections,
-  System.SysUtils,
+  Classes,
+  Generics.Collections,
+  SysUtils
+{$IFNDEF FPC}
+  ,
   Winapi.ActiveX,
-  Winapi.Windows,
-  Xml.XMLIntf;
+  Winapi.Windows
+{$ENDIF}
+  ;
 
 type
-  TEnvironmentController = class(TInterfacedObject, IOTAProjectFileStorageNotifier, IRFUEnvironmentController)
+  TEnvironmentController = class(TInterfacedObject,
+{$IFNDEF FPC}
+    IOTAProjectFileStorageNotifier,
+{$ENDIF}
+    IRFUEnvironmentController)
   private
     FProcessingDCU: Boolean;
     FAutoImport: TAutoImport;
@@ -40,6 +50,10 @@ type
     FLibraryPathLoading: Boolean;
     FProjectPathLoading: Boolean;
 
+{$IFNDEF FPC}
+    function CreateBackgroundThread(const AProc: TThreadProcedure): TThread;
+{$ENDIF}
+
     procedure CreateLibraryPathUnits(OldItems: TUnits);
     procedure OnFinishedLibraryPathScan(FindUnits: TUnits);
 
@@ -47,13 +61,17 @@ type
     procedure AddFilesFromProjectSearchPaths(Files: TDictionary<string, TFileInfo>; SearchPaths: TStringList);
     procedure OnFinishedProjectPathScan(FindUnits: TUnits);
 
+{$IFNDEF FPC}
     procedure CreatingProject(const ProjectOrGroup: IOTAModule);
     //Dummy
     procedure ProjectLoaded(const ProjectOrGroup: IOTAModule; const Node: IXMLNode);
     procedure ProjectSaving(const ProjectOrGroup: IOTAModule; const Node: IXMLNode);
     procedure ProjectClosing(const ProjectOrGroup: IOTAModule);
+{$ENDIF}
 
+    {$IFNDEF FPC}
     procedure CallProcessDcuFiles;
+{$ENDIF}
   public
     function GetName: string;
 
@@ -95,6 +113,40 @@ type
 implementation
 { TEnvUpdateControl }
 
+{$IFDEF FPC}
+uses
+  Windows;
+{$ENDIF}
+
+{$IFNDEF FPC}
+type
+  TAnonymousThreadMethod = class(TThread)
+  private
+    FProc: TThreadProcedure;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(const AProc: TThreadProcedure);
+  end;
+
+constructor TAnonymousThreadMethod.Create(const AProc: TThreadProcedure);
+begin
+  FProc := AProc;
+  inherited Create(True);
+end;
+
+procedure TAnonymousThreadMethod.Execute;
+begin
+  if Assigned(FProc) then
+    FProc;
+end;
+
+function TEnvironmentController.CreateBackgroundThread(const AProc: TThreadProcedure): TThread;
+begin
+  Result := TAnonymousThreadMethod.Create(AProc);
+end;
+{$ENDIF}
+
 constructor TEnvironmentController.Create;
 begin
   FAutoImport := TAutoImport.Create(FindUnitDir + AUTO_IMPORT_FILE);
@@ -107,7 +159,6 @@ procedure TEnvironmentController.CreateLibraryPathUnits(OldItems: TUnits);
 var
   Paths: TStringList;
   Files: TDictionary<string, TFileInfo>;
-  EnvironmentOptions: IOTAEnvironmentOptions;
   WaitCount: Integer;
 begin
   try
@@ -120,6 +171,30 @@ begin
     end;
   end;
 
+{$IFDEF FPC}
+  // On Lazarus the library paths come from the FPC/LCL installation
+  // (GetLibraryPath, see OTAUtils). There is no IDE services wait loop.
+  try
+    Files := nil;
+    Paths := TStringList.Create;
+    Paths.Delimiter := ';';
+    Paths.StrictDelimiter := True;
+    Paths.Duplicates := dupIgnore;
+
+    GetLibraryPath(Paths, '');
+
+    if FLibraryPath = nil then
+      FLibraryPath := TUnitsController.Create;
+    FLibraryPathWorker := TParserWorker.Create(Paths, Files, OldItems);
+    FLibraryPathWorker.Start(OnFinishedLibraryPathScan);
+  except
+    on E: exception do
+    begin
+      Logger.Error('TEnvironmentController.CreateLibraryPathUnits: %s', [e.Message]);
+      {$IFDEF RAISEMAD} raise; {$ENDIF}
+    end;
+  end;
+{$ELSE}
   WaitCount := 0;
   while (BorlandIDEServices as IOTAServices) = nil do
   begin
@@ -140,7 +215,6 @@ begin
     Paths.StrictDelimiter := True;
     Paths.Duplicates := dupIgnore;
 
-    EnvironmentOptions := (BorlandIDEServices as IOTAServices).GetEnvironmentOptions;
     GetLibraryPath(Paths, 'Win32');
     Paths.Add('$(BDS)\source\rtl\win');
 
@@ -155,13 +229,13 @@ begin
       {$IFDEF RAISEMAD} raise; {$ENDIF}
     end;
   end;
+{$ENDIF}
 end;
 
 procedure TEnvironmentController.CreateProjectPathUnits(NewFiles: TDictionary<string, TFileInfo>;
  OldFiles: TUnits);
 var
   Paths: TStringList;
-  WaitCount: Integer;
 begin
   try
     FreeAndNil(FProjectPathWorker);
@@ -173,18 +247,8 @@ begin
     end;
   end;
 
-  WaitCount := 0;
-  while GetCurrentProject = nil do
-  begin
-    Logger.Debug('TEnvironmentController.CreateProjectPathUnits: waiting GetCurrentProject <> nil');
-    Sleep(1000);
-    Inc(WaitCount);
-    if WaitCount >= 30 then
-    begin
-      Logger.Error('TEnvironmentController.CreateProjectPathUnits: GetCurrentProject not available after 30s');
-      Exit;
-    end;
-  end;
+  if not {$IFDEF FPC}IsProjectOpened{$ELSE}(GetCurrentProject <> nil){$ENDIF} then
+    Exit;
 
   Paths := nil;
 
@@ -194,10 +258,12 @@ begin
   FProjectPathWorker.Start(OnFinishedProjectPathScan);
 end;
 
+{$IFNDEF FPC}
 procedure TEnvironmentController.CreatingProject(const ProjectOrGroup: IOTAModule);
 begin
   LoadProjectPath(True);
 end;
+{$ENDIF}
 
 destructor TEnvironmentController.Destroy;
 begin
@@ -320,7 +386,11 @@ var
   FileEditor: TSourceFileEditor;
   ListToImport: TStringPositionList;
   Item: TStringPosition;
+{$IFDEF FPC}
+  OldFocus: HWND;
+{$ELSE}
   OldFocus: Cardinal;
+{$ENDIF}
 begin
   if FAutoImport = nil then
     Exit;
@@ -329,7 +399,7 @@ begin
   if CurEditor = nil then
     Exit;
 
-  OldFocus := GetFocus;
+  OldFocus := {$IFDEF FPC}Windows.{$ENDIF}GetFocus;
 
   ListToImport := FAutoImport.LoadUnitListToImport;
 
@@ -338,7 +408,7 @@ begin
     if ShowNoImport then
       TfrmMessage.ShowInfoToUser(Translation.GetAutoImportNoUnitsToImport);
     ListToImport.Free;
-    SetFocus(OldFocus);
+    {$IFDEF FPC}Windows.{$ENDIF}SetFocus(OldFocus);
     Exit;
   end;
 
@@ -351,7 +421,7 @@ begin
     FileEditor.Free;
   end;
   ListToImport.Free;
-  SetFocus(OldFocus);
+  {$IFDEF FPC}Windows.{$ENDIF}SetFocus(OldFocus);
 end;
 
 function TEnvironmentController.IsLibraryPathsUnitReady: Boolean;
@@ -392,7 +462,16 @@ begin
     FLibraryPath.Ready := False;
   end;
 
-  LocalThread := TThread.CreateAnonymousThread(
+{$IFDEF FPC}
+  // FPC port: closures (anonymous functions) are not supported by FPC 3.2.2,
+  // so the library scan runs synchronously. The worker itself is sequential.
+  try
+    CreateLibraryPathUnits(OldLibraryPath);
+  finally
+    FLibraryPathLoading := False;
+  end;
+{$ELSE}
+  LocalThread := CreateBackgroundThread(
     procedure
     begin
       try
@@ -404,6 +483,7 @@ begin
     );
   LocalThread.FreeOnTerminate := True;
   LocalThread.Start;
+{$ENDIF}
 end;
 
 procedure TEnvironmentController.AddFilesFromProjectSearchPaths(
@@ -450,18 +530,18 @@ begin
     Exit;
   end;
 
-  if GetCurrentProject = nil then
+  if {$IFDEF FPC}not IsProjectOpened{$ELSE}GetCurrentProject = nil{$ENDIF} then
   begin
     if AWaitForProject then
     begin
       WaitCount := 0;
-      while (GetCurrentProject = nil) and (WaitCount < 20) do
+      while ({$IFDEF FPC}not IsProjectOpened{$ELSE}GetCurrentProject = nil{$ENDIF}) and (WaitCount < 20) do
       begin
         Sleep(100);
         Inc(WaitCount);
       end;
     end;
-    if GetCurrentProject = nil then
+    if {$IFDEF FPC}not IsProjectOpened{$ELSE}GetCurrentProject = nil{$ENDIF} then
       Exit;
   end;
 
@@ -480,7 +560,18 @@ begin
   Files := GetAllFilesFromProjectGroup;
   DprojPaths := GetProjectSearchPathsFromDproj;
 
-  LocalThread := TThread.CreateAnonymousThread(
+{$IFDEF FPC}
+  // FPC port: closures are not supported, so the project scan runs
+  // synchronously (the worker itself is sequential).
+  try
+    AddFilesFromProjectSearchPaths(Files, DprojPaths);
+    CreateProjectPathUnits(Files, OldFiles);
+  finally
+    DprojPaths.Free;
+    FProjectPathLoading := False;
+  end;
+{$ELSE}
+  LocalThread := CreateBackgroundThread(
     procedure
     begin
       CoInitialize(nil);
@@ -496,6 +587,7 @@ begin
     );
   LocalThread.FreeOnTerminate := True;
   LocalThread.Start;
+{$ENDIF}
 end;
 
 procedure TEnvironmentController.OnFinishedLibraryPathScan(FindUnits: TUnits);
@@ -562,7 +654,11 @@ procedure TEnvironmentController.ProcessDCUFiles;
 var
   LocalThread: TThread;
 begin
-  LocalThread := TThread.CreateAnonymousThread(
+{$IFDEF FPC}
+  // There are no DCU files in Lazarus (only .ppu). Nothing to process.
+  FProcessingDCU := False;
+{$ELSE}
+  LocalThread := CreateBackgroundThread(
     procedure
     begin
       CallProcessDcuFiles;
@@ -570,6 +666,7 @@ begin
     );
   LocalThread.FreeOnTerminate := True;
   LocalThread.Start;
+{$ENDIF}
 end;
 
 function TEnvironmentController.AreDependenciasReady: Boolean;
@@ -577,6 +674,7 @@ begin
   Result := IsProjectsUnitReady and IsLibraryPathsUnitReady;
 end;
 
+{$IFNDEF FPC}
 procedure TEnvironmentController.CallProcessDcuFiles;
 var
   Paths: TStringList;
@@ -615,7 +713,9 @@ begin
   Items.Free;
   FProcessingDCU := False;
 end;
+{$ENDIF}
 
+{$IFNDEF FPC}
 procedure TEnvironmentController.ProjectClosing(const ProjectOrGroup: IOTAModule);
 begin
   Logger.Debug('TEnvironmentController.ProjectClosing');
@@ -639,6 +739,7 @@ procedure TEnvironmentController.ProjectSaving(const ProjectOrGroup: IOTAModule;
 begin
   Logger.Debug('TEnvironmentController.ProjectSaving');
 end;
+{$ENDIF}
 
 end.
 

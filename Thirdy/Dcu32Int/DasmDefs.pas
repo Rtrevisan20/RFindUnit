@@ -1,4 +1,8 @@
 unit DasmDefs;
+{$IFDEF FPC}
+{$WARNINGS OFF}
+{$NOTES OFF}
+{$ENDIF}
 (*
 The generic disassembler basic definitions module of the DCU32INT utility
 by Alexei Hmelnov.
@@ -7,7 +11,7 @@ E-Mail: alex@icc.ru
 http://hmelnov.icc.ru/DCU/
 ----------------------------------------------------------------------------
 
-See the file "readme.txt" for more details.
+See the file "readme.md" for more details.
 
 ------------------------------------------------------------------------
                              IMPORTANT NOTE:
@@ -39,7 +43,7 @@ type
   TRegVarInfoProc = function(ProcOfs: integer; hReg: THBMName; Ofs,Size: integer;
     var hDecl: integer): AnsiString of object;
 
-const
+var
   GetRegVarInfo: TRegVarInfoProc = Nil;
 
 const

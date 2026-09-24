@@ -1,4 +1,10 @@
 unit DasmUtil;
+{$IFNDEF FPC}
+{$WARNINGS OFF}
+{$ELSE}
+{$WARNINGS OFF}
+{$NOTES OFF}
+{$ENDIF}
 (*
 The main i80x86 disassembler module of the DCU32INT utility by Alexei Hmelnov.
 ----------------------------------------------------------------------------
@@ -6,7 +12,7 @@ E-Mail: alex@icc.ru
 http://hmelnov.icc.ru/DCU/
 ----------------------------------------------------------------------------
 
-See the file "readme.txt" for more details.
+See the file "readme.md" for more details.
 
 ------------------------------------------------------------------------
                              IMPORTANT NOTE:
@@ -25,7 +31,6 @@ freely, subject to the following restrictions:
 *)
 interface
 
-{$DEFINE I64}
 uses
   DasmDefs,FixUp;
 
@@ -456,7 +461,7 @@ var
 begin
   Result := false;
   SExt := S and $1;
-  if not im(BWTbl[(W and 1)and not (SExt){При SExt - используется непоср. байт}])
+  if not im(BWTbl[(W and 1)and not (SExt){пїЅпїЅпїЅ SExt - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ}])
   then
     Exit;
   if SExt<>0 then
@@ -789,7 +794,7 @@ begin
      end ;
    dsPtr6b: begin
        DP1 := DP;
-       Inc(integer(DP1),4);
+       DP1 := PAnsiChar(DP1)+4;
        PutSFmt('$%4.4x:$%8.8x',[Word(DP1^),LongInt(DP^)]);
      end ;
    {dsPtr:
@@ -907,8 +912,8 @@ var
   begin
     if hReg and hPresent=0 then
       Exit;
-    hReg := RegTbl{$IFDEF I64}[hReg and hRegHasRex<>0]{$ENDIF}
-        [(hReg shr hRegSizeShift)and hRegSizeMask]^[hReg and $F];
+    hReg := (RegTbl{$IFDEF I64}[hReg and hRegHasRex<>0]{$ENDIF}
+        [(hReg shr hRegSizeShift)and hRegSizeMask]^[hReg and $F]) and $FF;
     if SS=0 then
       hLastReg := hReg;
     Plus;
@@ -1032,7 +1037,7 @@ var
   DP: Pointer;
 begin
   DP := PrevCodePtr;
-  Inc(Cardinal(DP),Ofs);
+  DP := PAnsiChar(DP)+Ofs;
   Case hDSize and dsMask of
     dsByte: I := ShortInt(DP^);
     dsWord: I := SmallInt(DP^);
@@ -1107,3 +1112,4 @@ begin
 end ;
 
 end.
+

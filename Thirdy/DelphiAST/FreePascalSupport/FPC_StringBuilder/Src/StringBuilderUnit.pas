@@ -29,7 +29,7 @@ type
     procedure Add(const aStrings: array of string); overload;
     procedure Append(const aString: string);
     procedure AppendLine;
-    function ToString: string;
+    function ToString: string; override;
     procedure Clean;
     destructor Destroy; override;
   end;

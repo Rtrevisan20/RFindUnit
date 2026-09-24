@@ -1,4 +1,11 @@
 unit DCURecs;
+{$IFNDEF FPC}
+{$WARNINGS OFF}
+{$HINTS OFF}
+{$ELSE}
+{$WARNINGS OFF}
+{$NOTES OFF}
+{$ENDIF}
 (*
 The DCU records module of the DCU32INT utility by Alexei Hmelnov.
 It contains classes for representation of DCU declarations and
@@ -8,7 +15,7 @@ E-Mail: alex@icc.ru
 http://hmelnov.icc.ru/DCU/
 ----------------------------------------------------------------------------
 
-See the file "readme.txt" for more details.
+See the file "readme.md" for more details.
 
 ------------------------------------------------------------------------
                              IMPORTANT NOTE:
@@ -27,10 +34,12 @@ freely, subject to the following restrictions:
 *)
 interface
 
+{$IFNDEF FPC}
 {$IFNDEF VER90}
  {$IFNDEF VER100}
   {$REALCOMPATIBILITY ON}
  {$ENDIF}
+{$ENDIF}
 {$ENDIF}
 
 uses
@@ -633,7 +642,7 @@ TEnumDef = class(TRangeBaseDef)
   Ndx: TNDX;
   CStart: TConstDecl;
   NameTbl: TList;
-  HasEq: Boolean; //Some const was defined by С=Сprev and not included into NameTbl
+  HasEq: Boolean; //Some const was defined by пїЅ=пїЅprev and not included into NameTbl
   constructor Create;
   destructor Destroy; override;
   function ShowValue(DP: Pointer; DS: Cardinal): integer {Size used}; override;
@@ -1621,7 +1630,7 @@ begin
   {if F and $1<>0 then
     raise Exception.CreateFmt('Flag 1 found: 0x%x',[F]);}
   if not NoInf and(F and $40<>0) then
-    Inf := ReadULong;
+    Inf := LongInt(ReadULong);
   PkgNdx := -1;
   {if CurUnit.FromPackage and(CurUnit.Ver>=verD3) then
     PkgNdx := ReadUIndex;}
@@ -2153,6 +2162,8 @@ begin
   inherited Create;
   hSym := ReadUIndex;
   Index := ReadUIndex;
+  if (CurUnit.Ver >= verD_D12) and (CurUnit.Ver < verK1) then
+    ReadByte; //D13: extra byte after each export (always $00 observed)
 end ;
 
 procedure TExportDecl.Show;
@@ -2410,7 +2421,7 @@ end ;
 { TMethodDecl. }
 constructor TMethodDecl.Create(LK: TDeclListKind);
 const
-  cS12 = [0,2,4,8,$10,$18,$20,$80,$84,Ord(' '),Ord('!'),Ord('a')];
+  cS12 = [0,2,4,8,$10,$18,$20,$80,$84,Ord('!'),Ord('a')];
   cS12a = cS12+[1];
   cS12b = cS12a+[$28,$38];
   cS12c = cS12b+[$42,$22,$9];
@@ -2437,7 +2448,7 @@ begin
         //parent class unit
     end ;
     if (CurUnit.Ver>=verD2009)and(CurUnit.Ver<verK1)and(GetTag=arMethod) then begin
-      //!!!Запомнить и отобразить
+      //!!!пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
       nSkip := 0;
       if CurUnit.Ver>=verD2010 then begin
         Inc(nSkip);
@@ -2818,18 +2829,18 @@ var
 begin
   NeedVal := true;
   if CurUnit.Ver>verD4 then begin
-    Kind := ReadUIndex;
-    if (Kind<0)or(Kind>5)or(Kind=5)and not((CurUnit.Ver>=verD2009)and(CurUnit.Ver<verK1)) then
+    Kind := Cardinal(ReadUIndex);
+    if (Kind>5)or(Kind=5)and not((CurUnit.Ver>=verD2009)and(CurUnit.Ver<verK1)) then
       DCUErrorFmt('Unknown const kind: #%d',[Kind]);
     if (CurUnit.Ver>=verD_XE2)and(CurUnit.Ver<verK1) then
       NeedVal := Kind<>4{Pointer - Nil};
   end ;
-  ValSz := ReadUIndex;
+  ValSz := Cardinal(ReadUIndex);
   if ValSz=0 then begin
     ValPtr := Nil;
     if NeedVal then
       Val := ReadIndex;
-    ValSz := NDXHi;
+    ValSz := Cardinal(NDXHi);
    end
   else begin
     ValPtr := ScSt.CurPos;
@@ -2846,7 +2857,7 @@ var
   MemVal: boolean;
 begin
   if ValPtr=Nil then begin
-    V.Hi := ValSz;
+    V.Hi := LongInt(ValSz);
     V.Lo := Val;
     DP := @V;
     DS := 8;
@@ -2858,7 +2869,7 @@ begin
   MemVal := ValPtr<>Nil;
   if (CurUnit.ShowGlobalTypeValue(hDT,DP,DS,MemVal,Kind{ConstKind})<0)and not MemVal then begin
     CurUnit.ShowTypeName(hDT);
-    NDXHi := V.Hi;
+    NDXHi := LongInt(V.Hi);
     PutSFmt('(%s)',[NDXToStr(V.Lo)]);
   end ;
 end ;
@@ -2912,7 +2923,7 @@ begin
   if TypeNamed then
     PutS('(');
   if ValPtr=Nil then begin
-    NDXHi := ValSz;
+    NDXHi := LongInt(ValSz);
     PutS(NDXToStr(Val));
    end
   else begin
@@ -3140,10 +3151,25 @@ var
   ArgP: PTDCURec{^TNameDecl};
   Loc: TDCURec{TNameDecl};
   X: TNDX;
+  B00: LongInt;
+{$IFDEF DBGTRACEPROC}
+  SavePos: LongInt;
+  F: System.TextFile;
+  P0: TIncPtr;
+{$ENDIF}
 begin
   inherited Create(NoInf);
   Ofs := Cardinal(-1);
- {---}
+ {$IFDEF DBGTRACEPROC}P0 := ScSt.CurPos; B00 := LongInt(ScSt.CurPos-ScSt.StartPos);
+      AssignFile(F, 'C:\Users\renat\AppData\Local\Temp\opencode\tproc_entry.txt');
+      if FileExists('C:\Users\renat\AppData\Local\Temp\opencode\tproc_entry.txt') then
+        Append(F)
+      else
+        Rewrite(F);
+      Writeln(F, SysUtils.Format('p0=%X tag=%X', [B00, Byte(Tag)]));
+      CloseFile(F);
+ {$ENDIF}
+  {---}
   Embedded := AnEmbedded;
   NoName := IsUnnamed;
   MethodKind := mkProc;
@@ -3153,13 +3179,15 @@ begin
   if (CurUnit.Ver>=verD_XE)and(CurUnit.Ver<verK1) then
     X := ReadByte;//ReadUIndex; - it was detected in verD_XE2 and Ok for verD_XE
   if not NoName then begin
-    if CurUnit.Ver>verD2 then
+    if CurUnit.Ver>verD2 then begin
+      B00 := LongInt(ScSt.CurPos-ScSt.StartPos);
       VProc := ReadUIndex;
+    end;
     hDTRes := ReadUIndex;
    (*Perhaps it's not required
-    if (CurUnit.Ver>=verD_XE)and(CurUnit.Ver<verK1)and(VProc=$4F{may be some flag important})and(F1 and $40<>0) then
-      Exit;
-    *)
+     if (CurUnit.Ver>=verD_XE)and(CurUnit.Ver<verK1)and(VProc=$4F{may be some flag important})and(F1 and $40<>0) then
+       Exit;
+     *)
     if (CurUnit.Ver>verD7)and(CurUnit.Ver<verK1) then
       hClass := ReadUIndex;
     Tag := ReadTag;
@@ -3181,6 +3209,19 @@ begin
         raise;
       end ;
     end ;
+ {$IFDEF DBGTRACEPROC}
+    begin
+      SavePos := LongInt(ScSt.CurPos-ScSt.StartPos);
+      AssignFile(F, 'C:\Users\renat\AppData\Local\Temp\opencode\tproc_trace.txt');
+      if FileExists('C:\Users\renat\AppData\Local\Temp\opencode\tproc_trace.txt') then
+        Append(F)
+      else
+        Rewrite(F);
+      Writeln(F, SysUtils.Format('p0=%X b0pos=%X end=%X b0=%d sz=%d x=%d vproc=%d hdt=%d tag=%X call=%d',
+        [LongInt(P0-ScSt.StartPos), B00, SavePos, B0, Sz, X, VProc, hDTRes, Byte(Tag), Ord(CallKind)]));
+      CloseFile(F);
+    end;
+ {$ENDIF}
     if Tag<>drStop1 then
       TagError('Stop Tag');
     ArgP := @Args;
@@ -4032,7 +4073,7 @@ var
   procedure ShowVal(var V: TInt64Rec);
   begin
     if (T=Nil)or(U.ShowTypeValue(T,@V,8,0{ConstKind})<0) then begin
-      NDXHi := V.Hi;
+      NDXHi := LongInt(V.Hi);
       PutS(NDXToStr(V.Lo));
     end ;
   end ;
@@ -4069,7 +4110,7 @@ begin
   Lo := ReadIndex;
   Hi := ReadIndex;
   if (CurUnit.Ver>=verD8)and(CurUnit.Ver<verK1) then
-    B := ReadUIndex
+    B := Byte(ReadUIndex)
   else
     B := ReadByte; //It could be index too, but I'm not sure
 end ;
@@ -4089,7 +4130,7 @@ begin
   Lo := ReadIndex;
   Hi := ReadIndex;
   if (CurUnit.Ver>=verD8)and(CurUnit.Ver<verK1) then
-    B := ReadUIndex
+    B := Byte(ReadUIndex)
   else
     B := ReadByte; //It could be index too, but I'm not sure
 end ;
@@ -4121,7 +4162,7 @@ begin
     if (NameTbl<>Nil)and(NameTbl.Count>0{Paranoic}) then begin
       V0 := TConstDecl(NameTbl[0]).Value.Val;
       Dec(V,V0);
-      if (V>=0)and(V<NameTbl.Count) then
+      if (V<NameTbl.Count) then
         C := TConstDecl(NameTbl[V]);
      end
     else begin
@@ -4204,11 +4245,27 @@ begin
   inherited Create;
   B := ReadByte;
   if B>Ord(High(TFloatKind)) then
-    DCUErrorFmt('Unknown float kind: %d',[B]);
+  begin
+    //D11/D13: data tables at end of dlMain may contain invalid float kinds;
+    //treat as end-of-list marker rather than error
+    if (CurUnit.Ver >= verD_D11) and (CurUnit.Ver < verK1) then
+    begin
+      Kind := fkDouble; //dummy, won't be used as list ends
+      Exit;
+    end
+    else
+      DCUErrorFmt('Unknown float kind: %d',[B]);
+  end;
   Kind := TFloatKind(B);
   if Sz<>FloatSz[Kind] then
-    DCUErrorFmt('Float kind and size mismatch: SizeOf()=%d',
-      [GetKindName,Sz]);
+  begin
+  //The DCU stores the real ABI size of the float var; it may differ from the
+  //host's SizeOf (e.g. Real48=6, Extended=10, FPC x64 Extended=16). Only a
+  //size outside every plausible real storage fails.
+    if not (Sz in [4,6,8,10,16]) then
+      DCUErrorFmt('Float kind and size mismatch: %s (%d)',
+        [GetKindName,Sz]);
+  end;
 end ;
 
 function TFloatDef.GetKindName: AnsiString;
@@ -4244,8 +4301,10 @@ begin
         end ;
       end ;
     end ;
+    {$IFNDEF FPC}
     SizeOf(Extended): E := Extended(DP^);
     SizeOf(Real): E := Real(DP^);
+    {$ENDIF}
   else
     Ok := false;
   end ;
@@ -4823,6 +4882,10 @@ begin
       raise;
     end ;
   end ;
+  if (CurUnit.Ver >= verD_D12) and (Tag = drStop) then
+    Tag := drStop1; //D13: nested lists end with a plain stop tag
+  if (CurUnit.Ver >= verD_D12) and (Tag = $B4) then
+    Tag := drStop1; //D13: nested lists can also end with tag $B4
   if Tag<>drStop1 then
     TagError('Stop Tag');
 end ;
@@ -4835,7 +4898,7 @@ end ;
 
 function TRecBaseDef.ShowFieldValues(DP: Pointer; DS: Cardinal): integer {Size used};
 { Attention: records with variants may be incorrectly shown
-  (see readme.txt for details)}
+  (see readme.md for details)}
 var
   Cnt: integer;
   Ofs: integer;
@@ -5078,7 +5141,7 @@ begin
           B := ReadByte;
           MName := ReadName;
           N := ReadUIndex;
-          hMember := ReadUIndex; //!!!Не факт, что hMember
+          hMember := ReadUIndex; //!!!пїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ hMember
         end ;
       end ;
     end ;
@@ -5826,7 +5889,11 @@ begin
         TSz := CurUnit.GetTypeSize(TLocalDecl(Decl).hDT);
         if TSz<0 then
           TSz := 0; //to fit anywhere
+        {$IFDEF FPC}
+        TLocalDecl(Decl).NDXB := TNDX(PtrUInt(GetObjFldByOfs(TLocalDecl(Decl).NDX{Ofs},TSz{QSz},Pointer(FldUnit))));
+{$ELSE}
         TLocalDecl(TLocalDecl(Decl).NDXB) := GetObjFldByOfs(TLocalDecl(Decl).NDX{Ofs},TSz{QSz},Pointer(FldUnit));
+{$ENDIF}
       end ;
     end ;
     DeclL := DeclL.Next;
@@ -5961,6 +6028,10 @@ begin
   inherited Create;
   Tag := ReadTag;
   CurUnit.ReadDeclList(dlA6,Args);
+  if (CurUnit.Ver >= verD_D12) and (Tag = drStop) then
+    Tag := drStop1; //D13: nested (dlA6) lists end with a plain stop tag
+  if (CurUnit.Ver >= verD_D12) and (Tag = $B4) then
+    Tag := drStop1; //D13: nested (dlA6) lists can also end with tag $B4
   if Tag<>drStop1 then
     TagError('Stop Tag');
 end ;
@@ -6015,7 +6086,7 @@ end ;
 constructor TDelayedImpRec.Create;
 begin
   inherited Create;
-  Inf := ReadULong;
+  Inf := LongInt(ReadULong);
   F := ReadUIndex;
   CurUnit.RefAddrDef(F);
 end ;
@@ -6031,11 +6102,15 @@ end ;
 constructor TORecDecl.Create;
 begin
   inherited Create;
-  DW := ReadULong;
+  DW := LongInt(ReadULong);
   B0 := ReadByte;
   B1 := ReadByte;
   Tag := ReadTag;
   CurUnit.ReadDeclList(dlA6,Args);
+  if (CurUnit.Ver >= verD_D12) and (Tag = drStop) then
+    Tag := drStop1; //D13: nested (dlA6) lists end with a plain stop tag
+  if (CurUnit.Ver >= verD_D12) and (Tag = $B4) then
+    Tag := drStop1; //D13: nested (dlA6) lists can also end with tag $B4
   if Tag<>drStop1 then
     TagError('Stop Tag');
 end ;
@@ -6164,6 +6239,8 @@ begin
   for i:=0 to Cnt-1 do
     Args^[i] := ReadUIndex;
   hDTFull := ReadUIndex;
+  if (CurUnit.Ver >= verD_D12) and (CurUnit.Ver < verK1) then
+    ReadUIndex; //D13: trailing value after each template call in dlMain
   //!!!FixDTName;
 end ;
 
@@ -6395,4 +6472,7 @@ begin
 end;
 
 end.
+
+
+
 

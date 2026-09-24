@@ -12,15 +12,11 @@ unit Log4Pascal;
 
 interface
 
-uses
-  SyncObjs;
-
 type
   TLogTypes = (ltTrace, ltDebug, ltInfo, ltWarning, ltError, ltFatal);
 
   TLogger = class
   private
-    FRC: TCriticalSection;
     FFileName: string;
     FIsInit: Boolean;
     FOutFile: TextFile;
@@ -54,14 +50,18 @@ type
 
     procedure Clear;
 
-    procedure Trace(const Msg: string);
-    procedure Debug(const AMsg: string; const AArgs: array of const); overload;
+    procedure Trace(const Msg: string); overload;
+    procedure Trace(const Fmt: string; const Args: array of const); overload;
     procedure Debug(const Msg: string); overload;
-    procedure Info(const Msg: string);
-    procedure Warning(const Msg: string);
-    procedure Error(const AMsg: string; const AArgs: array of const); overload;
+    procedure Debug(const Fmt: string; const Args: array of const); overload;
+    procedure Info(const Msg: string); overload;
+    procedure Info(const Fmt: string; const Args: array of const); overload;
+    procedure Warning(const Msg: string); overload;
+    procedure Warning(const Fmt: string; const Args: array of const); overload;
     procedure Error(const Msg: string); overload;
-    procedure Fatal(const Msg: string);
+    procedure Error(const Fmt: string; const Args: array of const); overload;
+    procedure Fatal(const Msg: string); overload;
+    procedure Fatal(const Fmt: string; const Args: array of const); overload;
   end;
 
 var
@@ -70,16 +70,24 @@ var
 implementation
 
 uses
+  {$IFDEF MSWINDOWS}
+  Windows,
+  {$ENDIF}
+  {$IFNDEF FPC}
+  Forms,
+  {$ENDIF}
   SysUtils;
 
 const
   FORMAT_LOG = '%s %s';
-  PREFIX_TRACE = 'TRACE|';
-  PREFIX_DEBUG = 'DEBUG|';
-  PREFIX_INFO = 'INFO|';
-  PREFIX_WARN = 'WARN |';
-  PREFIX_ERROR = 'ERROR|';
-  PREFIX_FATAL = 'FATAL|';
+  PREFIX_TRACE = 'TRACE';
+  PREFIX_DEBUG = 'DEBUG';
+  PREFIX_INFO  = 'INFO ';
+  PREFIX_WARN  = 'WARN ';
+  PREFIX_ERROR = 'ERROR';
+  PREFIX_FATAL = 'FATAL';
+
+{ TLogger }
 
 procedure TLogger.Clear;
 begin
@@ -89,20 +97,19 @@ begin
   if FIsInit then
     CloseFile(FOutFile);
 
-  DeleteFile(FFileName);
+  SysUtils.DeleteFile(FFileName);
 
   FIsInit := False;
 end;
 
 constructor TLogger.Create(const FileName: string);
 begin
-  FRC := TCriticalSection.Create;
   FFileName := FileName;
   FIsInit := False;
   Self.SetNoisyMode;
   FQuietTypes := [];
 end;
-
+ 
 procedure TLogger.CreateFoldersIfNecessary;
 var
   FilePath: string;
@@ -113,32 +120,34 @@ begin
   if Pos(':', FilePath) > 0 then
     ForceDirectories(FilePath)
   else begin
+  {$IFDEF FPC}
     FullApplicationPath := ExtractFilePath(ParamStr(0));
+  {$ELSE}
+    FullApplicationPath := ExtractFilePath(Application.ExeName);
+  {$ENDIF}
     ForceDirectories(IncludeTrailingPathDelimiter(FullApplicationPath) + FilePath);
   end;
 end;
 
 procedure TLogger.Debug(const Msg: string);
 begin
-{$IFNDEF DEBUG}
-  Exit;
-{$ENDIF}
+  {$IFNDEF FPC}
+  {$WARN SYMBOL_PLATFORM OFF}
+  if DebugHook = 0 then
+    Exit;
+  {$WARN SYMBOL_PLATFORM ON}
+  {$ENDIF}
+
   if not (ltDebug in FQuietTypes) then
     Self.Write(Format(FORMAT_LOG, [PREFIX_DEBUG, Msg]));
 end;
 
-procedure TLogger.Debug(const AMsg: string; const AArgs: array of const);
-begin
-  Debug(Format(AMsg, AArgs));
-end;
-
 destructor TLogger.Destroy;
 begin
-  FRC.Free;
   Self.Finalize;
   inherited;
 end;
-
+ 
 procedure TLogger.DisableDebugLog;
 begin
   Include(FQuietTypes, ltDebug);
@@ -199,11 +208,6 @@ begin
   Exclude(FQuietTypes, ltWarning);
 end;
 
-procedure TLogger.Error(const AMsg: string; const AArgs: array of const);
-begin
-  Error(Format(AMsg, AArgs));
-end;
-
 procedure TLogger.Error(const Msg: string);
 begin
   if not (ltError in FQuietTypes) then
@@ -223,15 +227,16 @@ begin
 
   FIsInit := False;
 end;
-
+ 
 procedure TLogger.Initialize;
 begin
   if FIsInit then
     CloseFile(FOutFile);
 
-  if not FQuietMode then begin
+  if not FQuietMode then
+  begin
     Self.CreateFoldersIfNecessary;
-
+    
     AssignFile(FOutFile, FFileName);
     if not FileExists(FFileName) then
       Rewrite(FOutFile)
@@ -241,23 +246,23 @@ begin
 
   FIsInit := True;
 end;
-
+ 
 procedure TLogger.Info(const Msg: string);
 begin
   if not (ltInfo in FQuietTypes) then
     Self.Write(Format(FORMAT_LOG, [PREFIX_INFO, Msg]));
 end;
-
+ 
 procedure TLogger.SetNoisyMode;
 begin
   FQuietMode := False;
 end;
-
+ 
 procedure TLogger.SetQuietMode;
 begin
   FQuietMode := True;
 end;
-
+ 
 procedure TLogger.Trace(const Msg: string);
 begin
   if not (ltTrace in FQuietTypes) then
@@ -270,6 +275,36 @@ begin
     Self.Write(Format(FORMAT_LOG, [PREFIX_WARN, Msg]));
 end;
 
+procedure TLogger.Trace(const Fmt: string; const Args: array of const);
+begin
+  Self.Trace(SysUtils.Format(Fmt, Args));
+end;
+
+procedure TLogger.Debug(const Fmt: string; const Args: array of const);
+begin
+  Self.Debug(SysUtils.Format(Fmt, Args));
+end;
+
+procedure TLogger.Info(const Fmt: string; const Args: array of const);
+begin
+  Self.Info(SysUtils.Format(Fmt, Args));
+end;
+
+procedure TLogger.Warning(const Fmt: string; const Args: array of const);
+begin
+  Self.Warning(SysUtils.Format(Fmt, Args));
+end;
+
+procedure TLogger.Error(const Fmt: string; const Args: array of const);
+begin
+  Self.Error(SysUtils.Format(Fmt, Args));
+end;
+
+procedure TLogger.Fatal(const Fmt: string; const Args: array of const);
+begin
+  Self.Fatal(SysUtils.Format(Fmt, Args));
+end;
+
 procedure TLogger.Write(const Msg: string);
 const
   FORMAT_DATETIME_DEFAULT = 'yyyy-mm-dd hh:nn:ss';
@@ -277,22 +312,19 @@ begin
   if FQuietMode then
     Exit;
 
-  FRC.Acquire;
+  Self.Initialize;
   try
-    Self.Initialize;
-    try
-      if FIsInit then
-        Writeln(
-            FOutFile,
-            Format('[%s] [TID %d] %s ', [FormatDateTime(FORMAT_DATETIME_DEFAULT, Now),
-              {$IFDEF FPC} GetThreadID {$ELSE} GetCurrentThreadId {$ENDIF}, Msg])
-        );
-    finally
-      Self.Finalize;
-    end;
+    if FIsInit then
+      Writeln(FOutFile, Format('%s [%s]', [Msg, FormatDateTime(FORMAT_DATETIME_DEFAULT, Now)]));
   finally
-    FRC.Release;
+    Self.Finalize;
   end;
 end;
+
+initialization
+  Logger := TLogger.Create('Log.txt');
+
+finalization
+  Logger.Free;
 
 end.

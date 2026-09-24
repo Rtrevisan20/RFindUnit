@@ -17,12 +17,23 @@ unit CastaliaPasLexTypes;
 
 unit SimpleParser.Lexer.Types;
 
+{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
+
 interface
 
 uses
-  SysUtils;
+  {$IFDEF FPC}
+  SysUtils, TypInfo
+  {$ELSE}
+  System.SysUtils, System.TypInfo
+  {$ENDIF};
 
 {$INCLUDE SimpleParser.inc}
+
+{$IFNDEF D14_NEWER}
+type
+  TArray<T> = array of T;
+{$ENDIF}
 
 var
   CompTable: array[#0..#255] of byte;
@@ -38,6 +49,7 @@ type
   TTokenPoint = packed record
     X: Integer;
     Y: Integer;
+    LineSeq: Integer;
   end;
 
   TptTokenKind = (
@@ -46,6 +58,7 @@ type
     ptAbstract,
     ptAdd,
     ptAddressOp,
+    ptAlign,
     ptAmpersand,
     ptAnd,
     ptAnsiComment,
@@ -164,6 +177,7 @@ type
     ptNil,
     ptNodefault,
     ptNone,
+    ptNoreturn,
     ptNot,
     ptNotEqual,
     ptNull,
@@ -210,6 +224,7 @@ type
     ptRoundOpen,
     ptRunError,
     ptSafeCall,
+    ptScopedEnumsDirect,
     ptSealed,
     ptSemiColon,
     ptSet,
@@ -273,7 +288,8 @@ type
   EIncludeError = class(Exception);
   IIncludeHandler = interface
     ['{C5F20740-41D2-43E9-8321-7FE5E3AA83B6}']
-    function GetIncludeFileContent(const FileName: string): string;
+    function GetIncludeFileContent(const ParentFileName, IncludeName: string;
+      out Content: string; out FileName: string): Boolean;
   end;
 
 function TokenName(Value: TptTokenKind): string;
@@ -281,9 +297,6 @@ function ptTokenName(Value: TptTokenKind): string;
 function IsTokenIDJunk(const aTokenID: TptTokenKind): Boolean;
 
 implementation
-
-uses
-  TypInfo;
 
 function TokenName(Value: TptTokenKind): string;
 begin
@@ -313,8 +326,8 @@ begin
     ptEndIfDirect,
     ptIfOptDirect,
     ptDefineDirect,
+    ptScopedEnumsDirect,
     ptUndefDirect];
 end;
 
 end.
-
