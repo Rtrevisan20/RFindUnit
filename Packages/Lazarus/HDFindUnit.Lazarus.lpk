@@ -235,6 +235,7 @@
       <Item54>
         <Filename Value="..\..\src\Controller\HDFindUnit.Controller.Lazarus.pas"/>
         <UnitName Value="HDFindUnit.Controller.Lazarus"/>
+        <HasRegisterProc Value="True"/>
       </Item54>
     </Files>
     <Type Value="DesignTime"/>
