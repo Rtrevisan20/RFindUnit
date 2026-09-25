@@ -460,7 +460,11 @@ end;
 
 constructor TfrmFindUnit.Create(AOwner: TComponent);
 begin
+{$IFDEF FPC}
+  inherited CreateNew(AOwner);
+{$ELSE}
   inherited;
+{$ENDIF}
 {$IFDEF FPC}
   CreateFormControls;
   FormCreate(Self);
