@@ -10,7 +10,7 @@ interface
 uses
   DelphiAST.Consts, DelphiAST.Classes, SimpleParser.Types, SimpleParser.Lexer.Types,
   SimpleParser.Lexer, SimpleParser, DelphiAST, DelphiAST.Writer, StringBuilderUnit,
-  Log4Pascal, RegExpr, SVG, SVGColor, SVGCommon, SVGPaint, SVGParse, SVGPath,
+  Log4Pascal, SVG, SVGColor, SVGCommon, SVGPaint, SVGParse, SVGPath,
   SVGProperties, SVGStyle, SVGTypes, SVGXML, Painter, PainterGdiPlus, PainterLCL,
   GDIPAPI, GDIPOBJ, GDIPOBJ2, GDIPKerning, GDIPPathText, DirectDraw, RFUNetEncoding,
   HDFindUnit.Model.Header, HDFindUnit.Model.DelphiReservedWords,
