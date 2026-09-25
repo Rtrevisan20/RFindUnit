@@ -33,7 +33,7 @@ uses
 {$IFDEF FPC}
   Windows,
   Classes, Math, Types,
-  System.NetEncoding,
+  RFUNetEncoding,
   GDIPAPI, GDIPOBJ,
   PainterGdiPlus,
   SVGXML, SVGTypes, SVGStyle, Painter;
