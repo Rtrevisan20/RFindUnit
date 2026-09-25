@@ -19,7 +19,7 @@ uses
   HDFindUnit.View.FormSearch,
   HDFindUnit.Utils;
 
-procedure RegisterHDFindUnit;
+procedure Register;
 
 implementation
 
@@ -36,7 +36,7 @@ type
 var
   RFindUnitLazarusMain: TRFindUnitLazarusMain = nil;
 
-procedure RegisterHDFindUnit;
+procedure Register;
 var
   Category: TIDECommandCategory;
   Command: TIDECommand;
