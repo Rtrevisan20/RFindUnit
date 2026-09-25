@@ -7,8 +7,8 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Thirdy\DelphiAST\SimpleParser;..\..\Thirdy\DelphiAST"/>
-        <OtherUnitFiles Value="..\..\src\Model;..\..\src\Utils;..\..\src\View;..\..\src\Controller;..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src;..\..\Thirdy\Log4pascal;..\..\Thirdy\Andrey"/>
+        <IncludeFiles Value="..\..\Thirdy\DelphiAST\SimpleParser;..\..\Thirdy\DelphiAST;..\..\Thirdy\RFUSVG-Ekot\src\gdip"/>
+        <OtherUnitFiles Value="..\..\src\Model;..\..\src\Utils;..\..\src\View;..\..\src\Controller;..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src;..\..\Thirdy\Log4pascal;..\..\Thirdy\Andrey;..\..\Thirdy\DelphiAST;..\..\Thirdy\DelphiAST\SimpleParser;..\..\Thirdy\RFUSVG-Ekot\src\svg;..\..\Thirdy\RFUSVG-Ekot\src\painter;..\..\Thirdy\RFUSVG-Ekot\src\gdip;..\..\Thirdy\RFU-Shims"/>
         <UnitOutputDirectory Value="Compiled\$(TargetCPU)-$(TargetOS)\"/>
       </SearchPaths>
       <Other>
@@ -19,118 +19,239 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="24">
+    <Files Count="55">
       <Item1>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.Header.pas"/>
-        <UnitName Value="HDFindUnit.Model.Header"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.Consts.pas"/>
+        <UnitName Value="DelphiAST.Consts"/>
       </Item1>
       <Item2>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.DelphiReservedWords.pas"/>
-        <UnitName Value="HDFindUnit.Model.DelphiReservedWords"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.Classes.pas"/>
+        <UnitName Value="DelphiAST.Classes"/>
       </Item2>
       <Item3>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.StringPositionList.pas"/>
-        <UnitName Value="HDFindUnit.Model.StringPositionList"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Types.pas"/>
+        <UnitName Value="SimpleParser.Types"/>
       </Item3>
       <Item4>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.Settings.pas"/>
-        <UnitName Value="HDFindUnit.Model.Settings"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.Types.pas"/>
+        <UnitName Value="SimpleParser.Lexer.Types"/>
       </Item4>
       <Item5>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.PasParser.pas"/>
-        <UnitName Value="HDFindUnit.Model.PasParser"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas"/>
+        <UnitName Value="SimpleParser.Lexer"/>
       </Item5>
       <Item6>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.FileCache.pas"/>
-        <UnitName Value="HDFindUnit.Model.FileCache"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.pas"/>
+        <UnitName Value="SimpleParser"/>
       </Item6>
       <Item7>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.Interf.SearchStringCache.pas"/>
-        <UnitName Value="HDFindUnit.Model.Interf.SearchStringCache"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.pas"/>
+        <UnitName Value="DelphiAST"/>
       </Item7>
       <Item8>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.SearchStringCache.pas"/>
-        <UnitName Value="HDFindUnit.Model.SearchStringCache"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.Writer.pas"/>
+        <UnitName Value="DelphiAST.Writer"/>
       </Item8>
       <Item9>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.SearchString.pas"/>
-        <UnitName Value="HDFindUnit.Model.SearchString"/>
+        <Filename Value="..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src\StringBuilderUnit.pas"/>
+        <UnitName Value="StringBuilderUnit"/>
       </Item9>
       <Item10>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.DelphiVlcWrapper.pas"/>
-        <UnitName Value="HDFindUnit.Model.DelphiVlcWrapper"/>
+        <Filename Value="..\..\Thirdy\Log4pascal\Log4Pascal.pas"/>
+        <UnitName Value="Log4Pascal"/>
       </Item10>
       <Item11>
-        <Filename Value="..\..\src\View\HDFindUnit.View.FormMessage.pas"/>
-        <UnitName Value="HDFindUnit.View.FormMessage"/>
+        <Filename Value="..\..\Thirdy\Andrey\RegExpr.pas"/>
+        <UnitName Value="RegExpr"/>
       </Item11>
       <Item12>
-        <Filename Value="..\..\src\Utils\HDFindUnit.Utils.pas"/>
-        <UnitName Value="HDFindUnit.Utils"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVG.pas"/>
+        <UnitName Value="SVG"/>
       </Item12>
       <Item13>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.Interf.Translation.pas"/>
-        <UnitName Value="HDFindUnit.Model.Interf.Translation"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGColor.pas"/>
+        <UnitName Value="SVGColor"/>
       </Item13>
       <Item14>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.Translation.pas"/>
-        <UnitName Value="HDFindUnit.Model.Translation"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGCommon.pas"/>
+        <UnitName Value="SVGCommon"/>
       </Item14>
       <Item15>
-        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.Interf.EnvironmentController.pas"/>
-        <UnitName Value="HDFindUnit.Controller.Interf.EnvironmentController"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPaint.pas"/>
+        <UnitName Value="SVGPaint"/>
       </Item15>
       <Item16>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.IncluderHandlerInc.pas"/>
-        <UnitName Value="HDFindUnit.Model.IncluderHandlerInc"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGParse.pas"/>
+        <UnitName Value="SVGParse"/>
       </Item16>
       <Item17>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.ResultsImportanceCalculator.pas"/>
-        <UnitName Value="HDFindUnit.Model.ResultsImportanceCalculator"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPath.pas"/>
+        <UnitName Value="SVGPath"/>
       </Item17>
       <Item18>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.AutoImport.pas"/>
-        <UnitName Value="HDFindUnit.Model.AutoImport"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGProperties.pas"/>
+        <UnitName Value="SVGProperties"/>
       </Item18>
       <Item19>
-        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.OTAUtils.pas"/>
-        <UnitName Value="HDFindUnit.Controller.OTAUtils"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGStyle.pas"/>
+        <UnitName Value="SVGStyle"/>
       </Item19>
       <Item20>
-        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.EnvironmentController.pas"/>
-        <UnitName Value="HDFindUnit.Controller.EnvironmentController"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGTypes.pas"/>
+        <UnitName Value="SVGTypes"/>
       </Item20>
       <Item21>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.FileEditor.pas"/>
-        <UnitName Value="HDFindUnit.Model.FileEditor"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGXML.pas"/>
+        <UnitName Value="SVGXML"/>
       </Item21>
       <Item22>
-        <Filename Value="..\..\src\Model\HDFindUnit.Model.Worker.pas"/>
-        <UnitName Value="HDFindUnit.Model.Worker"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\painter\Painter.pas"/>
+        <UnitName Value="Painter"/>
       </Item22>
       <Item23>
-        <Filename Value="..\..\src\View\HDFindUnit.View.FormSearch.pas"/>
-        <UnitName Value="HDFindUnit.View.FormSearch"/>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\painter\PainterGdiPlus.pas"/>
+        <UnitName Value="PainterGdiPlus"/>
       </Item23>
       <Item24>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\painter\PainterLCL.pas"/>
+        <UnitName Value="PainterLCL"/>
+      </Item24>
+      <Item25>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPAPI.pas"/>
+        <UnitName Value="GDIPAPI"/>
+      </Item25>
+      <Item26>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPOBJ.pas"/>
+        <UnitName Value="GDIPOBJ"/>
+      </Item26>
+      <Item27>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPOBJ2.pas"/>
+        <UnitName Value="GDIPOBJ2"/>
+      </Item27>
+      <Item28>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPKerning.pas"/>
+        <UnitName Value="GDIPKerning"/>
+      </Item28>
+      <Item29>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPPathText.pas"/>
+        <UnitName Value="GDIPPathText"/>
+      </Item29>
+      <Item30>
+        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\DirectDraw.pas"/>
+        <UnitName Value="DirectDraw"/>
+      </Item30>
+      <Item31>
+        <Filename Value="..\..\Thirdy\RFU-Shims\RFUNetEncoding.pas"/>
+        <UnitName Value="RFUNetEncoding"/>
+      </Item31>
+      <Item32>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Header.pas"/>
+        <UnitName Value="HDFindUnit.Model.Header"/>
+      </Item32>
+      <Item33>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.DelphiReservedWords.pas"/>
+        <UnitName Value="HDFindUnit.Model.DelphiReservedWords"/>
+      </Item33>
+      <Item34>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.StringPositionList.pas"/>
+        <UnitName Value="HDFindUnit.Model.StringPositionList"/>
+      </Item34>
+      <Item35>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Settings.pas"/>
+        <UnitName Value="HDFindUnit.Model.Settings"/>
+      </Item35>
+      <Item36>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.PasParser.pas"/>
+        <UnitName Value="HDFindUnit.Model.PasParser"/>
+      </Item36>
+      <Item37>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.FileCache.pas"/>
+        <UnitName Value="HDFindUnit.Model.FileCache"/>
+      </Item37>
+      <Item38>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Interf.SearchStringCache.pas"/>
+        <UnitName Value="HDFindUnit.Model.Interf.SearchStringCache"/>
+      </Item38>
+      <Item39>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.SearchStringCache.pas"/>
+        <UnitName Value="HDFindUnit.Model.SearchStringCache"/>
+      </Item39>
+      <Item40>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.SearchString.pas"/>
+        <UnitName Value="HDFindUnit.Model.SearchString"/>
+      </Item40>
+      <Item41>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.DelphiVlcWrapper.pas"/>
+        <UnitName Value="HDFindUnit.Model.DelphiVlcWrapper"/>
+      </Item41>
+      <Item42>
+        <Filename Value="..\..\src\View\HDFindUnit.View.FormMessage.pas"/>
+        <UnitName Value="HDFindUnit.View.FormMessage"/>
+      </Item42>
+      <Item43>
+        <Filename Value="..\..\src\Utils\HDFindUnit.Utils.pas"/>
+        <UnitName Value="HDFindUnit.Utils"/>
+      </Item43>
+      <Item44>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Interf.Translation.pas"/>
+        <UnitName Value="HDFindUnit.Model.Interf.Translation"/>
+      </Item44>
+      <Item45>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Translation.pas"/>
+        <UnitName Value="HDFindUnit.Model.Translation"/>
+      </Item45>
+      <Item46>
+        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.Interf.EnvironmentController.pas"/>
+        <UnitName Value="HDFindUnit.Controller.Interf.EnvironmentController"/>
+      </Item46>
+      <Item47>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.IncluderHandlerInc.pas"/>
+        <UnitName Value="HDFindUnit.Model.IncluderHandlerInc"/>
+      </Item47>
+      <Item48>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.ResultsImportanceCalculator.pas"/>
+        <UnitName Value="HDFindUnit.Model.ResultsImportanceCalculator"/>
+      </Item48>
+      <Item49>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.AutoImport.pas"/>
+        <UnitName Value="HDFindUnit.Model.AutoImport"/>
+      </Item49>
+      <Item50>
+        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.OTAUtils.pas"/>
+        <UnitName Value="HDFindUnit.Controller.OTAUtils"/>
+      </Item50>
+      <Item51>
+        <Filename Value="..\..\src\Controller\HDFindUnit.Controller.EnvironmentController.pas"/>
+        <UnitName Value="HDFindUnit.Controller.EnvironmentController"/>
+      </Item51>
+      <Item52>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.FileEditor.pas"/>
+        <UnitName Value="HDFindUnit.Model.FileEditor"/>
+      </Item52>
+      <Item53>
+        <Filename Value="..\..\src\Model\HDFindUnit.Model.Worker.pas"/>
+        <UnitName Value="HDFindUnit.Model.Worker"/>
+      </Item53>
+      <Item54>
+        <Filename Value="..\..\src\View\HDFindUnit.View.FormSearch.pas"/>
+        <UnitName Value="HDFindUnit.View.FormSearch"/>
+      </Item54>
+      <Item55>
         <Filename Value="..\..\src\Controller\HDFindUnit.Controller.Lazarus.pas"/>
         <UnitName Value="HDFindUnit.Controller.Lazarus"/>
-      </Item24>
+      </Item55>
     </Files>
     <Type Value="DesignTime"/>
-    <RequiredPkgs Count="4">
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="HDFindUnit.Lazarus.Deps"/>
+        <PackageName Value="FCL"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
+        <PackageName Value="LCL"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
-      </Item3>
-      <Item4>
         <PackageName Value="IDEIntf"/>
-      </Item4>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

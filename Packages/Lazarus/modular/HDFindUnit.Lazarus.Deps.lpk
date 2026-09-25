@@ -7,8 +7,8 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Thirdy\DelphiAST\SimpleParser;..\..\Thirdy\DelphiAST"/>
-        <OtherUnitFiles Value="..\..\Thirdy\DelphiAST;..\..\Thirdy\DelphiAST\SimpleParser;..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src;..\..\Thirdy\Log4pascal;..\..\Thirdy\Andrey"/>
+        <IncludeFiles Value="..\..\..\Thirdy\DelphiAST\SimpleParser;..\..\..\Thirdy\DelphiAST"/>
+        <OtherUnitFiles Value="..\..\..\Thirdy\DelphiAST;..\..\..\Thirdy\DelphiAST\SimpleParser;..\..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src;..\..\..\Thirdy\Log4pascal;..\..\..\Thirdy\Andrey"/>
         <UnitOutputDirectory Value="Compiled\$(TargetCPU)-$(TargetOS)\"/>
       </SearchPaths>
       <Other>
@@ -21,47 +21,47 @@
     </CompilerOptions>
     <Files Count="11">
       <Item1>
-        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.Consts.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\DelphiAST.Consts.pas"/>
         <UnitName Value="DelphiAST.Consts"/>
       </Item1>
       <Item2>
-        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.Classes.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\DelphiAST.Classes.pas"/>
         <UnitName Value="DelphiAST.Classes"/>
       </Item2>
       <Item3>
-        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Types.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Types.pas"/>
         <UnitName Value="SimpleParser.Types"/>
       </Item3>
       <Item4>
-        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.Types.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.Types.pas"/>
         <UnitName Value="SimpleParser.Lexer.Types"/>
       </Item4>
       <Item5>
-        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.Lexer.pas"/>
         <UnitName Value="SimpleParser.Lexer"/>
       </Item5>
       <Item6>
-        <Filename Value="..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\SimpleParser\SimpleParser.pas"/>
         <UnitName Value="SimpleParser"/>
       </Item6>
       <Item7>
-        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\DelphiAST.pas"/>
         <UnitName Value="DelphiAST"/>
       </Item7>
       <Item8>
-        <Filename Value="..\..\Thirdy\DelphiAST\DelphiAST.Writer.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\DelphiAST.Writer.pas"/>
         <UnitName Value="DelphiAST.Writer"/>
       </Item8>
       <Item9>
-        <Filename Value="..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src\StringBuilderUnit.pas"/>
+        <Filename Value="..\..\..\Thirdy\DelphiAST\FreePascalSupport\FPC_StringBuilder\Src\StringBuilderUnit.pas"/>
         <UnitName Value="StringBuilderUnit"/>
       </Item9>
       <Item10>
-        <Filename Value="..\..\Thirdy\Log4pascal\Log4Pascal.pas"/>
+        <Filename Value="..\..\..\Thirdy\Log4pascal\Log4Pascal.pas"/>
         <UnitName Value="Log4Pascal"/>
       </Item10>
       <Item11>
-        <Filename Value="..\..\Thirdy\Andrey\RegExpr.pas"/>
+        <Filename Value="..\..\..\Thirdy\Andrey\RegExpr.pas"/>
         <UnitName Value="RegExpr"/>
       </Item11>
     </Files>

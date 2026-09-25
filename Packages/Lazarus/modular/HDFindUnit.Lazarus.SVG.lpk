@@ -7,8 +7,8 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip"/>
-        <OtherUnitFiles Value="..\..\Thirdy\RFUSVG-Ekot\src\svg;..\..\Thirdy\RFUSVG-Ekot\src\painter;..\..\Thirdy\RFUSVG-Ekot\src\gdip;..\..\Thirdy\RFU-Shims"/>
+        <IncludeFiles Value="..\..\..\Thirdy\RFUSVG-Ekot\src\gdip"/>
+        <OtherUnitFiles Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg;..\..\..\Thirdy\RFUSVG-Ekot\src\painter;..\..\..\Thirdy\RFUSVG-Ekot\src\gdip;..\..\..\Thirdy\RFU-Shims"/>
         <UnitOutputDirectory Value="Compiled\$(TargetCPU)-$(TargetOS)\"/>
       </SearchPaths>
       <Other>
@@ -21,83 +21,83 @@
     </CompilerOptions>
     <Files Count="20">
       <Item1>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVG.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVG.pas"/>
         <UnitName Value="SVG"/>
       </Item1>
       <Item2>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGColor.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGColor.pas"/>
         <UnitName Value="SVGColor"/>
       </Item2>
       <Item3>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGCommon.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGCommon.pas"/>
         <UnitName Value="SVGCommon"/>
       </Item3>
       <Item4>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPaint.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPaint.pas"/>
         <UnitName Value="SVGPaint"/>
       </Item4>
       <Item5>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGParse.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGParse.pas"/>
         <UnitName Value="SVGParse"/>
       </Item5>
       <Item6>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPath.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGPath.pas"/>
         <UnitName Value="SVGPath"/>
       </Item6>
       <Item7>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGProperties.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGProperties.pas"/>
         <UnitName Value="SVGProperties"/>
       </Item7>
       <Item8>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGStyle.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGStyle.pas"/>
         <UnitName Value="SVGStyle"/>
       </Item8>
       <Item9>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGTypes.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGTypes.pas"/>
         <UnitName Value="SVGTypes"/>
       </Item9>
       <Item10>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGXML.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\svg\SVGXML.pas"/>
         <UnitName Value="SVGXML"/>
       </Item10>
       <Item11>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\painter\Painter.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\painter\Painter.pas"/>
         <UnitName Value="Painter"/>
       </Item11>
       <Item12>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\painter\PainterGdiPlus.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\painter\PainterGdiPlus.pas"/>
         <UnitName Value="PainterGdiPlus"/>
       </Item12>
       <Item13>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\painter\PainterLCL.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\painter\PainterLCL.pas"/>
         <UnitName Value="PainterLCL"/>
       </Item13>
       <Item14>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPAPI.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPAPI.pas"/>
         <UnitName Value="GDIPAPI"/>
       </Item14>
       <Item15>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPOBJ.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPOBJ.pas"/>
         <UnitName Value="GDIPOBJ"/>
       </Item15>
       <Item16>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPOBJ2.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPOBJ2.pas"/>
         <UnitName Value="GDIPOBJ2"/>
       </Item16>
       <Item17>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPKerning.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPKerning.pas"/>
         <UnitName Value="GDIPKerning"/>
       </Item17>
       <Item18>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPPathText.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\gdip\GDIPPathText.pas"/>
         <UnitName Value="GDIPPathText"/>
       </Item18>
       <Item19>
-        <Filename Value="..\..\Thirdy\RFUSVG-Ekot\src\gdip\DirectDraw.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFUSVG-Ekot\src\gdip\DirectDraw.pas"/>
         <UnitName Value="DirectDraw"/>
       </Item19>
       <Item20>
-        <Filename Value="..\..\Thirdy\RFU-Shims\RFUNetEncoding.pas"/>
+        <Filename Value="..\..\..\Thirdy\RFU-Shims\RFUNetEncoding.pas"/>
         <UnitName Value="RFUNetEncoding"/>
       </Item20>
     </Files>
