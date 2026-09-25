@@ -279,8 +279,9 @@ begin
 
   for PasValue in ResultList.LockList do
     FPasFiles.AddOrSetValue(PasValue.Path, PasValue);
-
   ResultList.Free;
+
+  Logger.Debug('TParserWorker.ListPasFiles: %d .pas files found in %d paths', [FPasFiles.Count, FDirectoriesPath.Count]);
 end;
 
 function TParserWorker.MustContinue: Boolean;
@@ -463,8 +464,8 @@ var
   end;
 begin
   try
-    OutPutStep('FIncluder.Process');
-    TIncludeHandlerInc(FIncluder).Process;
+OutPutStep('FIncluder.Process');
+    FIncluder.Process;
     OutPutStep('ListPasFiles');
     ListPasFiles;
     OutPutStep('ListDcuFiles');

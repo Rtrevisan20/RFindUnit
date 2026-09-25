@@ -33,6 +33,8 @@ implementation
 
 procedure Register;
 begin
+  RegisterUnit('HDFindUnit.Controller.Lazarus', 
+    @HDFindUnit.Controller.Lazarus.Register);
 end;
 
 initialization

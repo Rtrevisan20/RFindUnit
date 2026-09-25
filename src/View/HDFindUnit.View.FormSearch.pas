@@ -95,7 +95,6 @@ type
 
 {$IFDEF FPC}
     procedure ProcessKeyCommand(Key: Word; Shift: TShiftState; var Handled: Boolean);
-    procedure CreateFormControls;
 {$ELSE}
     procedure ProcessKeyCommand(var Msg: tagMSG; var Handled: Boolean);
 {$ENDIF}
@@ -157,7 +156,9 @@ uses
   ,Winapi.ShellAPI
 {$ENDIF};
 
-{$IFNDEF FPC}
+{$IFDEF FPC}
+{$R *.lfm}
+{$ELSE}
 {$R *.dfm}
 {$ENDIF}
 
@@ -460,150 +461,9 @@ end;
 
 constructor TfrmFindUnit.Create(AOwner: TComponent);
 begin
-{$IFDEF FPC}
-  inherited CreateNew(AOwner);
-{$ELSE}
-  inherited;
-{$ENDIF}
-{$IFDEF FPC}
-  CreateFormControls;
-  FormCreate(Self);
-{$ENDIF}
+  inherited Create(AOwner);
   LoadCurrentFile;
 end;
-
-{$IFDEF FPC}
-procedure TfrmFindUnit.CreateFormControls;
-begin
-  Left := 0;
-  Top := 0;
-  Width := 580;
-  Height := 501;
-  BorderStyle := bsSizeToolWin;
-  Position := poMainFormCenter;
-  KeyPreview := True;
-  OnKeyDown := FormKeyDown;
-
-  grpSearch := TGroupBox.Create(Self);
-  grpSearch.Parent := Self;
-  grpSearch.Align := alTop;
-  grpSearch.Height := 73;
-
-  edtSearch := TEdit.Create(Self);
-  edtSearch.Parent := grpSearch;
-  edtSearch.Left := 16;
-  edtSearch.Top := 18;
-  edtSearch.Width := 330;
-  edtSearch.OnChange := edtSearchChange;
-  edtSearch.OnClick := edtSearchClick;
-  edtSearch.OnKeyDown := edtSearchKeyDown;
-
-  rbInterface := TRadioButton.Create(Self);
-  rbInterface.Parent := grpSearch;
-  rbInterface.Left := 84;
-  rbInterface.Top := 45;
-  rbInterface.Checked := True;
-
-  rbImplementation := TRadioButton.Create(Self);
-  rbImplementation.Parent := grpSearch;
-  rbImplementation.Left := 203;
-  rbImplementation.Top := 45;
-
-  lblWhere := TLabel.Create(Self);
-  lblWhere.Parent := grpSearch;
-  lblWhere.Left := 16;
-  lblWhere.Top := 46;
-
-  btnAdd := TButton.Create(Self);
-  btnAdd.Parent := grpSearch;
-  btnAdd.Left := 482;
-  btnAdd.Top := 16;
-  btnAdd.Width := 85;
-  btnAdd.Height := 25;
-  btnAdd.Anchors := [akTop, akRight];
-  btnAdd.OnClick := btnAddClick;
-
-  grpResult := TGroupBox.Create(Self);
-  grpResult.Parent := Self;
-  grpResult.Align := alClient;
-
-  lstResult := TListBox.Create(Self);
-  lstResult.Parent := grpResult;
-  lstResult.Align := alClient;
-  lstResult.OnClick := lstResultClick;
-  lstResult.OnDblClick := lstResultDblClick;
-
-  pnlMsg := TPanel.Create(Self);
-  pnlMsg.Parent := grpResult;
-  pnlMsg.Align := alBottom;
-  pnlMsg.Height := 47;
-  pnlMsg.Visible := False;
-
-  lblMessage := TLabel.Create(Self);
-  lblMessage.Parent := pnlMsg;
-  lblMessage.Align := alClient;
-  lblMessage.WordWrap := True;
-  lblMessage.Layout := tlCenter;
-  lblMessage.Font.Color := 19174;
-  lblMessage.Font.Style := [fsItalic];
-
-  grpOptions := TGroupBox.Create(Self);
-  grpOptions.Parent := Self;
-  grpOptions.Align := alBottom;
-  grpOptions.Height := 109;
-
-  chkSearchProjectFiles := TCheckBox.Create(Self);
-  chkSearchProjectFiles.Parent := grpOptions;
-  chkSearchProjectFiles.Left := 19;
-  chkSearchProjectFiles.Top := 22;
-  chkSearchProjectFiles.Checked := True;
-  chkSearchProjectFiles.OnClick := chkSearchProjectFilesClick;
-
-  chkSearchLibraryPath := TCheckBox.Create(Self);
-  chkSearchLibraryPath.Parent := grpOptions;
-  chkSearchLibraryPath.Left := 19;
-  chkSearchLibraryPath.Top := 45;
-  chkSearchLibraryPath.Width := 163;
-  chkSearchLibraryPath.Checked := True;
-  chkSearchLibraryPath.OnClick := chkSearchLibraryPathClick;
-
-  lblProjectUnitsStatus := TLabel.Create(Self);
-  lblProjectUnitsStatus.Parent := grpOptions;
-  lblProjectUnitsStatus.Left := 194;
-  lblProjectUnitsStatus.Top := 23;
-
-  lblLibraryUnitsStatus := TLabel.Create(Self);
-  lblLibraryUnitsStatus.Parent := grpOptions;
-  lblLibraryUnitsStatus.Left := 194;
-  lblLibraryUnitsStatus.Top := 46;
-
-  btnRefreshProject := TSpeedButton.Create(Self);
-  btnRefreshProject.Parent := grpOptions;
-  btnRefreshProject.Left := 188;
-  btnRefreshProject.Top := 18;
-  btnRefreshProject.Width := 54;
-  btnRefreshProject.Height := 22;
-  btnRefreshProject.Flat := True;
-  btnRefreshProject.Visible := False;
-  btnRefreshProject.OnClick := btnRefreshProjectClick;
-
-  btnRefreshLibraryPath := TSpeedButton.Create(Self);
-  btnRefreshLibraryPath.Parent := grpOptions;
-  btnRefreshLibraryPath.Left := 188;
-  btnRefreshLibraryPath.Top := 42;
-  btnRefreshLibraryPath.Width := 54;
-  btnRefreshLibraryPath.Height := 22;
-  btnRefreshLibraryPath.Flat := True;
-  btnRefreshLibraryPath.OnClick := btnRefreshLibraryPathClick;
-
-  tmrLoadedItens := TTimer.Create(Self);
-  tmrLoadedItens.Interval := 100;
-  tmrLoadedItens.OnTimer := tmrLoadedItensTimer;
-
-  OnClose := FormClose;
-  OnShow := FormShow;
-end;
-{$ENDIF}
 
 destructor TfrmFindUnit.Destroy;
 begin

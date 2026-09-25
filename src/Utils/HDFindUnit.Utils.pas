@@ -18,6 +18,7 @@ type
     FPath: string;
   public
     constructor Create(const Path: string);
+    procedure Process;
     function GetIncludeFileContent(const ParentFileName, IncludeName: string;
       out Content: string; out FileName: string): Boolean;
   end;
@@ -309,11 +310,11 @@ function GetAllFilesFromPathRecursive(const Path, Filter: string): TDictionary<s
 var
   FilePath: string;
   FileInfo: TFileInfo;
-  SR: TSearchRec;
 
   procedure ScanDir(const Dir: string);
   var
     SubPath: string;
+    SR: TSearchRec;
   begin
     if SysUtils.FindFirst(IncludeTrailingPathDelimiter(Dir) + '*', faAnyFile, SR) = 0 then
     try
@@ -369,6 +370,10 @@ constructor TIncludeHandler.Create(const Path: string);
 begin
   inherited Create;
   FPath := Path;
+end;
+
+procedure TIncludeHandler.Process;
+begin
 end;
 
 function TIncludeHandler.GetIncludeFileContent(const ParentFileName, IncludeName: string;

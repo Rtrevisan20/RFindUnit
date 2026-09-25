@@ -84,6 +84,7 @@ type
     public
       constructor Create(indexer: TProjectIndexer; includeCache: TIncludeCache;
         problemList: TProblems; const currentFile: string);
+      procedure Process;
       function  GetIncludeFileContent(const ParentFileName, FileName: string; out Content: string;
         out filePath: string): Boolean;
     end;
@@ -587,6 +588,10 @@ begin
   FProblems := problemList;
   FUnitFileFolder := IncludeTrailingPathDelimiter(ExtractFilePath(currentFile));
   FUnitFile := ChangeFileExt(ExtractFileName(currentFile), '');
+end;
+
+procedure TProjectIndexer.TIncludeHandler.Process;
+begin
 end;
 
 function TProjectIndexer.TIncludeHandler.GetIncludeFileContent(

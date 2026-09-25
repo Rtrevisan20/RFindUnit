@@ -27,9 +27,6 @@ type
   private
     procedure PrintOnCanvas(Sender: TObject);
     procedure ConfigMsg;
-{$IFDEF FPC}
-    procedure CreateFormControls;
-{$ENDIF}
   protected
     class var CurTop: integer;
     FTexto: string;
@@ -67,7 +64,9 @@ const
   FONT_COLOR      = $000146A5;
   BRUSH_COLOR     = $00CCE6FF;
 
-{$IFNDEF FPC}
+{$IFDEF FPC}
+{$R *.lfm}
+{$ELSE}
 {$R *.dfm}
 {$ENDIF}
 
@@ -159,36 +158,11 @@ end;
 procedure TfrmMessage.FormCreate(Sender: TObject);
 begin
 {$IFDEF FPC}
-  CreateFormControls;
   pnMsg.OnPaint := PrintOnCanvas;
 {$ENDIF}
   Brush.Style := bsClear;
   BorderStyle := bsNone;
 end;
-
-{$IFDEF FPC}
-procedure TfrmMessage.CreateFormControls;
-begin
-  Self.ClientHeight := 30;
-
-  pnMsg := TPanel.Create(Self);
-  with pnMsg do begin
-    Parent      := Self;
-    Left        := 0;
-    Top         := 0;
-    Width       := 629;
-    Height      := 30;
-    Align       := alClient;
-    BevelOuter  := bvNone;
-    Color       := BRUSH_COLOR;
-  end;
-
-  tmrClose := TTimer.Create(Self);
-  tmrClose.Enabled := False;
-  tmrClose.Interval := 2500;
-  tmrClose.OnTimer := tmrCloseTimer;
-end;
-{$ENDIF}
 
 function TfrmMessage.GetPosition: TRect;
 begin
